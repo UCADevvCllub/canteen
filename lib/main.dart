@@ -11,8 +11,10 @@ void main() async {
 
   runApp(const App());
 
-  print('Feruza');
 
+
+
+  print('commit');
 
 }
 
