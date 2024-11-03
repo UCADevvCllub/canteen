@@ -5,6 +5,8 @@ class AuthService {
 
   User? get currentUser => _auth.currentUser;
 
+  // minor change
+
   // Sign in with email and password
   Future<UserCredential> signInWithEmailAndPassword(
     String email,
