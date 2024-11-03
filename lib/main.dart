@@ -11,7 +11,7 @@ void main() async {
 
   runApp(const App());
 
-  print('Ramil');
+  print('commit');
 }
 
 
