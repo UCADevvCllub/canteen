@@ -10,12 +10,6 @@ void main() async {
   );
 
   runApp(const App());
-
-
-
-
-  print('commit');
-
 }
 
 
