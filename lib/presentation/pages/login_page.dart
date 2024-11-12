@@ -13,54 +13,60 @@ class LoginPage extends StatelessWidget {
     final TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
-      backgroundColor: Colors.green,
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Login',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/loginpage.png'), // Ensure the image path matches your `pubspec.yaml` file
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Login',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            AppTextFormField(
-              hintText: 'Email',
-              controller: emailController,
-              icon: Icons.email,
-            ),
-            const SizedBox(height: 20),
-            AppTextFormField(
-              hintText: 'Password',
-              controller: passwordController,
-              icon: Icons.lock,
-              isPassword: true,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
-              },
-              child: const Text('Login'),
-            ),
-            TextButton(
-              onPressed: () {
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SignUpPage()),
-                );
-              },
-              child: const Text('Don\'t have an account? Sign up'),
-            ),
-          ],
+              const SizedBox(height: 20),
+              AppTextFormField(
+                hintText: 'Email',
+                controller: emailController,
+                icon: Icons.email,
+              ),
+              const SizedBox(height: 20),
+              AppTextFormField(
+                hintText: 'Password',
+                controller: passwordController,
+                icon: Icons.lock,
+                isPassword: true,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                },
+                child: const Text('Login'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SignUpPage()),
+                  );
+                },
+                child: const Text('Don\'t have an account? Sign up'),
+              ),
+            ],
+          ),
         ),
       ),
     );
