@@ -1,6 +1,6 @@
 import 'package:canteen/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
-import '../widgets/app_text_form_field.dart';
+import '../../widgets/app_text_form_field.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
