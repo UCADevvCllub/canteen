@@ -1,8 +1,6 @@
-// lib/presentation/pages/login_page.dart
+import 'package:canteen/presentation/widgets/app_button.dart';
+import 'package:canteen/presentation/widgets/app_text_form_field.dart';
 import 'package:flutter/material.dart';
-import 'home_page.dart';
-import '../widgets/app_text_form_field.dart';
-import 'signup_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -16,14 +14,19 @@ class LoginPage extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/loginpage.png'), // Ensure the image path matches your `pubspec.yaml` file
+            image: AssetImage('assets/login_page.png'),
+            // Ensure the image path matches your `pubspec.yaml` file
             fit: BoxFit.cover,
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only(
+            left: 35,
+            right: 35,
+            bottom: 30,
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const Text(
                 'Login',
@@ -47,21 +50,14 @@ class LoginPage extends StatelessWidget {
                 isPassword: true,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
-                  );
-                },
-                child: const Text('Login'),
+              AppButton(
+                title: 'Login',
+                onPressed: () {},
               ),
+              const SizedBox(height: 150),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SignUpPage()),
-                  );
+                  Navigator.pushNamed(context, '/sign-up');
                 },
                 child: const Text('Don\'t have an account? Sign up'),
               ),

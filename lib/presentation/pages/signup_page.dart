@@ -1,22 +1,22 @@
-// lib/presentation/pages/signup_page.dart
+import 'package:canteen/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import '../widgets/app_text_form_field.dart';
-import 'home_page.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
+    final nameController = TextEditingController();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
 
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/signup.png'), // Ensure the image path matches your `pubspec.yaml` file
+            image: AssetImage('assets/sign_up.png'),
+            // Ensure the image path matches your `pubspec.yaml` file
             fit: BoxFit.cover,
           ),
         ),
@@ -25,6 +25,7 @@ class SignUpPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(height: 100),
               const Text(
                 'Sign Up',
                 style: TextStyle(
@@ -53,14 +54,16 @@ class SignUpPage extends StatelessWidget {
                 isPassword: true,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
+              AppButton(
+                title: 'Sign Up',
+                onPressed: () {},
+              ),
+              const Spacer(),
+              TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
-                  );
+                  Navigator.pushNamed(context, '/');
                 },
-                child: const Text('Sign Up'),
+                child: const Text('Already have an account? Login'),
               ),
             ],
           ),

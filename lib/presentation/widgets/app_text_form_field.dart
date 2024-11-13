@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//TODO: Give comments on every part of the code
 class AppTextFormField extends StatefulWidget {
   const AppTextFormField({
     super.key,
@@ -33,7 +34,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       height: widget.height ?? 55,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(35),
       ),
       child: TextFormField(
         controller: widget.controller,
