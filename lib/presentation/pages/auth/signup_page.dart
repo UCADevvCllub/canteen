@@ -13,9 +13,9 @@ class SignUpPage extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/sign_up.png'),
+            image: AssetImage('assets/images/sign_up.png'),
             // Ensure the image path matches your `pubspec.yaml` file
             fit: BoxFit.cover,
           ),
