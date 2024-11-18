@@ -75,22 +75,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           ),
           prefixIcon: widget.icon != null ? Icon(widget.icon, color: Colors.grey[600]) : null,
           //Добавляет иконку слева, если она указана, с серым цветом.
-          suffixIcon: widget.isPassword
-          //Добавляет кнопку для управления видимостью текста в поле пароля.
-          // При нажатии вызывает setState, переключая значение _obscureText,
-          // чтобы показать/скрыть текст.
-              ? IconButton(
-            icon: Icon(
-              _obscureText ? Icons.visibility_off : Icons.visibility,
-              color: Colors.grey[600],
-            ),
-            onPressed: () {
-              setState(() {
-                _obscureText = !_obscureText;
-              });
-            },
-          )
-              : null,
+          suffixIcon: widget,
         ),
         maxLines: widget.maxLines, //Устанавливает максимальное количество строк для текстового поля (по умолчанию 1).
       ),
