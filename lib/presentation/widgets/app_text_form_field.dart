@@ -63,7 +63,6 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           hintText: widget.hintText, // Показывает текст-заполнитель, заданный widget.hintText.
           hintStyle: TextStyle(
             //Устанавливает серый цвет для текста-заполнителя.
-
             color: Colors.grey[600],
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
