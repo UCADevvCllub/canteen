@@ -44,6 +44,12 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 AppTextFormField(
                   hintText: 'Email',
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Email is required';
+                    }
+                    return null;
+                  },
                   controller: emailController,
                   icon: Icons.email,
                 ),

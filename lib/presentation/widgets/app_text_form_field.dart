@@ -48,52 +48,47 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
   Widget build(BuildContext context) {
     //Метод build создает пользовательский интерфейс для виджета, возвращая дерево Widget,
     // которое определяет его внешний вид и поведение.
-    return Container( //Этот Container оборачивает TextFormField, устанавливая его высоту
-      // (по умолчанию 55, если не указана) и применяя белый цвет фона с округлыми углами радиусом 30 пикселей.
-      height: widget.height ?? 55,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(35),
-      ),
-      child: TextFormField(
-        controller: widget.controller, //Управляет текстом внутри поля, позволяя доступ к нему и модификацию вне виджета.
-        obscureText: widget.isPassword ? _obscureText : false, // Скрывает текст, если isPassword равно true и
-        // _obscureText тоже true (например, для пароля).
-        validator: widget.validator, //Необязательная функция, которая может проверять текст на корректность.
-        decoration: InputDecoration( //настраивает внешний вид текстового поля.
-          hintText: widget.hintText, // Показывает текст-заполнитель, заданный widget.hintText.
-          hintStyle: TextStyle(
-            //Устанавливает серый цвет для текста-заполнителя.
+    return TextFormField(
+      controller: widget.controller, //Управляет текстом внутри поля, позволяя доступ к нему и модификацию вне виджета.
+      obscureText: widget.isPassword ? _obscureText : false, // Скрывает текст, если isPassword равно true и
+      // _obscureText тоже true (например, для пароля).
+      validator: widget.validator, //Необязательная функция, которая может проверять текст на корректность.
+      decoration: InputDecoration(
+        //TODO: check this
+        filled: true,
+        fillColor: Colors.white,
+        hintText: widget.hintText, // Показывает текст-заполнитель, заданный widget.hintText.
+        hintStyle: TextStyle(
+          //Устанавливает серый цвет для текста-заполнителя.
+          color: Colors.grey[600],
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        //Добавляет внутренние отступы вокруг текста для визуального пространства.
+        border: OutlineInputBorder(
+          //Применяет границу с закругленными углами (радиус 30), с невидимой границей благодаря BorderSide.none.
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+        prefixIcon: widget.icon != null ? Icon(widget.icon, color: Colors.grey[600]) : null,
+        //Добавляет иконку слева, если она указана, с серым цветом.
+        suffixIcon: widget.isPassword
+        //Добавляет кнопку для управления видимостью текста в поле пароля.
+        // При нажатии вызывает setState, переключая значение _obscureText,
+        // чтобы показать/скрыть текст.
+            ? IconButton(
+          icon: Icon(
+            _obscureText ? Icons.visibility_off : Icons.visibility,
             color: Colors.grey[600],
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          //Добавляет внутренние отступы вокруг текста для визуального пространства.
-          border: OutlineInputBorder(
-            //Применяет границу с закругленными углами (радиус 30), с невидимой границей благодаря BorderSide.none.
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide.none,
-          ),
-          prefixIcon: widget.icon != null ? Icon(widget.icon, color: Colors.grey[600]) : null,
-          //Добавляет иконку слева, если она указана, с серым цветом.
-          suffixIcon: widget.isPassword
-          //Добавляет кнопку для управления видимостью текста в поле пароля.
-          // При нажатии вызывает setState, переключая значение _obscureText,
-          // чтобы показать/скрыть текст.
-              ? IconButton(
-            icon: Icon(
-              _obscureText ? Icons.visibility_off : Icons.visibility,
-              color: Colors.grey[600],
-            ),
-            onPressed: () {
-              setState(() {
-                _obscureText = !_obscureText;
-              });
-            },
-          )
-              : null,
-        ),
-        maxLines: widget.maxLines, //Устанавливает максимальное количество строк для текстового поля (по умолчанию 1).
+          onPressed: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+        )
+            : null,
       ),
+      maxLines: widget.maxLines, //Устанавливает максимальное количество строк для текстового поля (по умолчанию 1).
     );
   }
 }
