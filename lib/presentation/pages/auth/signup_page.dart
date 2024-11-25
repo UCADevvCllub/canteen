@@ -11,6 +11,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _formKey = GlobalKey<FormState>(); // Создаем ключ для формы
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -28,70 +29,99 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 100),
-              const Text(
-                'Sign Up',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+          child: Form( // Оборачиваем в Form
+            key: _formKey, // Передаем ключ формы
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 100),
+                const Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              AppTextFormField(
-                hintText: 'Full Name',
-                controller: nameController,
-                icon: Icons.person,
-              ),
-              const SizedBox(height: 20),
-              AppTextFormField(
-                hintText: 'Email',
-                controller: emailController,
-                icon: Icons.email,
-              ),
-              const SizedBox(height: 20),
-              AppTextFormField(
-                hintText: 'Password',
-                controller: passwordController,
-                icon: Icons.lock,
-                isPassword: true,
-              ),
-              const SizedBox(height: 20),
-              // Use the RoleDropdown widget here
-              RoleDropdown(
-                onChanged: (value) {
-                  setState(() {
-                    selectedRole = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 20),
-              AppButton(
-                title: 'Sign Up',
-                onPressed: () {
-                  // Perform sign-up logic
-                  if (selectedRole == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please select a role')),
-                    );
-                  } else {
-                    print('Name: ${nameController.text}');
-                    print('Email: ${emailController.text}');
-                    print('Role: $selectedRole');
-                  }
-                },
-              ),
-              const Spacer(),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/');
-                },
-                child: const Text('Already have an account? Login'),
-              ),
-            ],
+                const SizedBox(height: 20),
+                AppTextFormField(
+                  hintText: 'Full Name',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Full name is required';
+                    }
+                    return null;
+                  },
+                  controller: nameController,
+                  icon: Icons.person,
+                ),
+                const SizedBox(height: 20),
+                AppTextFormField(
+                  hintText: 'Email',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Email is required';
+                    }
+                    return null;
+                  },
+                  controller: emailController,
+                  icon: Icons.email,
+                ),
+                const SizedBox(height: 20),
+                AppTextFormField(
+                  hintText: 'Password',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Password is required';
+                    }
+                    return null;
+                  },
+                  controller: passwordController,
+                  icon: Icons.lock,
+                  isPassword: true,
+                ),
+                const SizedBox(height: 20),
+
+                RoleDropdown(
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRole = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                AppButton(
+                  title: 'Sign Up',
+                  onPressed: () {
+
+                    if (_formKey.currentState!.validate()) {
+
+                      if (selectedRole == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please select a role')),
+                        );
+                      } else {
+                        print('Name: ${nameController.text}');
+                        print('Email: ${emailController.text}');
+                        print('Role: $selectedRole');
+                      }
+                    } else {
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please fill in all fields')),
+                      );
+                    }
+                  },
+                ),
+                const Spacer(),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/');
+                  },
+                  child: const Text('Already have an account? Login'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
