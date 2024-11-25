@@ -1,5 +1,6 @@
 import 'package:canteen/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:canteen/presentation/widgets/role_dropdown.dart'; // Import the new dropdown file
 import '../../widgets/app_text_form_field.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -13,8 +14,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  String? selectedRole; // For dropdown selection
-  final List<String> roleOptions = ['Student', 'Faculty', 'Staff'];
+  String? selectedRole; // Store the selected role
 
   @override
   Widget build(BuildContext context) {
@@ -60,50 +60,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 isPassword: true,
               ),
               const SizedBox(height: 20),
-              // Dropdown Styled Like AppTextFormField
-              Container(
-                height: 55,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(35),
-                ),
-                child: DropdownButtonFormField<String>(
-                  value: selectedRole,
-                  hint: const Text(
-                    'Select Role',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  items: roleOptions.map((String role) {
-                    return DropdownMenuItem<String>(
-                      value: role,
-                      child: Text(
-                        role,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedRole = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.school, color: Colors.grey[600]),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  style: const TextStyle(fontSize: 16, color: Colors.black),
-                  icon: Icon(Icons.arrow_drop_down, color: Colors.grey[600]),
-                ),
+              // Use the RoleDropdown widget here
+              RoleDropdown(
+                onChanged: (value) {
+                  setState(() {
+                    selectedRole = value;
+                  });
+                },
               ),
               const SizedBox(height: 20),
               AppButton(
