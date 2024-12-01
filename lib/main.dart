@@ -1,3 +1,4 @@
+import 'package:canteen/core/di.dart';
 import 'package:canteen/presentation/app.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,6 +9,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  setupLocator();
 
   runApp(const App());
 }
