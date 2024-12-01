@@ -1,7 +1,9 @@
+import 'package:canteen/presentation/screens/home/schedule.dart';
 import 'package:canteen/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:canteen/presentation/widgets/role_dropdown.dart'; // Import the new dropdown file
 import '../../widgets/app_text_form_field.dart';
+import "../../screens/home/products_page.dart";
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -92,7 +94,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 const SizedBox(height: 20),
                 AppButton(
                   title: 'Sign Up',
+
                   onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SchedulePage())
+                    );
 
                     if (_formKey.currentState!.validate()) {
 
