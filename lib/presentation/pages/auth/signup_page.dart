@@ -1,18 +1,11 @@
-
-import 'package:canteen/presentation/screens/home/schedule.dart';
-import 'package:canteen/presentation/widgets/app_button.dart';
-import 'package:flutter/material.dart';
-import 'package:canteen/presentation/widgets/role_dropdown.dart'; // Import the new dropdown file
-import '../../widgets/app_text_form_field.dart';
-import "../../screens/home/products_page.dart";
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/validators.dart';
 import 'package:canteen/presentation/navigation/app_router.dart';
-import 'package:canteen/presentation/widgets/app_button.dart';
+import 'package:canteen/presentation/widgets/buttons/app_button.dart';
 import 'package:flutter/material.dart';
-import 'package:canteen/presentation/widgets/role_dropdown.dart';
-import 'package:canteen/presentation/widgets/app_text_form_field.dart';
+import 'package:canteen/presentation/widgets/fields/role_dropdown.dart';
+import 'package:canteen/presentation/widgets/fields/app_text_form_field.dart';
 
 @RoutePage()
 class SignUpPage extends StatefulWidget {
@@ -23,7 +16,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final _formKey = GlobalKey<FormState>(); // Создаем ключ для формы
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -41,19 +33,16 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Form( // Оборачиваем в Form
-            key: _formKey, // Передаем ключ формы
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 100),
-                const Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 100),
+              const Text(
+                'Sign Up',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
               const SizedBox(height: 20),
@@ -95,6 +84,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       const SnackBar(content: Text('Please select a role')),
                     );
                   } else {
+                    context.router.pushNamed('/home');
                   }
                 },
               ),

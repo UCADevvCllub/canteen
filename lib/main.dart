@@ -1,11 +1,19 @@
 import 'package:canteen/core/di.dart';
 import 'package:canteen/presentation/app.dart';
 import 'package:flutter/material.dart';
-import 'presentation/pages/auth/login_page.dart';
-import 'package:canteen/presentation/widgets/navigation_bar.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
-void main() {
   setupLocator();
+
   runApp(const App());
 }
+
+
+
