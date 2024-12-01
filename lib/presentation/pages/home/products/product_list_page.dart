@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:canteen/presentation/widgets/product_card_widget.dart'; // Import the ProductCardWidget
+import 'package:canteen/presentation/widgets/cards/product_card_widget.dart'; // Import the ProductCardWidget
 
 class ProductListPage extends StatelessWidget {
   final String categoryTitle;

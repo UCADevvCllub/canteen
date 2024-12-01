@@ -1,8 +1,7 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/validators.dart';
-import 'package:canteen/presentation/widgets/app_button.dart';
-import 'package:canteen/presentation/widgets/app_text_form_field.dart';
+import 'package:canteen/presentation/widgets/buttons/app_button.dart';
+import 'package:canteen/presentation/widgets/fields/app_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
@@ -65,8 +64,9 @@ class _LoginPageState extends State<LoginPage> {
                   AppButton(
                     title: 'Login',
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                      }
+                      // if (_formKey.currentState!.validate()) {
+                      // }
+                      context.router.pushNamed('/home');
                     },
                   ),
                   const SizedBox(height: 150),

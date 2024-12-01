@@ -1,3 +1,7 @@
+
+*.gr.dart
+pubspec.lock
+
 # Miscellaneous
 *.class
 *.log
