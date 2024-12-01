@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // Импортирует пакет Material, который предоставляет виджеты и функции для создания пользовательского интерфейса
 
-//TODO: Give comments on every part of the code
 class AppTextFormField extends StatefulWidget {
   // Определяет виджет AppTextFormField, являющийся StatefulWidget, так как он должен
   // управлять изменяющимся состоянием (например, показывать/скрывать текст пароля).
@@ -53,7 +52,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       height: widget.height ?? 55,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(35),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: TextFormField(
         controller: widget.controller, //Управляет текстом внутри поля, позволяя доступ к нему и модификацию вне виджета.
@@ -75,22 +74,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           ),
           prefixIcon: widget.icon != null ? Icon(widget.icon, color: Colors.grey[600]) : null,
           //Добавляет иконку слева, если она указана, с серым цветом.
-          suffixIcon: widget.isPassword
-          //Добавляет кнопку для управления видимостью текста в поле пароля.
-          // При нажатии вызывает setState, переключая значение _obscureText,
-          // чтобы показать/скрыть текст.
-              ? IconButton(
-            icon: Icon(
-              _obscureText ? Icons.visibility_off : Icons.visibility,
-              color: Colors.grey[600],
-            ),
-            onPressed: () {
-              setState(() {
-                _obscureText = !_obscureText;
-              });
-            },
-          )
-              : null,
+          suffixIcon: widget,
         ),
         maxLines: widget.maxLines, //Устанавливает максимальное количество строк для текстового поля (по умолчанию 1).
       ),
