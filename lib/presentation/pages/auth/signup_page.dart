@@ -1,8 +1,12 @@
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:canteen/presentation/navigation/app_router.dart';
 import 'package:canteen/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
-import 'package:canteen/presentation/widgets/role_dropdown.dart'; // Import the new dropdown file
-import '../../widgets/app_text_form_field.dart';
+import 'package:canteen/presentation/widgets/role_dropdown.dart';
+import 'package:canteen/presentation/widgets/app_text_form_field.dart';
 
+@RoutePage()
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -72,22 +76,18 @@ class _SignUpPageState extends State<SignUpPage> {
               AppButton(
                 title: 'Sign Up',
                 onPressed: () {
-                  // Perform sign-up logic
                   if (selectedRole == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Please select a role')),
                     );
                   } else {
-                    print('Name: ${nameController.text}');
-                    print('Email: ${emailController.text}');
-                    print('Role: $selectedRole');
                   }
                 },
               ),
               const Spacer(),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/');
+                  context.router.pushNamed('/login');
                 },
                 child: const Text('Already have an account? Login'),
               ),

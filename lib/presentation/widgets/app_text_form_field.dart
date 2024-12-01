@@ -49,7 +49,19 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
             borderSide: BorderSide.none,
           ),
           prefixIcon: widget.icon != null ? Icon(widget.icon, color: Colors.grey[600]) : null,
-          suffixIcon: widget,
+          suffixIcon: widget.isPassword
+              ? IconButton(
+            icon: Icon(
+              _obscureText ? Icons.visibility : Icons.visibility_off,
+              color: Colors.grey[600],
+            ),
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
+          )
+              : null,
         ),
         maxLines: widget.maxLines,
       ),

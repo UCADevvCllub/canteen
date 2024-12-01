@@ -1,7 +1,10 @@
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:canteen/presentation/widgets/app_button.dart';
 import 'package:canteen/presentation/widgets/app_text_form_field.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -67,14 +70,13 @@ class _LoginPageState extends State<LoginPage> {
                     title: 'Login',
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        print('Password: ${passwordController.text}');
                       }
                     },
                   ),
                   const SizedBox(height: 150),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/sign-up');
+                      context.router.pushNamed('/sign-up');
                     },
                     child: const Text('Don\'t have an account? Sign up'),
                   ),
@@ -87,3 +89,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+
+
