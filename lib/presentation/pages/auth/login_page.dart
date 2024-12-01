@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:canteen/core/validators.dart';
 import 'package:canteen/presentation/widgets/app_button.dart';
 import 'package:canteen/presentation/widgets/app_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,6 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        // The scrolling applies to both the background and widgets
         child: Container(
           height: MediaQuery.of(context).size.height,
           decoration: const BoxDecoration(
@@ -51,16 +51,12 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: 'Email',
                     controller: emailController,
                     icon: Icons.email,
+                    validator: FormValidators.validateEmail,
                   ),
                   const SizedBox(height: 20),
                   AppTextFormField(
                     hintText: 'Password',
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Password is required';
-                      }
-                      return null;
-                    },
+                    validator: FormValidators.validatePassword,
                     controller: passwordController,
                     icon: Icons.lock,
                     isPassword: true,
