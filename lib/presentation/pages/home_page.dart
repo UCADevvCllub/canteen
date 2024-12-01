@@ -19,12 +19,7 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Flutter Demo Home Page'),
       ),
       body: Center(
-        child: AppTextFormField(
-          hintText: 'hintText',
-          controller: controller,
-          icon: Icons.person,
-          isPassword: true,
-        ),
+        child: Text('You have pushed the button this many times:'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
