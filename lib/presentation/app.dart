@@ -9,6 +9,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final router = locator<AppRouter>();
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Canteen',
       routerConfig: router.config(),
     );
