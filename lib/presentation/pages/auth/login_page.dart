@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     controller: emailController,
                     icon: Icons.email,
-                    validator: FormValidators.validateEmail,
+                    // validator: FormValidators.validateEmail,
                   ),
                   const SizedBox(height: 20),
                   AppTextFormField(

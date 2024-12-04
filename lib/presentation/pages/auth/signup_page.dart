@@ -1,10 +1,8 @@
-
-import 'package:canteen/presentation/screens/home/schedule.dart';
+import 'package:canteen/presentation/pages/home/schedule.dart';
 import 'package:canteen/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:canteen/presentation/widgets/role_dropdown.dart'; // Import the new dropdown file
 import '../../widgets/app_text_form_field.dart';
-import "../../screens/home/products_page.dart";
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/validators.dart';
@@ -41,7 +39,8 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Form( // Оборачиваем в Form
+          child: Form(
+            // Оборачиваем в Form
             key: _formKey, // Передаем ключ формы
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -55,57 +54,63 @@ class _SignUpPageState extends State<SignUpPage> {
                     color: Colors.white,
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              AppTextFormField(
-                hintText: 'Full Name',
-                controller: nameController,
-                icon: Icons.person,
-                validator: FormValidators.validateName,
-              ),
-              const SizedBox(height: 20),
-              AppTextFormField(
-                hintText: 'Email',
-                controller: emailController,
-                icon: Icons.email,
-                validator: FormValidators.validateEmail,
-              ),
-              const SizedBox(height: 20),
-              AppTextFormField(
-                hintText: 'Password',
-                controller: passwordController,
-                icon: Icons.lock,
-                validator: FormValidators.validatePassword,
-                isPassword: true,
-              ),
-              const SizedBox(height: 20),
-              RoleDropdown(
-                onChanged: (value) {
-                  setState(() {
-                    selectedRole = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 20),
-              AppButton(
-                title: 'Sign Up',
-                onPressed: () {
-                  if (selectedRole == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please select a role')),
-                    );
-                  } else {
-                  }
-                },
-              ),
-              const Spacer(),
-              TextButton(
-                onPressed: () {
-                  context.router.pushNamed('/login');
-                },
-                child: const Text('Already have an account? Login'),
-              ),
-            ],
+                const SizedBox(height: 20),
+                AppTextFormField(
+                  hintText: 'Full Name',
+                  controller: nameController,
+                  icon: Icons.person,
+                  validator: FormValidators.validateName,
+                ),
+                const SizedBox(height: 20),
+                AppTextFormField(
+                  hintText: 'Email',
+                  controller: emailController,
+                  icon: Icons.email,
+                  validator: FormValidators.validateEmail,
+                ),
+                const SizedBox(height: 20),
+                AppTextFormField(
+                  hintText: 'Password',
+                  controller: passwordController,
+                  icon: Icons.lock,
+                  validator: FormValidators.validatePassword,
+                  isPassword: true,
+                ),
+                const SizedBox(height: 20),
+                RoleDropdown(
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRole = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                AppButton(
+                  title: 'Sign Up',
+                  onPressed: () {
+                    if (selectedRole == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Please select a role')),
+                      );
+                    } else {
+                      // Переход на экран SchedulePage
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SchedulePage()),
+                      );
+                    }
+                  },
+                ),
+
+                const Spacer(),
+                TextButton(
+                  onPressed: () {
+                    context.router.pushNamed('/login');
+                  },
+                  child: const Text('Already have an account? Login'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
