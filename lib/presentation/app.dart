@@ -1,4 +1,5 @@
 import 'package:canteen/core/di.dart';
+import 'package:canteen/core/theme/app_theme.dart';
 import 'package:canteen/presentation/navigation/app_router.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,8 @@ class App extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Canteen',
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       routerConfig: router.config(),
     );
   }
