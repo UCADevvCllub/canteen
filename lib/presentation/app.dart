@@ -1,4 +1,5 @@
-import 'package:canteen/presentation/pages/home_page.dart';
+import 'package:canteen/core/di.dart';
+import 'package:canteen/presentation/navigation/app_router.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -6,11 +7,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      routes: {
-        '/': (context) => const HomePage(),
-      },
+    final router = locator<AppRouter>();
+    return MaterialApp.router(
+      title: 'Canteen',
+      routerConfig: router.config(),
     );
   }
 }
