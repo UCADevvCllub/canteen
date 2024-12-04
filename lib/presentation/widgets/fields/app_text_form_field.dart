@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-//TODO: Give comments on every part of the code
 class AppTextFormField extends StatefulWidget {
   const AppTextFormField({
     super.key,

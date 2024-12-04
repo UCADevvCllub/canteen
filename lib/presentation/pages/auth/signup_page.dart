@@ -1,16 +1,10 @@
-import 'package:canteen/presentation/pages/home/schedule.dart';
-import 'package:canteen/presentation/widgets/app_button.dart';
+import 'package:canteen/presentation/widgets/buttons/app_button.dart';
+import 'package:canteen/presentation/widgets/fields/app_text_form_field.dart';
+import 'package:canteen/presentation/widgets/fields/role_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:canteen/presentation/widgets/role_dropdown.dart'; // Import the new dropdown file
-import '../../widgets/app_text_form_field.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/validators.dart';
-import 'package:canteen/presentation/navigation/app_router.dart';
-import 'package:canteen/presentation/widgets/app_button.dart';
-import 'package:flutter/material.dart';
-import 'package:canteen/presentation/widgets/role_dropdown.dart';
-import 'package:canteen/presentation/widgets/app_text_form_field.dart';
 
 @RoutePage()
 class SignUpPage extends StatefulWidget {
@@ -92,16 +86,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Please select a role')),
                       );
-                    } else {
-                      // Переход на экран SchedulePage
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SchedulePage()),
-                      );
-                    }
+                    } else {}
                   },
                 ),
-
                 const Spacer(),
                 TextButton(
                   onPressed: () {

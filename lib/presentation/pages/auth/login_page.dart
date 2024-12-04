@@ -1,8 +1,8 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/validators.dart';
-import 'package:canteen/presentation/widgets/app_button.dart';
-import 'package:canteen/presentation/widgets/app_text_form_field.dart';
+import 'package:canteen/data/remote/auth_service.dart';
+import 'package:canteen/presentation/widgets/buttons/app_button.dart';
+import 'package:canteen/presentation/widgets/fields/app_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
@@ -49,14 +49,9 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 20),
                   AppTextFormField(
                     hintText: 'Email',
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Email is required';
-                      }
-                      return null;
-                    },
                     controller: emailController,
                     icon: Icons.email,
+
                     // validator: FormValidators.validateEmail,
                   ),
                   const SizedBox(height: 20),
@@ -71,13 +66,18 @@ class _LoginPageState extends State<LoginPage> {
                   AppButton(
                     title: 'Login',
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                      }
+                      // if (_formKey.currentState!.validate()) {
+                      // }
+                      context.router.pushNamed('/home');
                     },
                   ),
                   const SizedBox(height: 150),
                   TextButton(
                     onPressed: () {
+                      // AuthService().signInWithEmailAndPassword(
+                      //   emailController.text,
+                      //   passwordController.text,
+                      // );
                       context.router.pushNamed('/sign-up');
                     },
                     child: const Text('Don\'t have an account? Sign up'),
