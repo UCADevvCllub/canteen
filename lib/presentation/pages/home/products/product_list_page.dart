@@ -1,56 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:canteen/presentation/widgets/cards/product_card_widget.dart'; // Import the ProductCardWidget
+import 'package:canteen/presentation/widgets/cards/product_card_widget.dart';
+import 'package:canteen/presentation/pages/home/products/product_description_page.dart';
 
 class ProductListPage extends StatelessWidget {
   final String categoryTitle;
 
-  const ProductListPage({
-    Key? key,
-    required this.categoryTitle,
-  }) : super(key: key);
+  const ProductListPage({Key? key, required this.categoryTitle}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Sample data for products (You can replace this with actual data)
+    // Mock products data for the selected category
     final products = [
       {
-        'name': 'Product 1',
-        'price': '\$10',
-        'imagePath': 'assets/images/product1.png',
+        'name': 'Jin Ramen Mild',
+        'price': '160 som/piece',
+        'imagePath': 'assets/product_images/jin_ramen.jpg',
+        'description': 'Delicious Korean-style ramen with a mild flavor.',
+        'rating': 4.5,
+        'reviews': 13,
       },
       {
-        'name': 'Product 2',
-        'price': '\$15',
-        'imagePath': 'assets/images/product2.png',
+        'name': 'Jin Ramen Spicy',
+        'price': '170 som/piece',
+        'imagePath': 'assets/product_images/jin_ramen_spicy.jpg',
+        'description': 'Delicious Korean-style ramen with a spicy kick.',
+        'rating': 4.8,
+        'reviews': 20,
       },
-      // Add more products as needed...
+      {
+        'name': 'Cup Noodles',
+        'price': '120 som/piece',
+        'imagePath': 'assets/product_images/cup_noodles.jpg',
+        'description': 'Convenient cup noodles for quick meals on the go.',
+        'rating': 4.3,
+        'reviews': 8,
+      },
     ];
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF50B154), // Green AppBar
-        title: Text(
-          categoryTitle,
-          style: const TextStyle(color: Colors.white),
+        title: Text(categoryTitle),
+        backgroundColor: const Color(0xFF50B154),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: products.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // 2 columns
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 0.7, // Adjust aspect ratio for product cards
+          crossAxisCount: 2,
+          crossAxisSpacing: 16.0,
+          mainAxisSpacing: 16.0,
+          childAspectRatio: 0.8,
         ),
+        itemCount: products.length,
         itemBuilder: (context, index) {
           final product = products[index];
+
           return ProductCardWidget(
-            name: product['name']!,
-            price: product['price']!,
-            imagePath: product['imagePath']!,
+            name: product['name'] as String, // Explicitly cast as String
+            price: product['price'] as String, // Explicitly cast as String
+            imagePath: product['imagePath'] as String, // Explicitly cast as String
+            description: product['description'] as String, // Explicitly cast as String
+            rating: product['rating'] as double, // Explicitly cast as double
+            reviews: product['reviews'] as int, // Explicitly cast as int
             onTap: () {
-              // TODO: Handle product tap (e.g., navigate to product detail page)
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDescriptionPage(
+                    name: product['name'] as String,
+                    price: product['price'] as String,
+                    imagePath: product['imagePath'] as String,
+                    description: product['description'] as String,
+                    rating: product['rating'] as double,
+                    reviews: product['reviews'] as int,
+                  ),
+                ),
+              );
             },
           );
         },

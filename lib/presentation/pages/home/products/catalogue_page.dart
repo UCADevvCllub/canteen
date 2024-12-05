@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:canteen/presentation/navigation/app_router.dart';
 import 'package:canteen/presentation/pages/home/products/product_list_page.dart';
 import 'package:canteen/presentation/widgets/catalog_widget.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +67,7 @@ class CataloguePage extends StatelessWidget {
                   title: item['title']!,
                   imagePath: item['imagePath']!,
                   onTap: () {
-                    // Navigate to ProductListPage with the selected category
+                    // // Navigate to ProductListPage with the selected category
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -74,6 +76,7 @@ class CataloguePage extends StatelessWidget {
                         ),
                       ),
                     );
+                    // context.router.pushNamed('/product-list');
                   },
                 );
               },
