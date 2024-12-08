@@ -16,8 +16,22 @@ class ProductsService {
     return Product.fromFirebase(snapshot);
   }
 
+  // ----------------- Category -----------------
+
   Future<List<Category>> getCategories() async {
     final snapshot = await _categories.get();
     return snapshot.docs.map((doc) => Category.fromFirebase(doc)).toList();
+  }
+
+  Future<void> addCategory(Category category) async {
+    await _categories.doc(category.id).set(category.toFirebase());
+  }
+
+  Future<void> updateCategory(Category category) async {
+    await _categories.doc(category.id).update(category.toFirebase());
+  }
+
+  Future<void> deleteCategory(String id) async {
+    await _categories.doc(id).delete();
   }
 }

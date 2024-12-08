@@ -1,7 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+enum UserRole {
+  admin,
+  user,
+  unknown
+}
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   User? get currentUser => _auth.currentUser;
 
@@ -37,6 +45,23 @@ class AuthService {
     }
   }
 
+  // Check if current user is an admin
+  Future<bool> isAdmin() async {
+    if (currentUser?.uid == null) return false;
+
+    try {
+      DocumentSnapshot adminDoc = await _fireStore
+          .collection('admins')
+          .doc(currentUser?.uid)
+          .get();
+
+      return adminDoc.exists;
+    } catch (e) {
+      print('Error checking admin status: $e');
+      return false;
+    }
+  }
+
   // Sign out
   Future<void> signOut() async {
     try {
@@ -63,15 +88,6 @@ class AuthService {
   // Get user ID
   String? getUserId() {
     return _auth.currentUser?.uid;
-  }
-
-  // Update email
-  Future<void> updateEmail(String newEmail) async {
-    try {
-      await _auth.currentUser?.updateEmail(newEmail);
-    } on FirebaseAuthException catch (e) {
-      throw _handleAuthException(e);
-    }
   }
 
   // Update password

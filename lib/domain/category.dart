@@ -19,4 +19,13 @@ class Category {
       imageUrl: d['image_url'],
     );
   }
+
+  Map<String, dynamic> toFirebase() {
+    return {
+      'id': id,
+      'name': name,
+      'image_url': imageUrl,
+    };
+  }
+
 }
