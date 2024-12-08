@@ -1,15 +1,42 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:canteen/core/di.dart';
+import 'package:canteen/core/mixins/dialog_helper.dart';
+import 'package:canteen/core/theme/app_colors.dart';
+import 'package:canteen/data/remote/auth_service.dart';
 import 'package:canteen/presentation/navigation/app_router.gr.dart';
 import 'package:canteen/presentation/providers/products_notifier.dart';
+import 'package:canteen/presentation/widgets/buttons/app_button.dart';
 import 'package:canteen/presentation/widgets/catalog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CataloguePage extends StatelessWidget {
+class CataloguePage extends StatefulWidget {
   const CataloguePage({super.key});
 
   @override
+  State<CataloguePage> createState() => _CataloguePageState();
+}
+
+class _CataloguePageState extends State<CataloguePage> {
+  bool isAdmin = true;
+
+  @override
+  void initState() {
+    // isAdminCheck();
+    super.initState();
+  }
+
+  void isAdminCheck() async {
+    locator<AuthService>().isAdmin().then((value) {
+      setState(() {
+        isAdmin = value;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Consumer<ProductsNotifier>(
@@ -74,6 +101,16 @@ class CataloguePage extends StatelessWidget {
                   : const Center(
                       child: CircularProgressIndicator(),
                     ),
+              const Spacer(),
+              isAdmin
+                  ? AppButton(
+                color: AppColors.secondary,
+                      title: 'Add category',
+                      onPressed: () {
+                        DialogHelper.showAddCategoryDialog(context);
+                      },
+                    )
+                  : const SizedBox(),
             ],
           );
         },
