@@ -10,6 +10,7 @@ class AppTextFormField extends StatefulWidget {
     this.height,
     this.isPassword = false,
     this.maxLines = 1,
+    this.borderColor,
   });
 
   final String hintText;
@@ -19,6 +20,7 @@ class AppTextFormField extends StatefulWidget {
   final double? height;
   final bool isPassword;
   final int maxLines;
+  final Color? borderColor;
 
   @override
   State<AppTextFormField> createState() => _AppTextFormFieldState();
@@ -32,6 +34,9 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       height: widget.height ?? 55,
       decoration: BoxDecoration(
         color: Colors.white,
+        border: Border.all(
+          color: widget.borderColor ?? Colors.transparent,
+        ),
         borderRadius: BorderRadius.circular(30),
       ),
       child: TextFormField(
