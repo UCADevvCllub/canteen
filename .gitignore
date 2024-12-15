@@ -2,6 +2,12 @@
 *.gr.dart
 pubspec.lock
 
+#Firebase files
+
+**/GoogleService-Info.plist
+**/google-services.json
+
+
 # Miscellaneous
 *.class
 *.log

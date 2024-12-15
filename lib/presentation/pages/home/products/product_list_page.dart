@@ -1,10 +1,13 @@
+import 'package:auto_route/annotations.dart';
+import 'package:canteen/presentation/providers/products_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:canteen/presentation/widgets/cards/product_card_widget.dart';
 import 'package:canteen/presentation/pages/home/products/product_description_page.dart';
+import 'package:provider/provider.dart';
 
+@RoutePage()
 class ProductListPage extends StatelessWidget {
-  final String categoryTitle;
-
+  final String categoryId;
   const ProductListPage({Key? key, required this.categoryTitle}) : super(key: key);
 
   @override
@@ -79,11 +82,12 @@ class ProductListPage extends StatelessWidget {
                     reviews: product['reviews'] as int,
                   ),
                 ),
+
               );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

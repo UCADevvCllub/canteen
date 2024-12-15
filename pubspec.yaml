@@ -22,6 +22,11 @@ dependencies:
   build_runner: ^2.4.13
   get_it: ^8.0.2
   curved_navigation_bar: ^1.0.6
+  provider: ^6.1.2
+  google_fonts: ^6.2.1
+  dotted_border: ^2.1.0
+  image_picker: ^1.1.2
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

@@ -16,7 +16,16 @@ class Category {
     return Category(
       id: d['id'],
       name: d['name'],
-      imageUrl: d['imageUrl'],
+      imageUrl: d['image_url'],
     );
   }
+
+  Map<String, dynamic> toFirebase() {
+    return {
+      'id': id,
+      'name': name,
+      'image_url': imageUrl,
+    };
+  }
+
 }

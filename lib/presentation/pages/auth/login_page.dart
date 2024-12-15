@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:canteen/core/theme/app_colors.dart';
 import 'package:canteen/core/validators.dart';
 import 'package:canteen/presentation/widgets/buttons/app_button.dart';
 import 'package:canteen/presentation/widgets/fields/app_text_form_field.dart';
@@ -42,7 +43,10 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 50), // Add space at the top
                   Text(
                     'Login',
-                    style: theme.textTheme.displayLarge,
+                    style: theme.textTheme.headlineLarge!.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
@@ -50,7 +54,8 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: 'Email',
                     controller: emailController,
                     icon: Icons.email,
-                    validator: FormValidators.validateEmail,
+
+                    // validator: FormValidators.validateEmail,
                   ),
                   const SizedBox(height: 20),
                   AppTextFormField(
@@ -72,9 +77,26 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 150),
                   TextButton(
                     onPressed: () {
+                      // AuthService().signInWithEmailAndPassword(
+                      //   emailController.text,
+                      //   passwordController.text,
+                      // );
                       context.router.pushNamed('/sign-up');
                     },
-                    child: const Text('Don\'t have an account? Sign up'),
+                    child: RichText(text: TextSpan(
+                      text: 'Don\'t have an account? ',
+                      style: theme.textTheme.bodyMedium!.copyWith(
+                        color: Colors.white,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Sign up',
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                            color: AppColors.darkGreen,
+                          ),
+                        ),
+                      ],
+                    )),
                   ),
                 ],
               ),
@@ -85,6 +107,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-
-

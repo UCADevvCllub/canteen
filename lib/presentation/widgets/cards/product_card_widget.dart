@@ -1,3 +1,4 @@
+import 'package:canteen/domain/product.dart';
 import 'package:flutter/material.dart';
 import 'package:canteen/presentation/pages/home/products/product_description_page.dart'; // Import the ProductDescriptionPage
 
@@ -9,6 +10,7 @@ class ProductCardWidget extends StatelessWidget {
   final double rating;
   final int reviews;
   final VoidCallback onTap;
+  final Product product;
 
 
   const ProductCardWidget({
@@ -21,6 +23,9 @@ class ProductCardWidget extends StatelessWidget {
     required this.reviews,
     required this.onTap, // Add this parameter
   }) : super(key: key);
+    super.key,
+    required this.product,
+  });
 
 
   @override
@@ -62,28 +67,30 @@ class ProductCardWidget extends StatelessWidget {
             Expanded(
               child: ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                child: Image.asset(
-                  imagePath,
+                child: product.imageUrl != null ?Image.network(
+                  product.imageUrl!,
                   fit: BoxFit.cover,
+                ) : const Icon(
+                  Icons.image,
+                  size: 48,
+                  color: Colors.grey,
                 ),
               ),
             ),
-            // Product details
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                name,
+                product.name,
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            // Price
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                price,
+                '${product.price} сом',
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.green,

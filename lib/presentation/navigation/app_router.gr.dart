@@ -59,13 +59,12 @@ class LoginRoute extends _i5.PageRouteInfo<void> {
 class ProductListRoute extends _i5.PageRouteInfo<ProductListRouteArgs> {
   ProductListRoute({
     _i6.Key? key,
-    required String categoryTitle,
+
     List<_i5.PageRouteInfo>? children,
   }) : super(
           ProductListRoute.name,
           args: ProductListRouteArgs(
             key: key,
-            categoryTitle: categoryTitle,
           ),
           initialChildren: children,
         );
@@ -78,7 +77,6 @@ class ProductListRoute extends _i5.PageRouteInfo<ProductListRouteArgs> {
       final args = data.argsAs<ProductListRouteArgs>();
       return _i3.ProductListPage(
         key: args.key,
-        categoryTitle: args.categoryTitle,
       );
     },
   );
@@ -87,16 +85,10 @@ class ProductListRoute extends _i5.PageRouteInfo<ProductListRouteArgs> {
 class ProductListRouteArgs {
   const ProductListRouteArgs({
     this.key,
-    required this.categoryTitle,
   });
 
   final _i6.Key? key;
 
-  final String categoryTitle;
-
-  @override
-  String toString() {
-    return 'ProductListRouteArgs{key: $key, categoryTitle: $categoryTitle}';
   }
 }
 
