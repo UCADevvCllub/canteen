@@ -9,8 +9,6 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  String status = ''; // Статус ("Open", "Break", "Closed")
-
   final List<Map<String, String>> weeklySchedule = [
     {"day": "Monday", "date": "October 14, 2024"},
     {"day": "Tuesday", "date": "October 15, 2024"},
@@ -21,73 +19,47 @@ class _SchedulePageState extends State<SchedulePage> {
     {"day": "Sunday", "date": "October 20, 2024"},
   ];
 
-  Future<void> _onRefresh() async {
-    // Имитация обновления данных (2 секунды)
-    await Future.delayed(Duration(seconds: 2));
-
-    // Меняем статус (цикл между Open, Break и Closed)
-    setState(() {
-      if (status == '' || status == 'Closed') {
-        status = 'Open';
-      } else if (status == 'Open') {
-        status = 'Break';
-      } else if (status == 'Break') {
-        status = 'Closed';
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _onRefresh,
-      child: Column(
-        children: [
-          if (status.isNotEmpty)
-            Container(
-              color: Colors.green,
-              padding: EdgeInsets.all(20),
-              child: Center(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: _getStatusColor(),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Text(
-                    status,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
+    return Column(
+      children: [
+        Container(
+          color: Colors.green,
+          padding: EdgeInsets.all(20),
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.green ,
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Text(
+                'OPEN',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
             ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              '• Schedule •',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
           ),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(16),
-              itemCount: weeklySchedule.length,
-              itemBuilder: (context, index) {
-                final day = weeklySchedule[index]['day']!;
-                final date = weeklySchedule[index]['date']!;
-                return _buildScheduleCard(day, date);
-              },
-            ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 10),
+
+        ),
+        Expanded(
+          child: ListView.builder(
+            padding: EdgeInsets.all(16),
+            itemCount: weeklySchedule.length,
+            itemBuilder: (context, index) {
+              final day = weeklySchedule[index]['day']!;
+              final date = weeklySchedule[index]['date']!;
+              return _buildScheduleCard(day, date);
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -98,28 +70,51 @@ class _SchedulePageState extends State<SchedulePage> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              day,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: day.startsWith('Today') ? Colors.black : Colors.grey,
+            // Название дня недели (вверху по центру)
+            Center(
+              child: Text(
+                day,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: day.startsWith('Today') ? Colors.black : Colors.black,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              date,
-              style: TextStyle(fontSize: 14),
-            ),
-            SizedBox(height: 8),
+            SizedBox(height: 16), // Отступ между заголовком и нижней частью
+            // Нижняя часть: дата слева и время справа (или "Days off")
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildTimeDetail('Open', '12:00-21:00', Colors.orange),
-                _buildTimeDetail('Break', '13:00-14:00', Colors.black),
-                _buildTimeDetail('Closed', '21:00-12:00', Colors.black),
+                // Дата слева
+                Text(
+                  date,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                // Проверка для субботы и воскресенья
+                day == "Saturday" || day == "Sunday"
+                    ? Text(
+                  'Days off', // Текст для выходных
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                )
+                    : Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _buildTimeDetail('Open', '12:00-21:00', Colors.black),
+                    _buildTimeDetail('Break', '13:00-14:00', Colors.black),
+                    _buildTimeDetail('Closed', '21:00-12:00', Colors.black),
+                  ],
+                ),
               ],
             ),
           ],
@@ -129,12 +124,13 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   Widget _buildTimeDetail(String label, String time, Color color) {
-    return Column(
+    return Row(
       children: [
         Text(
           label,
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         ),
+        SizedBox(width: 8),
         Text(
           time,
           style: TextStyle(
@@ -144,18 +140,5 @@ class _SchedulePageState extends State<SchedulePage> {
         ),
       ],
     );
-  }
-
-  Color _getStatusColor() {
-    switch (status) {
-      case 'Open':
-        return Colors.orange;
-      case 'Break':
-        return Colors.brown;
-      case 'Closed':
-        return Colors.green;
-      default:
-        return Colors.transparent;
-    }
   }
 }
