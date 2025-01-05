@@ -30,7 +30,7 @@ class _SchedulePageState extends State<SchedulePage> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
-                color: Colors.green ,
+                color: Colors.green,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: Text(
@@ -44,19 +44,64 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
           ),
         ),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 10),
 
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.5),
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 5,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Note: Shop will be open only untill 19:00 this week",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
+
+        SizedBox(height: 10), // Отступ
+
         Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.all(16),
-            itemCount: weeklySchedule.length,
-            itemBuilder: (context, index) {
-              final day = weeklySchedule[index]['day']!;
-              final date = weeklySchedule[index]['date']!;
-              return _buildScheduleCard(day, date);
-            },
+          child: SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(50),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 5,
+                    offset: Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: weeklySchedule.map((schedule) {
+                  final day = schedule['day']!;
+                  final date = schedule['date']!;
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: _buildScheduleCard(day, date),
+                  );
+                }).toList(),
+              ),
+            ),
           ),
         ),
       ],
@@ -64,61 +109,65 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   Widget _buildScheduleCard(String day, String date) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Название дня недели (вверху по центру)
-            Center(
-              child: Text(
-                day,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: day.startsWith('Today') ? Colors.black : Colors.black,
-                ),
-                textAlign: TextAlign.center,
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.grey[200], // Светло-серый фон
+        borderRadius: BorderRadius.circular(15), // Скругленные углы
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1), // Легкая тень
+            blurRadius: 5,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Center(
+            child: Text(
+              day,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: day.startsWith('Today') ? Colors.black : Colors.black,
               ),
+              textAlign: TextAlign.center,
             ),
-            SizedBox(height: 16), // Отступ между заголовком и нижней частью
-            // Нижняя часть: дата слева и время справа (или "Days off")
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Дата слева
-                Text(
-                  date,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
+          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                date,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
                 ),
-                // Проверка для субботы и воскресенья
-                day == "Saturday" || day == "Sunday"
-                    ? Text(
-                  'Days off', // Текст для выходных
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
-                  ),
-                )
-                    : Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    _buildTimeDetail('Open', '12:00-21:00', Colors.black),
-                    _buildTimeDetail('Break', '13:00-14:00', Colors.black),
-                    _buildTimeDetail('Closed', '21:00-12:00', Colors.black),
-                  ],
+              ),
+              day == "Saturday" || day == "Sunday"
+                  ? Text(
+                'Days off',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
                 ),
-              ],
-            ),
-          ],
-        ),
+              )
+                  : Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _buildTimeDetail('Open', '12:00-21:00', Colors.black),
+                  _buildTimeDetail('Break', '13:00-14:00', Colors.black),
+                  _buildTimeDetail('Closed', '21:00-12:00', Colors.black),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
