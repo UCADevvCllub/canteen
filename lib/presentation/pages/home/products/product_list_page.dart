@@ -2,46 +2,87 @@ import 'package:auto_route/annotations.dart';
 import 'package:canteen/presentation/providers/products_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:canteen/presentation/widgets/cards/product_card_widget.dart';
+import 'package:canteen/presentation/pages/home/products/product_description_page.dart';
 import 'package:provider/provider.dart';
 
 @RoutePage()
 class ProductListPage extends StatelessWidget {
   final String categoryId;
-
-  const ProductListPage({
-    super.key,
-    required this.categoryId,
-  });
+  const ProductListPage({Key? key, required this.categoryTitle}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProductsNotifier>(
-      builder: (context, provider, _) {
-        final category = provider.getCategoryById(categoryId);
-        final products = provider.products
-            .where((product) => product.categoryId == categoryId)
-            .toList();
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color(0xFF50B154), // Green AppBar
-            title: Text(
-              category.name,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-          body: GridView.builder(
-            padding: const EdgeInsets.all(16.0),
-            itemCount: products.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // 2 columns
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              childAspectRatio: 0.7, // Adjust aspect ratio for product cards
-            ),
-            itemBuilder: (context, index) {
-              final product = products[index];
-              return ProductCardWidget(
-                product: product,
+    // Mock products data for the selected category
+    final products = [
+      {
+        'name': 'Jin Ramen Mild',
+        'price': '160 som/piece',
+        'imagePath': 'assets/product_images/jin_ramen.jpg',
+        'description': 'Delicious Korean-style ramen with a mild flavor.',
+        'rating': 4.5,
+        'reviews': 13,
+      },
+      {
+        'name': 'Jin Ramen Spicy',
+        'price': '170 som/piece',
+        'imagePath': 'assets/product_images/jin_ramen_spicy.jpg',
+        'description': 'Delicious Korean-style ramen with a spicy kick.',
+        'rating': 4.8,
+        'reviews': 20,
+      },
+      {
+        'name': 'Cup Noodles',
+        'price': '120 som/piece',
+        'imagePath': 'assets/product_images/cup_noodles.jpg',
+        'description': 'Convenient cup noodles for quick meals on the go.',
+        'rating': 4.3,
+        'reviews': 8,
+      },
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(categoryTitle),
+        backgroundColor: const Color(0xFF50B154),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: GridView.builder(
+        padding: const EdgeInsets.all(16.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16.0,
+          mainAxisSpacing: 16.0,
+          childAspectRatio: 0.8,
+        ),
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final product = products[index];
+
+          return ProductCardWidget(
+            name: product['name'] as String, // Explicitly cast as String
+            price: product['price'] as String, // Explicitly cast as String
+            imagePath: product['imagePath'] as String, // Explicitly cast as String
+            description: product['description'] as String, // Explicitly cast as String
+            rating: product['rating'] as double, // Explicitly cast as double
+            reviews: product['reviews'] as int, // Explicitly cast as int
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDescriptionPage(
+                    name: product['name'] as String,
+                    price: product['price'] as String,
+                    imagePath: product['imagePath'] as String,
+                    description: product['description'] as String,
+                    rating: product['rating'] as double,
+                    reviews: product['reviews'] as int,
+                  ),
+                ),
+
               );
             },
           ),

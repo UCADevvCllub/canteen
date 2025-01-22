@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:canteen/presentation/navigation/app_router.dart';
+import 'package:canteen/presentation/pages/home/products/product_list_page.dart';
 import 'package:canteen/core/di.dart';
 import 'package:canteen/core/mixins/dialog_helper.dart';
 import 'package:canteen/core/theme/app_colors.dart';
@@ -62,19 +64,20 @@ class _CataloguePageState extends State<CataloguePage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              // Grid for catalog items
-              categories.isNotEmpty
-                  ? Expanded(
-                      child: GridView.builder(
-                        itemCount: categories.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, // 2 columns
-                          mainAxisSpacing: 16,
-                          crossAxisSpacing: 16,
-                          childAspectRatio: 1.3, // Adjust aspect ratio
-                        ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          // Grid for catalog items
+          Expanded(
+            child: GridView.builder(
+              itemCount: catalogItems.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // 2 columns
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+                childAspectRatio: 1.3, // Adjust aspect ratio
+              ),
+          
                         itemBuilder: (context, index) {
                           final item = categories[index];
                           return CatalogWidget(
@@ -97,6 +100,14 @@ class _CataloguePageState extends State<CataloguePage> {
                           );
                         },
                       ),
+                    );
+                    // context.router.pushNamed('/product-list');
+                  },
+                );
+              },
+            ),
+          ),
+        ],
                     )
                   : const Center(
                       child: CircularProgressIndicator(),

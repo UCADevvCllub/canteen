@@ -1,18 +1,52 @@
 import 'package:canteen/domain/product.dart';
 import 'package:flutter/material.dart';
+import 'package:canteen/presentation/pages/home/products/product_description_page.dart'; // Import the ProductDescriptionPage
 
 class ProductCardWidget extends StatelessWidget {
+  final String name;
+  final String price;
+  final String imagePath;
+  final String description;
+  final double rating;
+  final int reviews;
+  final VoidCallback onTap;
   final Product product;
 
+
   const ProductCardWidget({
+    Key? key,
+    required this.name,
+    required this.price,
+    required this.imagePath,
+    required this.description,
+    required this.rating,
+    required this.reviews,
+    required this.onTap, // Add this parameter
+  }) : super(key: key);
     super.key,
     required this.product,
   });
 
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){},
+      onTap: () {
+        // Navigate to the Product Description Page
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductDescriptionPage(
+              name: name,
+              price: price,
+              imagePath: imagePath,
+              description: description,
+              rating: rating,
+              reviews: reviews,
+            ),
+          ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
