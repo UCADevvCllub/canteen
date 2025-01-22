@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:canteen/presentation/widgets/layout/navigation_bar.dart';
+import 'package:canteen/presentation/widgets/cards/message_bubble_background.dart';
+
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -21,90 +23,80 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          color: Colors.green,
-          padding: EdgeInsets.all(20),
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(50),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          // Верхний блок с "OPEN"
+          Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Center(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Text(
+                  'OPEN',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
+            ),
+          ),
+
+          // Блок для заметок с подключением MessageBackground
+          BubbleBackground(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
               child: Text(
-                'OPEN',
+                "Note: Shop will be open only until 19:00 this week",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                ),
+                )
               ),
             ),
           ),
-        ),
 
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 5,
-                offset: Offset(0, 5),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Note: Shop will be open only untill 19:00 this week",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
+          SizedBox(height: 10), // Отступ
+
+          // Основной контент со списком расписания
+          Container(
+            margin: EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(50),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 5,
+                  offset: Offset(0, 5),
                 ),
-              ),
-            ],
-          ),
-        ),
-
-        SizedBox(height: 10), // Отступ
-
-        Expanded(
-          child: SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.all(16),
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(50),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 5,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: weeklySchedule.map((schedule) {
-                  final day = schedule['day']!;
-                  final date = schedule['date']!;
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: _buildScheduleCard(day, date),
-                  );
-                }).toList(),
-              ),
+              ],
+            ),
+            child: Column(
+              children: weeklySchedule.map((schedule) {
+                final day = schedule['day']!;
+                final date = schedule['date']!;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: _buildScheduleCard(day, date),
+                );
+              }).toList(),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -191,3 +183,4 @@ class _SchedulePageState extends State<SchedulePage> {
     );
   }
 }
+
