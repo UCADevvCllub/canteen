@@ -1,7 +1,7 @@
-import 'package:canteen/data/remote/products_service.dart';
+import 'package:canteen/data/products/products_service.dart';
 import 'package:canteen/domain/category.dart';
 import 'package:flutter/material.dart';
-import 'package:canteen/domain/product.dart';
+import 'package:canteen/domain/products/product.dart';
 
 class ProductsNotifier extends ChangeNotifier {
   final ProductsService _productsService;

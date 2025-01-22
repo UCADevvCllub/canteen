@@ -1,5 +1,5 @@
 import 'package:canteen/domain/category.dart';
-import 'package:canteen/domain/product.dart';
+import 'package:canteen/domain/products/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductsService {

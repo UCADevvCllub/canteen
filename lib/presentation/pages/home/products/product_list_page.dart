@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
-import 'package:canteen/presentation/providers/products_notifier.dart';
+import 'package:canteen/domain/products/product.dart';
+import 'package:canteen/presentation/providers/products/products_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:canteen/presentation/widgets/cards/product_card_widget.dart';
 import 'package:canteen/presentation/pages/home/products/product_description_page.dart';
@@ -7,8 +8,10 @@ import 'package:provider/provider.dart';
 
 @RoutePage()
 class ProductListPage extends StatelessWidget {
-  final String categoryId;
-  const ProductListPage({Key? key, required this.categoryTitle}) : super(key: key);
+  final String categoryTitle;
+
+  const ProductListPage({Key? key, required this.categoryTitle})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +66,18 @@ class ProductListPage extends StatelessWidget {
           final product = products[index];
 
           return ProductCardWidget(
-            name: product['name'] as String, // Explicitly cast as String
-            price: product['price'] as String, // Explicitly cast as String
-            imagePath: product['imagePath'] as String, // Explicitly cast as String
-            description: product['description'] as String, // Explicitly cast as String
-            rating: product['rating'] as double, // Explicitly cast as double
-            reviews: product['reviews'] as int, // Explicitly cast as int
+            name: product['name'] as String,
+            // Explicitly cast as String
+            price: product['price'] as String,
+            // Explicitly cast as String
+            imagePath: product['imagePath'] as String,
+            // Explicitly cast as String
+            description: product['description'] as String,
+            // Explicitly cast as String
+            rating: product['rating'] as double,
+            // Explicitly cast as double
+            reviews: product['reviews'] as int,
+            // Explicitly cast as int
             onTap: () {
               Navigator.push(
                 context,
@@ -82,12 +91,25 @@ class ProductListPage extends StatelessWidget {
                     reviews: product['reviews'] as int,
                   ),
                 ),
-
               );
             },
-          ),
-        );
-      },
+            product: Product(
+              name: product['name'] as String,
+              categoryId: '',
+              id: '',
+
+
+              // Explicitly cast as String
+              price: product['price'] as double,
+              // Explicitly cast as String
+              description: product['description'] as String,
+              // Explicitly cast as String
+              // Explicitly cast as double
+              // Explicitly cast as int
+            ),
+          );
+        },
+      ),
     );
   }
 }
