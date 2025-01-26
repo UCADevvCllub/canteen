@@ -1,7 +1,7 @@
 import 'package:canteen/core/di.dart';
-import 'package:canteen/data/remote/products_service.dart';
+import 'package:canteen/data/products/products_service.dart';
 import 'package:canteen/presentation/app.dart';
-import 'package:canteen/presentation/providers/products_notifier.dart';
+import 'package:canteen/presentation/providers/products/products_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';

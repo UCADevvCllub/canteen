@@ -19,6 +19,7 @@ class Product {
     this.quantity,
   });
 
+  // For Updating the Model
   Product copyWith({
     String? id,
     String? name,
