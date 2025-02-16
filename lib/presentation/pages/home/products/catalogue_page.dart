@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/di.dart';
+import 'package:canteen/core/mixins/dialog_helper.dart';
 import 'package:canteen/data/auth/auth_service.dart';
 import 'package:canteen/presentation/navigation/app_router.gr.dart';
 import 'package:canteen/presentation/providers/products/products_notifier.dart';
@@ -14,8 +15,8 @@ class CataloguePage extends StatefulWidget {
   State<CataloguePage> createState() => _CataloguePageState();
 }
 
-class _CataloguePageState extends State<CataloguePage> {
-  bool isAdmin = false;
+class _CataloguePageState extends State<CataloguePage> with DialogHelper {
+  bool isAdmin = true; // Change this to `false` if you don’t want admin access
 
   @override
   void initState() {
@@ -33,7 +34,6 @@ class _CataloguePageState extends State<CataloguePage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Consumer<ProductsNotifier>(
@@ -41,7 +41,7 @@ class _CataloguePageState extends State<CataloguePage> {
           final categories = provider.categories;
           return Column(
             children: [
-              // Placeholder for search bar
+              // Search Bar
               Container(
                 height: 50,
                 width: double.infinity,
@@ -60,7 +60,8 @@ class _CataloguePageState extends State<CataloguePage> {
                 ),
               ),
               const SizedBox(height: 20),
-              // Grid for catalog items
+
+              // Category Grid
               Expanded(
                 child: GridView.builder(
                   itemCount: categories.length,
@@ -76,23 +77,41 @@ class _CataloguePageState extends State<CataloguePage> {
                       title: item.name,
                       imagePath: item.imageUrl,
                       onTap: () {
-                        // Navigate to ProductListPage with the selected category
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => ProductListPage(
-                        //       categoryTitle: item.name,
-                        //     ),
-                        //   ),
-                        // );
+                        // Navigate to product list
                         context.router.push(
-                          ProductListRoute(categoryTitle: 'null'),
+                          ProductListRoute(categoryTitle: item.name),
                         );
                       },
                     );
                   },
                 ),
               ),
+
+              // Add Category Button (Only Visible to Admin)
+              if (isAdmin)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFFEB8716), // Orange color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(35),
+                      ),
+                      minimumSize: const Size(332, 44),
+                    ),
+                    onPressed: () {
+                      showAddCategoryDialog(context);
+                    },
+                    child: const Text(
+                      "+ Add Category",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
             ],
           );
         },
