@@ -2,14 +2,18 @@ import 'package:canteen/data/products/products_service.dart';
 import 'package:canteen/domain/category.dart';
 import 'package:flutter/material.dart';
 import 'package:canteen/domain/products/product.dart';
+import 'package:canteen/data/schedule/schedule_service.dart';
+
+import '../../../data/schedule/schedule_service.dart'; // Добавьте импорт
 
 class ProductsNotifier extends ChangeNotifier {
   final ProductsService _productsService;
+  final FirestoreService _firestoreService; // Добавьте поле для FirestoreService
   List<Product> _products = [];
   List<Category> _categories = [];
   bool _isLoading = false;
 
-  ProductsNotifier(this._productsService) {
+  ProductsNotifier(this._productsService, this._firestoreService) { // Измените конструктор
     _initialize();
   }
 

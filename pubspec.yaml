@@ -28,12 +28,14 @@ dependencies:
   image_picker: ^1.1.2
   permission_handler: ^11.3.1
   chat_bubbles: ^1.7.0
+  table_calendar: ^3.0.9
+  intl: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
   uses-material-design: true
