@@ -14,7 +14,7 @@ class BubbleBackground extends StatelessWidget {
   const BubbleBackground({
     super.key,
     required this.child,
-    this.backgroundColor = const Color(0xFF1E1E1E), // Default color
+    this.backgroundColor = const Color(0x8F84C264),// Default color
     this.textColor = Colors.white,
     this.isSender = false,
     this.tail = false,

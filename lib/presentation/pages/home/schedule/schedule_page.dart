@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:canteen/presentation/widgets/layout/navigation_bar.dart';
 import 'package:canteen/presentation/widgets/cards/message_bubble_background.dart';
-
+import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -21,6 +22,10 @@ class _SchedulePageState extends State<SchedulePage> {
     {"day": "Sunday", "date": "October 20, 2024"},
   ];
 
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  CalendarFormat _calendarFormat = CalendarFormat.week; // Начинаем с компактного режима
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -28,31 +33,28 @@ class _SchedulePageState extends State<SchedulePage> {
         children: [
           // Верхний блок с "OPEN"
           Container(
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(20),
-            ),
+            constraints: BoxConstraints(maxWidth: 200),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(color: Colors.green),
             child: Center(
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(15),
-                ),
+                decoration: BoxDecoration(color: Colors.green),
                 child: Text(
                   'OPEN',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Color(0xFFE5F0DC),
                   ),
                 ),
               ),
             ),
           ),
 
-          // Блок для заметок с подключением MessageBackground
+          SizedBox(height: 10),
+
+          // Блок для заметок с подключением BubbleBackground
           BubbleBackground(
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -62,20 +64,23 @@ class _SchedulePageState extends State<SchedulePage> {
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
-                )
+                ),
               ),
             ),
           ),
 
-          SizedBox(height: 10), // Отступ
+          SizedBox(height: 10),
 
-          // Основной контент со списком расписания
+          // Основной контейнер с белым фоном и закругленными углами
           Container(
-            margin: EdgeInsets.all(16),
+            margin: EdgeInsets.only(top: 10),
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),
@@ -85,14 +90,92 @@ class _SchedulePageState extends State<SchedulePage> {
               ],
             ),
             child: Column(
-              children: weeklySchedule.map((schedule) {
-                final day = schedule['day']!;
-                final date = schedule['date']!;
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: _buildScheduleCard(day, date),
-                );
-              }).toList(),
+              children: [
+                // Контейнер с календарем
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _calendarFormat = _calendarFormat == CalendarFormat.month
+                          ? CalendarFormat.week
+                          : CalendarFormat.month;
+                    });
+                  },
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Color.lerp(Color(0xFF808080), Colors.white, 0.9)!,
+
+                      borderRadius: BorderRadius.circular(30),
+
+                    ),
+                    child: TableCalendar(
+
+                      firstDay: DateTime.utc(2020, 1, 1),
+                      lastDay: DateTime.utc(2100, 12, 31),
+                      focusedDay: _focusedDay,
+                      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          _selectedDay = selectedDay;
+                          _focusedDay = focusedDay;
+                        });
+                      },
+                      calendarFormat: _calendarFormat, // Динамический формат
+                      availableCalendarFormats: const {
+                        CalendarFormat.month: 'Month',
+                        CalendarFormat.week: 'Week',
+                      },
+                      calendarStyle: CalendarStyle(
+                        todayDecoration: BoxDecoration(
+                          color: Colors.green,
+                          shape: BoxShape.circle,
+                        ),
+                        selectedDecoration: BoxDecoration(
+                          color: Colors.lightGreen,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      headerStyle: HeaderStyle(
+                        formatButtonVisible: false,
+                        titleCentered: true,
+                        titleTextFormatter: (date, locale) =>
+                            DateFormat.MMMM(locale).format(date), // Только месяц
+                        titleTextStyle: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green, // Название месяца зеленым
+                        ),
+                      ),
+                      daysOfWeekStyle: DaysOfWeekStyle(
+                        weekdayStyle: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold, // Дни недели жирным
+                        ),
+                        weekendStyle: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          // Выходные красным
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+
+                // Блок с расписанием
+                Column(
+                  children: weeklySchedule.map((schedule) {
+                    final day = schedule['day']!;
+                    final date = schedule['date']!;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6.0),
+                      child: _buildScheduleCard(day, date),
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
           ),
         ],
@@ -103,28 +186,26 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget _buildScheduleCard(String day, String date) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 5.0),
       decoration: BoxDecoration(
-        color: Colors.grey[200], // Светло-серый фон
-        borderRadius: BorderRadius.circular(15), // Скругленные углы
+          color: Color.lerp(Color(0xFF808080), Colors.white, 0.9)!,
+          borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1), // Легкая тень
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 5,
             offset: Offset(0, 5),
           ),
         ],
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Center(
             child: Text(
               day,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: day.startsWith('Today') ? Colors.black : Colors.black,
               ),
               textAlign: TextAlign.center,
             ),
@@ -136,7 +217,7 @@ class _SchedulePageState extends State<SchedulePage> {
               Text(
                 date,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -144,7 +225,7 @@ class _SchedulePageState extends State<SchedulePage> {
                   ? Text(
                 'Days off',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.red,
                 ),
@@ -169,7 +250,7 @@ class _SchedulePageState extends State<SchedulePage> {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         ),
         SizedBox(width: 8),
         Text(
@@ -183,4 +264,3 @@ class _SchedulePageState extends State<SchedulePage> {
     );
   }
 }
-
