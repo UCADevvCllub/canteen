@@ -19,7 +19,7 @@ class CatalogWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(45), // Rounded corners
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.3),
@@ -48,9 +48,9 @@ class CatalogWidget extends StatelessWidget {
               child: Text(
                 title,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.bold,
-                  color: Colors.green,
+                  color: Color(0xFF84C264), // Green text
                 ),
                 textAlign: TextAlign.center,
               ),
