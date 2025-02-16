@@ -1,10 +1,9 @@
 import 'package:auto_route/annotations.dart';
-import 'package:canteen/presentation/pages/home/debts/debts_page.dart';
-import 'package:canteen/presentation/pages/home/delivery/delivery_page.dart';
-import 'package:canteen/presentation/pages/home/products/catalogue_page.dart';
-import 'package:canteen/presentation/pages/home/recomendations/recommendations_page.dart';
-import 'package:canteen/presentation/pages/home/schedule/admin_schedule.dart';
-import 'package:canteen/presentation/pages/home/schedule/schedule_page.dart';
+import 'package:canteen/presentation/pages/debts/debts_page.dart';
+import 'package:canteen/presentation/pages/delivery/delivery_page.dart';
+import 'package:canteen/presentation/pages/products/catalogue_page.dart';
+import 'package:canteen/presentation/pages/recomendations/recommendations_page.dart';
+import 'package:canteen/presentation/pages/schedule/admin_schedule.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -77,31 +76,6 @@ class _HomePageState extends State<HomePage>
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            leading: IconButton(
-              onPressed: () {},
-              icon: Image.asset(
-                'assets/icons/menu.png',
-                width: 25,
-              ),
-            ),
-            title: Text(
-              _pages.keys.elementAt(_currentIndex),
-              style: const TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: Image.asset(
-                  'assets/icons/chat.png',
-                  width: 25,
-                ),
-              ),
-            ],
-          ),
           body: TabBarView(
             controller: _tabController,
             physics: const NeverScrollableScrollPhysics(),

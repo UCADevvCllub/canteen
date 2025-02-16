@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-
 class ProductDescriptionPage extends StatelessWidget {
   final String name;
   final String price;
@@ -11,14 +10,14 @@ class ProductDescriptionPage extends StatelessWidget {
   final int reviews;
 
   const ProductDescriptionPage({
-    Key? key,
+    super.key,
     required this.name,
     required this.price,
     required this.imagePath,
     required this.description,
     required this.rating,
     required this.reviews,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +29,13 @@ class ProductDescriptionPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: Container(
-                color: const Color(0xFF84C264), // Green background outside the image
-                padding: const EdgeInsets.all(16.0), // Padding to make the image smaller
+                color: const Color(
+                    0xFF84C264), // Green background outside the image
+                padding: const EdgeInsets.all(
+                    16.0), // Padding to make the image smaller
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20), // Rounded corners for the image
+                  borderRadius: BorderRadius.circular(
+                      20), // Rounded corners for the image
                   child: Image.asset(
                     imagePath, // Image path
                     fit: BoxFit.cover,
@@ -43,7 +45,6 @@ class ProductDescriptionPage extends StatelessWidget {
                 ),
               ),
             ),
-
 
             // Back Button
             _buildBackButton(context),

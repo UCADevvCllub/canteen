@@ -1,17 +1,14 @@
 import 'package:auto_route/annotations.dart';
 import 'package:canteen/domain/products/product.dart';
-import 'package:canteen/presentation/providers/products/products_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:canteen/presentation/widgets/cards/product_card_widget.dart';
-import 'package:canteen/presentation/pages/home/products/product_description_page.dart';
-import 'package:provider/provider.dart';
+import 'package:canteen/presentation/pages/products/product_description_page.dart';
 
 @RoutePage()
 class ProductListPage extends StatelessWidget {
   final String categoryTitle;
 
-  const ProductListPage({Key? key, required this.categoryTitle})
-      : super(key: key);
+  const ProductListPage({super.key, required this.categoryTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +94,6 @@ class ProductListPage extends StatelessWidget {
               name: product['name'] as String,
               categoryId: '',
               id: '',
-
 
               // Explicitly cast as String
               price: product['price'] as double,

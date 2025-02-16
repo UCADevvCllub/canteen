@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/theme/app_colors.dart';
-import 'package:canteen/core/validators.dart';
+import 'package:canteen/core/utils/errors/validators.dart';
 import 'package:canteen/presentation/widgets/buttons/app_button.dart';
 import 'package:canteen/presentation/widgets/fields/app_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +83,8 @@ class _LoginPageState extends State<LoginPage> {
                       // );
                       context.router.pushNamed('/sign-up');
                     },
-                    child: RichText(text: TextSpan(
+                    child: RichText(
+                        text: TextSpan(
                       text: 'Don\'t have an account? ',
                       style: theme.textTheme.bodyMedium!.copyWith(
                         color: Colors.white,

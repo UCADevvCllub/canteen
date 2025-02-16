@@ -6,6 +6,7 @@ pubspec.lock
 
 **/GoogleService-Info.plist
 **/google-services.json
+firebase_options.dart
 
 
 # Miscellaneous

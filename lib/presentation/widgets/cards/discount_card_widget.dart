@@ -9,14 +9,14 @@ class DiscountCardWidget extends StatelessWidget {
   final bool showStar;
 
   const DiscountCardWidget({
-    Key? key,
+    super.key,
     required this.imagePath,
     required this.title,
     required this.newPrice,
     this.oldPrice,
     this.discount,
     this.showStar = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +45,8 @@ class DiscountCardWidget extends StatelessWidget {
                   top: 8,
                   right: 8,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: const BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -67,7 +67,8 @@ class DiscountCardWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               children: [
-                Text(newPrice, style: const TextStyle(fontSize: 14, color: Colors.green)),
+                Text(newPrice,
+                    style: const TextStyle(fontSize: 14, color: Colors.green)),
                 if (oldPrice != null)
                   Text(' $oldPrice',
                       style: const TextStyle(

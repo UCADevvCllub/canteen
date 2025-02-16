@@ -2,9 +2,8 @@ import 'package:canteen/presentation/widgets/buttons/app_button.dart';
 import 'package:canteen/presentation/widgets/fields/app_text_form_field.dart';
 import 'package:canteen/presentation/widgets/fields/role_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:canteen/core/validators.dart';
+import 'package:canteen/core/utils/errors/validators.dart';
 
 @RoutePage()
 class SignUpPage extends StatefulWidget {

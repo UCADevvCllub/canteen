@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:canteen/presentation/navigation/app_router.gr.dart';
+import 'package:canteen/core/navigation/app_router.gr.dart';
 import 'package:flutter/material.dart';
 
 class RecommendationsPage extends StatelessWidget {
@@ -34,13 +34,15 @@ class RecommendationsPage extends StatelessWidget {
                       _buildSection(
                         context,
                         title: "Top Offers",
-                        onSeeMore: () => context.router.push(const TopOffersRoute()),
+                        onSeeMore: () =>
+                            context.router.push(const TopOffersRoute()),
                       ),
                       const SizedBox(height: 20),
                       _buildSection(
                         context,
                         title: "Most Popular",
-                        onSeeMore: () => context.router.push(const MostPopularRoute()),
+                        onSeeMore: () =>
+                            context.router.push(const MostPopularRoute()),
                       ),
                     ],
                   ),
@@ -53,7 +55,8 @@ class RecommendationsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSection(BuildContext context, {required String title, required VoidCallback onSeeMore}) {
+  Widget _buildSection(BuildContext context,
+      {required String title, required VoidCallback onSeeMore}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -62,11 +65,15 @@ class RecommendationsPage extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
             TextButton(
               onPressed: onSeeMore,
-              child: const Text("See more", style: TextStyle(color: Colors.white)),
+              child:
+                  const Text("See more", style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -77,7 +84,9 @@ class RecommendationsPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(12), // ✅ Rounded corners
           ),
           margin: const EdgeInsets.symmetric(vertical: 8),
-          child: const Center(child: Text("Product list here", style: TextStyle(color: Colors.black))),
+          child: const Center(
+              child: Text("Product list here",
+                  style: TextStyle(color: Colors.black))),
         ),
       ],
     );

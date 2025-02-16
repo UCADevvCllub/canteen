@@ -1,13 +1,11 @@
 import 'dart:io';
 
 import 'package:canteen/core/config/app_permission.dart';
-import 'package:canteen/core/config/app_permission.dart';
 import 'package:canteen/core/theme/app_colors.dart';
 import 'package:canteen/presentation/widgets/buttons/app_button.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ImageHolder extends StatefulWidget {
   final TextEditingController controller;
@@ -97,17 +95,17 @@ class _ImageHolderState extends State<ImageHolder> {
           children: [
             _selectedImage != null
                 ? Image.file(
-              _selectedImage!,
-              width: 70,
-              height: 70,
-              fit: BoxFit.cover,
-            )
+                    _selectedImage!,
+                    width: 70,
+                    height: 70,
+                    fit: BoxFit.cover,
+                  )
                 : Image.asset(
-              'assets/images/image.png',
-              width: 70,
-              height: 70,
-              fit: BoxFit.cover,
-            ),
+                    'assets/images/image.png',
+                    width: 70,
+                    height: 70,
+                    fit: BoxFit.cover,
+                  ),
             const SizedBox(width: 10),
             AppButton(
               title: 'Upload',

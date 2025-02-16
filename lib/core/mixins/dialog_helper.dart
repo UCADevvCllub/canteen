@@ -1,8 +1,8 @@
-import 'package:canteen/presentation/pages/home/products/admin/add_category.dart';
+import 'package:canteen/presentation/pages/products/admin/add_category.dart';
 import 'package:flutter/material.dart';
 
 mixin DialogHelper {
-   void showAddCategoryDialog(BuildContext context) {
+  void showAddCategoryDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

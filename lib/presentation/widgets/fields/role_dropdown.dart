@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class RoleDropdown extends StatefulWidget {
   final void Function(String?) onChanged;
 
-  const RoleDropdown({Key? key, required this.onChanged}) : super(key: key);
+  const RoleDropdown({super.key, required this.onChanged});
 
   @override
   State<RoleDropdown> createState() => _RoleDropdownState();
@@ -11,7 +11,11 @@ class RoleDropdown extends StatefulWidget {
 
 class _RoleDropdownState extends State<RoleDropdown> {
   String? selectedRole; // Selected role value
-  final List<String> roleOptions = ['Student', 'Faculty', 'Staff']; // Role options
+  final List<String> roleOptions = [
+    'Student',
+    'Faculty',
+    'Staff'
+  ]; // Role options
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,8 @@ class _RoleDropdownState extends State<RoleDropdown> {
         },
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.school, color: Colors.grey[600]),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,

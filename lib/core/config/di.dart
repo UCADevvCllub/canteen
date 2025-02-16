@@ -1,10 +1,11 @@
 import 'package:canteen/data/auth/auth_service.dart';
 import 'package:canteen/data/products/products_service.dart';
-import 'package:canteen/presentation/navigation/app_router.dart';
+import 'package:canteen/core/navigation/app_router.dart';
 import 'package:canteen/data/schedule/schedule_service.dart'; // Добавлен импорт FirestoreService
 import 'package:get_it/get_it.dart';
 
-final GetIt locator = GetIt.instance; // Убедитесь, что используете GetIt.instance
+final GetIt locator =
+    GetIt.instance; // Убедитесь, что используете GetIt.instance
 
 void setupLocator() {
   // Регистрация AppRouter
@@ -22,5 +23,6 @@ void registerServices() {
   locator.registerLazySingleton(() => ProductsService());
 
   // Регистрация FirestoreService
-  locator.registerLazySingleton(() => FirestoreService()); // Добавлена регистрация FirestoreService
+  locator.registerLazySingleton(
+      () => FirestoreService()); // Добавлена регистрация FirestoreService
 }

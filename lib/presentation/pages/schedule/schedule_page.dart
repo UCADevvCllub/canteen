@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:canteen/presentation/widgets/layout/navigation_bar.dart';
 import 'package:canteen/presentation/widgets/cards/message_bubble_background.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +23,8 @@ class _SchedulePageState extends State<SchedulePage> {
 
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  CalendarFormat _calendarFormat = CalendarFormat.week; // Начинаем с компактного режима
+  CalendarFormat _calendarFormat =
+      CalendarFormat.week; // Начинаем с компактного режима
 
   @override
   Widget build(BuildContext context) {
@@ -106,16 +106,14 @@ class _SchedulePageState extends State<SchedulePage> {
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: Color.lerp(Color(0xFF808080), Colors.white, 0.9)!,
-
                       borderRadius: BorderRadius.circular(30),
-
                     ),
                     child: TableCalendar(
-
                       firstDay: DateTime.utc(2020, 1, 1),
                       lastDay: DateTime.utc(2100, 12, 31),
                       focusedDay: _focusedDay,
-                      selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+                      selectedDayPredicate: (day) =>
+                          isSameDay(_selectedDay, day),
                       onDaySelected: (selectedDay, focusedDay) {
                         setState(() {
                           _selectedDay = selectedDay;
@@ -141,7 +139,8 @@ class _SchedulePageState extends State<SchedulePage> {
                         formatButtonVisible: false,
                         titleCentered: true,
                         titleTextFormatter: (date, locale) =>
-                            DateFormat.MMMM(locale).format(date), // Только месяц
+                            DateFormat.MMMM(locale)
+                                .format(date), // Только месяц
                         titleTextStyle: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -188,8 +187,8 @@ class _SchedulePageState extends State<SchedulePage> {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       margin: const EdgeInsets.symmetric(vertical: 5.0),
       decoration: BoxDecoration(
-          color: Color.lerp(Color(0xFF808080), Colors.white, 0.9)!,
-          borderRadius: BorderRadius.circular(15),
+        color: Color.lerp(Color(0xFF808080), Colors.white, 0.9)!,
+        borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -223,21 +222,21 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
               day == "Saturday" || day == "Sunday"
                   ? Text(
-                'Days off',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
-              )
+                      'Days off',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    )
                   : Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  _buildTimeDetail('Open', '12:00-21:00', Colors.black),
-                  _buildTimeDetail('Break', '13:00-14:00', Colors.black),
-                  _buildTimeDetail('Closed', '21:00-12:00', Colors.black),
-                ],
-              ),
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        _buildTimeDetail('Open', '12:00-21:00', Colors.black),
+                        _buildTimeDetail('Break', '13:00-14:00', Colors.black),
+                        _buildTimeDetail('Closed', '21:00-12:00', Colors.black),
+                      ],
+                    ),
             ],
           ),
         ],

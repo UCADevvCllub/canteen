@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:canteen/presentation/widgets/layout/navigation_bar.dart';
 import 'package:canteen/presentation/widgets/cards/message_bubble_background.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -13,7 +12,7 @@ class AdminSchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<AdminSchedulePage> {
   String _noteText = "Note: Shop will be open only until 19:00 this week";
-  TextEditingController _noteController = TextEditingController();
+  final TextEditingController _noteController = TextEditingController();
 
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -92,7 +91,6 @@ class _SchedulePageState extends State<AdminSchedulePage> {
               ),
             ),
           ),
-
           AnimatedContainer(
             duration: Duration(milliseconds: 300),
             height: _isExpanded ? 120 : 0,
@@ -104,9 +102,7 @@ class _SchedulePageState extends State<AdminSchedulePage> {
               ],
             ),
           ),
-
           SizedBox(height: 10),
-
           GestureDetector(
             onTap: () {
               _showEditNoteDialog();
@@ -125,9 +121,7 @@ class _SchedulePageState extends State<AdminSchedulePage> {
               ),
             ),
           ),
-
           SizedBox(height: 10),
-
           Container(
             margin: EdgeInsets.only(top: 10),
             padding: EdgeInsets.all(16),
@@ -217,7 +211,6 @@ class _SchedulePageState extends State<AdminSchedulePage> {
                   ),
                 ),
                 SizedBox(height: 20),
-
                 Column(
                   children: weeklySchedule.map((schedule) {
                     final day = schedule['day']!;
@@ -245,8 +238,8 @@ class _SchedulePageState extends State<AdminSchedulePage> {
     );
   }
 
-  Widget _buildScheduleCard(String day, String date, String open,
-      String breakTime, String closed) {
+  Widget _buildScheduleCard(
+      String day, String date, String open, String breakTime, String closed) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       margin: const EdgeInsets.symmetric(vertical: 5.0),
@@ -286,21 +279,21 @@ class _SchedulePageState extends State<AdminSchedulePage> {
               ),
               day.contains("Saturday") || day.contains("Sunday")
                   ? Text(
-                'Days off',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              )
+                      'Days off',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    )
                   : Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  _buildTimeDetail('Open', open, Colors.black),
-                  _buildTimeDetail('Break', breakTime, Colors.black),
-                  _buildTimeDetail('Closed', closed, Colors.black),
-                ],
-              ),
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        _buildTimeDetail('Open', open, Colors.black),
+                        _buildTimeDetail('Break', breakTime, Colors.black),
+                        _buildTimeDetail('Closed', closed, Colors.black),
+                      ],
+                    ),
             ],
           ),
         ],
@@ -392,14 +385,14 @@ class _SchedulePageState extends State<AdminSchedulePage> {
   }
 
   void _showEditTimeDialog(Map<String, dynamic> schedule) {
-    TextEditingController openController = TextEditingController(
-        text: schedule['open']);
-    TextEditingController breakController = TextEditingController(
-        text: schedule['break']);
-    TextEditingController closedController = TextEditingController(
-        text: schedule['closed']);
-    TextEditingController dateController = TextEditingController(
-        text: schedule['date']);
+    TextEditingController openController =
+        TextEditingController(text: schedule['open']);
+    TextEditingController breakController =
+        TextEditingController(text: schedule['break']);
+    TextEditingController closedController =
+        TextEditingController(text: schedule['closed']);
+    TextEditingController dateController =
+        TextEditingController(text: schedule['date']);
 
     showDialog(
       context: context,
@@ -423,8 +416,8 @@ class _SchedulePageState extends State<AdminSchedulePage> {
                         lastDate: DateTime(2100),
                       );
                       if (pickedDate != null) {
-                        dateController.text = DateFormat('MMMM d, y').format(
-                            pickedDate);
+                        dateController.text =
+                            DateFormat('MMMM d, y').format(pickedDate);
                       }
                     },
                   ),

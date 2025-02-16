@@ -1,5 +1,5 @@
 name: canteen
-description: "A new Flutter project."
+description: "Shop App for campus canteen"
 
 publish_to: 'none'
 
@@ -44,7 +44,6 @@ flutter:
     - assets/icons/
     - assets/layouts/
     - assets/product_images/
-    - assets/categories/
 
   # fonts:
   #   - family: Schyler
