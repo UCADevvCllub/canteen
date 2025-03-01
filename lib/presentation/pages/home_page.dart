@@ -4,6 +4,7 @@ import 'package:canteen/presentation/pages/delivery/delivery_page.dart';
 import 'package:canteen/presentation/pages/products/catalogue_page.dart';
 import 'package:canteen/presentation/pages/recomendations/recommendations_page.dart';
 import 'package:canteen/presentation/pages/schedule/admin_schedule.dart';
+import 'package:canteen/presentation/pages/schedule/schedule_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
