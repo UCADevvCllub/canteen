@@ -1,8 +1,8 @@
-import 'package:canteen/data/products/products_service.dart';
-import 'package:canteen/domain/products/category.dart';
+import 'package:canteen/features/products/data/products_service.dart';
+import 'package:canteen/features/products/domain/models/category.dart';
 import 'package:flutter/material.dart';
-import 'package:canteen/domain/products/product.dart';
-import 'package:canteen/data/schedule/schedule_service.dart';
+import 'package:canteen/features/products/domain/models/product.dart';
+import 'package:canteen/features/schedule/data/schedule_service.dart';
 
 // Добавьте импорт
 

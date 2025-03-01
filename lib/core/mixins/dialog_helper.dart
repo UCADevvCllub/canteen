@@ -1,4 +1,4 @@
-import 'package:canteen/presentation/pages/products/admin/add_category.dart';
+import 'package:canteen/features/products/presentation/admin/add_category.dart';
 import 'package:flutter/material.dart';
 
 mixin DialogHelper {

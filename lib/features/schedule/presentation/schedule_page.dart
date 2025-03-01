@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-import 'package:canteen/presentation/widgets/cards/message_bubble_background.dart'; // Импортируем ваш BubbleBackground
+import 'package:canteen/core/widgets/cards/message_bubble_background.dart'; // Импортируем ваш BubbleBackground
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -75,11 +75,15 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
             ),
 
-            SizedBox(height: 30), // Увеличиваем расстояние между "Shop Status" и "Open"
+            SizedBox(
+                height:
+                    30), // Увеличиваем расстояние между "Shop Status" и "Open"
 
             // Блок с "Open"
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 90, vertical: 13), // Увеличиваем горизонтальный размер
+              padding: EdgeInsets.symmetric(
+                  horizontal: 90,
+                  vertical: 13), // Увеличиваем горизонтальный размер
               decoration: BoxDecoration(
                 color: Colors.green, // Зеленый фон
                 borderRadius: BorderRadius.circular(0), // Меньше скругления
@@ -140,9 +144,10 @@ class _SchedulePageState extends State<SchedulePage> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        _calendarFormat = _calendarFormat == CalendarFormat.month
-                            ? CalendarFormat.week
-                            : CalendarFormat.month;
+                        _calendarFormat =
+                            _calendarFormat == CalendarFormat.month
+                                ? CalendarFormat.week
+                                : CalendarFormat.month;
                       });
                     },
                     child: AnimatedContainer(
@@ -213,7 +218,8 @@ class _SchedulePageState extends State<SchedulePage> {
                     children: weeklySchedule.map((schedule) {
                       final day = schedule['day']!;
                       final date = schedule['date']!;
-                      final isToday = isSameDay(_selectedDay, DateFormat('MMMM d, y').parse(date));
+                      final isToday = isSameDay(
+                          _selectedDay, DateFormat('MMMM d, y').parse(date));
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -235,7 +241,9 @@ class _SchedulePageState extends State<SchedulePage> {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       margin: const EdgeInsets.symmetric(vertical: 5.0),
       decoration: BoxDecoration(
-        color: isToday ? Colors.green.withOpacity(0.2) : Colors.grey[200], // Подсветка сегодняшнего дня
+        color: isToday
+            ? Colors.green.withOpacity(0.2)
+            : Colors.grey[200], // Подсветка сегодняшнего дня
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
@@ -253,7 +261,9 @@ class _SchedulePageState extends State<SchedulePage> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: isToday ? Colors.green : Colors.black, // Зеленый текст для сегодняшнего дня
+                color: isToday
+                    ? Colors.green
+                    : Colors.black, // Зеленый текст для сегодняшнего дня
               ),
               textAlign: TextAlign.center,
             ),
@@ -267,26 +277,28 @@ class _SchedulePageState extends State<SchedulePage> {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: isToday ? Colors.green : Colors.black, // Зеленый текст для сегодняшнего дня
+                  color: isToday
+                      ? Colors.green
+                      : Colors.black, // Зеленый текст для сегодняшнего дня
                 ),
               ),
               day == "Saturday" || day == "Sunday"
                   ? Text(
-                'Days off',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              )
+                      'Days off',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    )
                   : Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  _buildTimeDetail('Open', '12:00–21:00', Colors.black),
-                  _buildTimeDetail('Break', '13:00–14:00', Colors.black),
-                  _buildTimeDetail('Closed', '21:00–12:00', Colors.black),
-                ],
-              ),
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        _buildTimeDetail('Open', '12:00–21:00', Colors.black),
+                        _buildTimeDetail('Break', '13:00–14:00', Colors.black),
+                        _buildTimeDetail('Closed', '21:00–12:00', Colors.black),
+                      ],
+                    ),
             ],
           ),
         ],

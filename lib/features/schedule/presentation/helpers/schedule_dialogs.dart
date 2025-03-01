@@ -1,6 +1,4 @@
-import 'package:canteen/presentation/pages/schedule/helpers/schedule_config.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 mixin ScheduleDialogs {
   // void showEditTimeDialog(BuildContext context,

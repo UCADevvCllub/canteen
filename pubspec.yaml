@@ -17,8 +17,8 @@ dependencies:
   firebase_auth: ^5.3.1
   cloud_firestore: ^5.4.4
   firebase_storage: ^12.3.4
-  auto_route: ^9.2.2
-  auto_route_generator: ^9.0.0
+  auto_route: ^10.0.0
+  auto_route_generator: ^10.0.1
   build_runner: ^2.4.13
   get_it: ^8.0.2
   curved_navigation_bar: ^1.0.6
