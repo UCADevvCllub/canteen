@@ -1,5 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:canteen/core/navigation/app_router.gr.dart';
+import 'package:auto_route/auto_route.dart';
+import 'app_router.gr.dart';
+
+
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {

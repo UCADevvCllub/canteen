@@ -14,11 +14,11 @@ class BubbleBackground extends StatelessWidget {
   const BubbleBackground({
     super.key,
     required this.child,
-    this.backgroundColor = const Color(0x8F84C264),// Default color
+    this.backgroundColor = const Color(0xFF84C164), // Изменено на цвет "Shop Status"
     this.textColor = Colors.white,
     this.isSender = false,
     this.tail = false,
-    this.opacity = 0.5, // Default opacity is fully opaque
+    this.opacity = 1.0, // Убрана прозрачность (полностью непрозрачный)
   })  : assert(opacity >= 0.0 && opacity <= 1.0, 'Opacity must be between 0 and 1.');
 
   @override
@@ -26,10 +26,10 @@ class BubbleBackground extends StatelessWidget {
     return Align(
       alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 40),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
         decoration: BoxDecoration(
-          color: backgroundColor.withOpacity(opacity), // Apply opacity here
+          color: backgroundColor.withOpacity(opacity), // Применяем opacity
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(15),
             topRight: const Radius.circular(15),
