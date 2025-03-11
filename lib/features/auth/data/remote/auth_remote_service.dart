@@ -1,13 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-enum UserRole {
-  admin,
-  user,
-  unknown
-}
+enum UserRole { admin, user, unknown }
 
-class AuthService {
+class AuthRemoteService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
@@ -30,19 +26,41 @@ class AuthService {
   }
 
   // Sign up with email and password
-  Future<UserCredential> signUpWithEmailAndPassword(
-    String email,
-    String password,
-  ) async {
+  Future<User?> signUp({
+    required String email,
+    required String password,
+    required String name,
+    required String role,
+  }) async {
     try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      // Create user in Firebase Authentication
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return userCredential;
+
+      // Get the created user
+      User? user = userCredential.user;
+
+      if (user != null) {
+        // Save additional user data to Firestore
+        await _fireStore.collection('users').doc(user.uid).set({
+          'uid': user.uid,
+          'name': name,
+          'email': email,
+          'role': role,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+
+        return user;
+      }
     } on FirebaseAuthException catch (e) {
-      throw _handleAuthException(e);
+      throw Exception("FirebaseAuth Error: ${e.message}");
+    } catch (e) {
+      throw Exception("Error: $e");
     }
+    return null;
   }
 
   // Check if current user is an admin
@@ -50,10 +68,8 @@ class AuthService {
     if (currentUser?.uid == null) return false;
 
     try {
-      DocumentSnapshot adminDoc = await _fireStore
-          .collection('admins')
-          .doc(currentUser?.uid)
-          .get();
+      DocumentSnapshot adminDoc =
+          await _fireStore.collection('admins').doc(currentUser?.uid).get();
 
       return adminDoc.exists;
     } catch (e) {
