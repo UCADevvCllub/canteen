@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:canteen/core/widgets/cards/message_bubble_background.dart'; // Импортируем ваш BubbleBackground
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
+
+  String _status = "Open";
+  String _note = "Add note";
+  Map<String, Map<String, String>> _weekSchedule = {};
 
   @override
   State<SchedulePage> createState() => _SchedulePageState();
@@ -14,6 +19,30 @@ class _SchedulePageState extends State<SchedulePage> {
   DateTime _focusedDay = DateTime.now(); // Сегодняшняя дата
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
+  Future<void> _loadScheduleFromFirebase() async {
+    try {
+      // Получаем документ с расписанием
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+      await FirebaseFirestore.instance.collection('admin_schedule').doc('shop_status').get();
+
+      if (snapshot.exists) {
+        setState(() {
+          _status = snapshot.data()?['status'] ?? "Open";
+          _note = snapshot.data()?['note'] ?? "Add note";
+          _weekSchedule = Map<String, Map<String, String>>.from(
+            (snapshot.data()?['week_schedule'] ?? {}).map(
+                  (day, schedule) => MapEntry(
+                day,
+                Map<String, String>.from(schedule),
+              ),
+            ),
+          );
+        });
+      }
+    } catch (e) {
+      print("Ошибка загрузки данных: $e");
+    }
+  }
 
   // Генерация расписания, начиная с сегодняшнего дня
   List<Map<String, String>> get weeklySchedule {
@@ -75,42 +104,42 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
             ),
 
-            SizedBox(
-                height:
-                    30), // Увеличиваем расстояние между "Shop Status" и "Open"
+            SizedBox(height: 30), // Увеличиваем расстояние между заголовком и кнопкой
 
-            // Блок с "Open"
+            // Блок с "Open", который теперь динамический
             Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 90,
-                  vertical: 13), // Увеличиваем горизонтальный размер
+              padding: EdgeInsets.symmetric(horizontal: 90, vertical: 13),
               decoration: BoxDecoration(
-                color: Colors.green, // Зеленый фон
-                borderRadius: BorderRadius.circular(0), // Меньше скругления
+                color: _status == "Open"
+                    ? Colors.green
+                    : _status == "Break"
+                    ? Colors.orange
+                    : Colors.red, // Цвет зависит от статуса
+                borderRadius: BorderRadius.circular(0),
               ),
               child: Text(
-                'Open',
+                _status, // Теперь статус загружается из Firestore
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white, // Белый текст
+                  color: Colors.white,
                 ),
               ),
             ),
 
             SizedBox(height: 25), // Отступ между "Open" и заметкой
 
-            // Заметка с BubbleBackground
+            // Заметка с BubbleBackground (теперь из Firestore)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: BubbleBackground(
                 child: Padding(
                   padding: const EdgeInsets.all(7.0),
                   child: Text(
-                    "Note: Shop will be open only until 19:00 this week",
+                    _note, // Теперь заметка загружается из Firestore
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.black, // Черный текст
+                      color: Colors.black,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -118,7 +147,63 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
             ),
 
-            SizedBox(height: 15), // Отступ между заметкой и календарем
+            SizedBox(height: 20), // Отступ перед расписанием
+
+            // Отображение расписания по дням недели
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: _weekSchedule.length,
+              itemBuilder: (context, index) {
+                String day = _weekSchedule.keys.elementAt(index);
+                Map<String, dynamic> schedule = _weekSchedule[day];
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          day,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "${schedule['open']} - ${schedule['break']} - ${schedule['closed']}",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SizedBox(height: 15), // Отступ между заметкой и календарем
 
             // Основной контейнер с календарем и расписанием
             Container(
