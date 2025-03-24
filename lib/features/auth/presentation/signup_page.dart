@@ -1,3 +1,4 @@
+import 'package:canteen/core/mixins/snackbar_helpers.dart';
 import 'package:canteen/core/navigation/app_router.gr.dart';
 import 'package:canteen/core/theme/app_colors.dart';
 import 'package:canteen/core/widgets/buttons/app_button.dart';
@@ -16,10 +17,11 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final repeatPasswordController = TextEditingController();
   String? selectedRole;
   bool _isNameValid = false; // Track name validation state
   bool _isEmailValid = false; // Track email validation state
@@ -113,6 +115,14 @@ class _SignUpPageState extends State<SignUpPage> {
                   icon: Icons.email,
                 ),
                 const SizedBox(height: 20),
+                RoleDropdown(
+                  onChanged: (value) {
+                    setState(() {
+                      selectedRole = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
                 AppTextFormField(
                   hintText: 'Password',
                   controller: passwordController,
@@ -120,12 +130,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   isPassword: true,
                 ),
                 const SizedBox(height: 20),
-                RoleDropdown(
-                  onChanged: (value) {
-                    setState(() {
-                      selectedRole = value;
-                    });
-                  },
+                AppTextFormField(
+                  hintText: 'Confirm Password',
+                  controller: repeatPasswordController,
+                  icon: Icons.lock,
+                  isPassword: true,
                 ),
                 const SizedBox(height: kToolbarHeight),
                 authProvider.isLoading
@@ -143,25 +152,21 @@ class _SignUpPageState extends State<SignUpPage> {
                             );
 
                             if (authProvider.errorMessage == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Sign up successful!'),
-                                ),
+                              showSuccessSnackBar(
+                                context: context,
+                                message: 'Sign up successful!',
                               );
                               context.router.replaceAll([HomeRoute()]);
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(authProvider.errorMessage!),
-                                ),
+                              showErrorSnackBar(
+                                context: context,
+                                message: authProvider.errorMessage!,
                               );
                             }
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    'Please fill in all fields correctly and select a role'),
-                              ),
+                            showErrorSnackBar(
+                              context: context,
+                              message: 'Please fill in all fields correctly',
                             );
                           }
                         },

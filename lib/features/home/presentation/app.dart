@@ -15,6 +15,6 @@ class App extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.lightTheme,
       routerConfig: router.config(),
-    );
+    );  
   }
 }
