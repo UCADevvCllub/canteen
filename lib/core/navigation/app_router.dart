@@ -6,9 +6,13 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
+          page: SplashRoute.page,
+          path: '/',
+        ),
+        AutoRoute(
           page: LoginRoute.page,
           path: '/login',
-          initial: true,
+          // initial: true,
         ),
         AutoRoute(
           page: SignUpRoute.page,
@@ -27,7 +31,7 @@ class AppRouter extends RootStackRouter {
           path: '/product-list',
         ),
         AutoRoute(
-          page: AddCategory.page, // ✅ Keep only this reference
+          page: AddCategory.page,
           path: '/add-category',
         ),
         AutoRoute(
