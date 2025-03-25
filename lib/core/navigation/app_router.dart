@@ -27,7 +27,7 @@ class AppRouter extends RootStackRouter {
           path: '/product-list',
         ),
         AutoRoute(
-          page: AddCategory.page, // ✅ Keep only this reference
+          page: AddCategory.page,
           path: '/add-category',
         ),
         AutoRoute(
