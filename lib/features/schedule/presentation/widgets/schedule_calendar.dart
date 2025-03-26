@@ -1,14 +1,16 @@
-import 'package:canteen/features/schedule/presentation/helpers/schedule_config.dart';
-import 'package:canteen/features/schedule/presentation/helpers/schedule_dialogs.dart';
-import 'package:canteen/features/schedule/presentation/widgets/schedule_card.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'package:canteen/features/schedule/presentation/helpers/schedule_dialogs.dart';
 class ScheduleCalendar extends StatefulWidget {
-  const ScheduleCalendar({super.key, required this.onSaved});
+  final Map<String, Map<String, String>> weekSchedule;
 
-  final VoidCallback onSaved;
+  const ScheduleCalendar({
+    super.key,
+    required this.weekSchedule,
+  });
 
   @override
   State<ScheduleCalendar> createState() => _ScheduleCalendarState();
@@ -19,16 +21,17 @@ class _ScheduleCalendarState extends State<ScheduleCalendar>
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
+  final DatabaseReference _dbRef =
+  FirebaseDatabase.instance.ref('admin_schedule/shop_status/week_schedule');
 
   @override
   Widget build(BuildContext context) {
-    final weeklySchedule = ScheduleConfig.getWeeklySchedule(_focusedDay);
     return Container(
-      margin: EdgeInsets.only(top: 10),
-      padding: EdgeInsets.all(16),
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
         ),
@@ -36,13 +39,12 @@ class _ScheduleCalendarState extends State<ScheduleCalendar>
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
-            offset: Offset(0, -5),
+            offset: const Offset(0, -5),
           ),
         ],
       ),
       child: Column(
         children: [
-          // Календарь
           GestureDetector(
             onTap: () {
               setState(() {
@@ -52,9 +54,9 @@ class _ScheduleCalendarState extends State<ScheduleCalendar>
               });
             },
             child: AnimatedContainer(
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: Colors.grey[200],
                 borderRadius: BorderRadius.circular(20),
@@ -75,7 +77,7 @@ class _ScheduleCalendarState extends State<ScheduleCalendar>
                   CalendarFormat.month: 'Month',
                   CalendarFormat.week: 'Week',
                 },
-                calendarStyle: CalendarStyle(
+                calendarStyle: const CalendarStyle(
                   todayDecoration: BoxDecoration(
                     color: Colors.green,
                     shape: BoxShape.circle,
@@ -85,25 +87,11 @@ class _ScheduleCalendarState extends State<ScheduleCalendar>
                     shape: BoxShape.circle,
                   ),
                 ),
-                headerStyle: HeaderStyle(
+                headerStyle: const HeaderStyle(
                   formatButtonVisible: false,
                   titleCentered: true,
-                  titleTextFormatter: (date, locale) =>
-                      DateFormat.MMMM(locale).format(date),
                   titleTextStyle: TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                daysOfWeekStyle: DaysOfWeekStyle(
-                  weekdayStyle: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                  weekendStyle: TextStyle(
-                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -111,25 +99,20 @@ class _ScheduleCalendarState extends State<ScheduleCalendar>
               ),
             ),
           ),
-          SizedBox(height: 20),
-
-          // Расписание, начиная с сегодняшнего дня
+          const SizedBox(height: 20),
           Column(
-            children: weeklySchedule.map((schedule) {
+            children: widget.weekSchedule.entries.map((entry) {
+              final day = entry.key;
+              final schedule = entry.value;
+
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
-                child: GestureDetector(
-                  onTap: () {
-                    final schedule =
-                        ScheduleConfig.getWeeklySchedule(DateTime.now());
-
-                    // showEditTimeDialog(context, onSaved: () {
-                    //   widget.onSaved();
-                    // });
-                  },
-                  child: ScheduleCard(
-                    schedule: schedule,
+                child: ListTile(
+                  title: Text(day),
+                  subtitle: Text(
+                    'Open: ${schedule['open']}\nBreak: ${schedule['break']}\nClosed: ${schedule['closed']}',
                   ),
+                  onTap: () => _showEditDialog(day, schedule),
                 ),
               );
             }).toList(),
@@ -137,5 +120,25 @@ class _ScheduleCalendarState extends State<ScheduleCalendar>
         ],
       ),
     );
+  }
+
+  Future<void> _showEditDialog(String day, Map<String, String> schedule) async {
+    final result = await ScheduleDialogs.showEditTimeDialog(
+      context,
+      initialDay: day,
+      initialOpen: schedule['open']!,
+      initialBreak: schedule['break']!,
+      initialClosed: schedule['closed']!,
+    );
+
+    if (result != null) {
+      try {
+        await _dbRef.child(day).update(result);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Ошибка сохранения: $e')),
+        );
+      }
+    }
   }
 }

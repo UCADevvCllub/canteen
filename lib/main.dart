@@ -5,6 +5,7 @@ import 'package:canteen/features/home/presentation/app.dart';
 import 'package:canteen/features/products/presentation/provider/products_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'features/schedule/data/schedule_service.dart';
