@@ -20,11 +20,23 @@ class _SchedulePageState extends State<SchedulePage> {
   Stream<DatabaseEvent> _getScheduleStream() => _dbRef.onValue;
 
   Map<String, Map<String, String>> _parseData(dynamic data) {
-    return (data['week_schedule'] as Map<String, dynamic>).map(
-          (key, value) => MapEntry(
-        key,
-        Map<String, String>.from(value),
-      ),
+    // 1. Безопасно извлекаем 'week_schedule' и преобразуем его
+    final rawWeekSchedule = data['week_schedule'] as Map<dynamic, dynamic>? ?? {};
+
+    // 2. Преобразуем внешнюю Map
+    return Map<String, dynamic>.from(rawWeekSchedule).map<String, Map<String, String>>(
+          (key, dynamic value) {
+        // 3. Проверяем и преобразуем внутренние значения
+        if (value is Map<dynamic, dynamic>) {
+          return MapEntry(
+            key.toString(),
+            Map<String, String>.from(value),
+          );
+        } else {
+          // 4. Обработка некорректных данных (можно выбросить исключение или вернуть пустую Map)
+          return MapEntry(key.toString(), {});
+        }
+      },
     );
   }
 
