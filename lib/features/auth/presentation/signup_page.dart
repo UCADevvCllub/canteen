@@ -174,7 +174,7 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
                 const Spacer(),
                 TextButton(
                   onPressed: () {
-                    context.router.pushPath('/login');
+                    context.router.pushNamed('/login');
                   },
                   child: RichText(
                     text: TextSpan(

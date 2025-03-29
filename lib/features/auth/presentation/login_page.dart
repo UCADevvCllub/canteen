@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage> with SnackbarHelpers {
                   const SizedBox(height: kToolbarHeight * 2),
                   TextButton(
                     onPressed: () {
-                      context.router.pushPath('/sign-up');
+                      context.router.pushNamed('/sign-up');
                     },
                     child: RichText(
                       text: TextSpan(
