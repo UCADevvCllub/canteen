@@ -1,8 +1,8 @@
 import 'package:auto_route/annotations.dart';
-import 'package:canteen/features/products/domain/models/product.dart';
+import 'package:canteen/domain/products/product.dart';
 import 'package:flutter/material.dart';
-import 'package:canteen/core/widgets/cards/product_card_widget.dart';
-import 'package:canteen/features/products/presentation/product_description_page.dart';
+import 'package:canteen/presentation/widgets/cards/product_card_widget.dart';
+import 'package:canteen/presentation/pages/products/product_description_page.dart';
 
 @RoutePage()
 class ProductListPage extends StatelessWidget {

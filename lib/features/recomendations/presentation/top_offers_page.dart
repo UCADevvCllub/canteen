@@ -1,68 +1,64 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:canteen/core/widgets/cards/discount_card_widget.dart';
 import 'package:flutter/material.dart';
 
-@RoutePage()  // ✅ Added RoutePage annotation
+@RoutePage()
 class TopOffersPage extends StatelessWidget {
   const TopOffersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Top Offers"),
-        backgroundColor: const Color(0xFF84C264),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.router.pop(), // ✅ Fixed navigation issue
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 0.8,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/layouts/home_back.png'),
+            fit: BoxFit.cover,
           ),
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return _buildOfferCard();
-          },
         ),
-      ),
-    );
-  }
-
-  Widget _buildOfferCard() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: Image.asset(
-              'assets/images/sample_product.png',
-              fit: BoxFit.cover,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: const Text(
+              "Top Offers",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
             ),
           ),
-          const Text("Jin Ramen Mild", style: TextStyle(fontSize: 14)),
-          const Text("48 som", style: TextStyle(fontSize: 14, color: Colors.red)),
-        ],
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 1,
+              ),
+              itemCount: 4,
+              itemBuilder: (context, index) {
+                return const Center(
+                  child: DiscountCardWidget(
+                    imagePath: 'assets/product_images/Drinks.jpg',
+                    title: 'Jin RAMEN MILD..',
+                    oldPrice: '160 som',
+                    newPrice: '48 som',
+                    discount: '-30%',
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
       ),
     );
   }
-}
-
-extension on StackRouter {
-  pop() {}
 }
