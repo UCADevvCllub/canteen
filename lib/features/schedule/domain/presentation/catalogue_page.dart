@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/config/di.dart';
 import 'package:canteen/core/mixins/dialog_helper.dart';
-import 'package:canteen/features/auth/data/auth_service.dart';
+import 'package:canteen/features/auth/data/remote/auth_remote_service.dart';
 import 'package:canteen/core/navigation/app_router.gr.dart';
-import 'package:canteen/features/schedule/domain/presentation/provider/products_notifier.dart';
-import 'package:canteen/features/schedule/domain/presentation/widgets/catalog_widget.dart';
+import 'package:canteen/features/products/presentation/provider/products_notifier.dart';
+import 'package:canteen/features/products/presentation/widgets/catalog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +25,7 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
   }
 
   void isAdminCheck() async {
-    locator<AuthService>().isAdmin().then((value) {
+    locator<AuthRemoteService>().isAdmin().then((value) {
       setState(() {
         isAdmin = value;
       });

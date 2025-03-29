@@ -21,8 +21,8 @@ class _AddCategoryState extends State<AddCategory> {
   @override
   Widget build(BuildContext context) {
     return
-      // Stack(
-      // children: [
+        // Stack(
+        // children: [
         // 🔹 Background Image
         // Positioned.fill(
         //   child: Image.asset(
@@ -33,72 +33,72 @@ class _AddCategoryState extends State<AddCategory> {
 
         // 🔹 Dialog with Rounded Corners
         Center(
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), // Rounded corners
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20), // Rounded corners
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Add Category',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF84C264), // Green color
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              // Category Name Input
+              TitledFieldWrapper(
+                title: 'Category Name',
+                child: AppTextFormField(
+                  hintText: 'Enter name here',
+                  borderColor: AppColors.primary,
+                  controller: _nameController,
+                ),
+              ),
+
+              // Category Image Upload
+              TitledFieldWrapper(
+                title: 'Category Image',
+                child: ImageHolder(
+                  controller: _imageController,
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Cancel & Add Category Buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Add Category',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF84C264), // Green color
-                    ),
+                  AppButton(
+                    title: 'Cancel',
+                    color: Colors.white,
+                    borderColor: Color(0xFF84C264), // Green outline
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                  const SizedBox(height: 10),
-
-                  // Category Name Input
-                  TitledFieldWrapper(
-                    title: 'Category Name',
-                    child: AppTextFormField(
-                      hintText: 'Enter name here',
-                      borderColor: AppColors.primary,
-                      controller: _nameController,
-                    ),
-                  ),
-
-                  // Category Image Upload
-                  TitledFieldWrapper(
-                    title: 'Category Image',
-                    child: ImageHolder(
-                      controller: _imageController,
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Cancel & Add Category Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppButton(
-                        title: 'Cancel',
-                        color: Colors.white,
-                        borderColor: Color(0xFF84C264), // Green outline
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      AppButton(
-                        title: 'Add Category',
-                        color: Color(0xFF84C264), // Green color
-                        onPressed: () {
-                          // TODO: Implement category addition logic
-                          Navigator.pop(context);
-                        },
-                      )
-                    ],
-                  ),
+                  AppButton(
+                    title: 'Add Category',
+                    color: Color(0xFF84C264), // Green color
+                    onPressed: () {
+                      // TODO: Implement category addition logic
+                      Navigator.pop(context);
+                    },
+                  )
                 ],
               ),
-            ),
+            ],
           ),
-        );
+        ),
+      ),
+    );
     //   ],
     // );
   }

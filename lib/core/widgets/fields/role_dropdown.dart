@@ -23,7 +23,15 @@ class _RoleDropdownState extends State<RoleDropdown> {
       height: 55,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(35),
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade400,
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: DropdownButtonFormField<String>(
         value: selectedRole,

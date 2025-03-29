@@ -1,0 +1,2 @@
+/Users/student/github/canteen/android/app/.cxx/RelWithDebInfo/3f3z4z1p/x86/CMakeFiles/edit_cache.dir
+/Users/student/github/canteen/android/app/.cxx/RelWithDebInfo/3f3z4z1p/x86/CMakeFiles/rebuild_cache.dir

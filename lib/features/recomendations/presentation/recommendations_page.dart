@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/navigation/app_router.gr.dart';
+import 'package:canteen/features/auth/presentation/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RecommendationsPage extends StatelessWidget {
   const RecommendationsPage({super.key});
@@ -10,7 +12,6 @@ class RecommendationsPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // ✅ Background Image Setup
           Positioned.fill(
             child: Image.asset(
               'assets/layouts/home_back.png', // Replace with your image path
@@ -49,6 +50,20 @@ class RecommendationsPage extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          Positioned(
+            top: kToolbarHeight * 1.2,
+            left: 16,
+            child: GestureDetector(
+              onTap: () {
+                Provider.of<AuthProvider>(context, listen: false).logout();
+                context.router.replace(const LoginRoute());
+              },
+              child: Image.asset(
+                'assets/icons/menu.png',
+                width: 25,
+              ),
+            ),
           ),
         ],
       ),
