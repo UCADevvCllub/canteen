@@ -1,68 +1,62 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:canteen/core/widgets/cards/discount_card_widget.dart';
 import 'package:flutter/material.dart';
 
-@RoutePage()  // ✅ Added RoutePage annotation
+@RoutePage()
 class MostPopularPage extends StatelessWidget {
   const MostPopularPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Most Popular"),
-        backgroundColor: const Color(0xFF84C264),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.router.pop(), // ✅ Fixed navigation issue
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 0.8,
+      // Background image added here
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/layouts/home_back.png'),
+            fit: BoxFit.cover,
           ),
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return _buildPopularCard();
-          },
         ),
-      ),
-    );
-  }
-
-  Widget _buildPopularCard() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: Image.asset(
-              'assets/images/sample_product.png',
-              fit: BoxFit.cover,
+        child: Scaffold(
+          backgroundColor: Colors.transparent, // Transparent to show background
+          appBar: AppBar(
+            title: const Text(
+              "Most Popular",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            backgroundColor: Colors.transparent, // Transparent AppBar
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
             ),
           ),
-          const Text("Jin Ramen Mild", style: TextStyle(fontSize: 14)),
-          const Text("160 som", style: TextStyle(fontSize: 14)),
-        ],
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 0.8,
+              ),
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return const DiscountCardWidget(
+                  imagePath: 'assets/product_images/jin_ramen.png',
+                  title: 'Jin RAMEN MILD..',
+                  newPrice: '160 som',
+                  showStar: true,
+                );
+              },
+            ),
+          ),
+        ),
       ),
     );
   }
-}
-
-extension on StackRouter {
-  pop() {}
 }

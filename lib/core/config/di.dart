@@ -1,7 +1,7 @@
-import 'package:canteen/data/auth/auth_service.dart';
-import 'package:canteen/data/products/products_service.dart';
+import 'package:canteen/features/auth/data/auth_service.dart';
+import 'package:canteen/features/products/data/products_service.dart';
 import 'package:canteen/core/navigation/app_router.dart';
-import 'package:canteen/data/schedule/schedule_service.dart'; // Добавлен импорт FirestoreService
+import 'package:canteen/features/schedule/data/schedule_service.dart'; // Добавлен импорт FirestoreService
 import 'package:get_it/get_it.dart';
 
 final GetIt locator =

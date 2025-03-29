@@ -1,6 +1,6 @@
-import 'package:canteen/presentation/pages/schedule/helpers/schedule_dialogs.dart';
-import 'package:canteen/presentation/pages/schedule/widgets/schedule_calendar.dart';
-import 'package:canteen/presentation/pages/schedule/widgets/status_button.dart';
+import 'package:canteen/features/schedule/presentation/helpers/schedule_dialogs.dart';
+import 'package:canteen/features/schedule/presentation/widgets/schedule_calendar.dart';
+import 'package:canteen/features/schedule/presentation/widgets/status_button.dart';
 import 'package:flutter/material.dart';
 
 class AdminSchedulePage extends StatefulWidget {

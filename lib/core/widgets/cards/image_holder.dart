@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:canteen/core/config/app_permission.dart';
 import 'package:canteen/core/theme/app_colors.dart';
-import 'package:canteen/presentation/widgets/buttons/app_button.dart';
+import 'package:canteen/core/widgets/buttons/app_button.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

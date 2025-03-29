@@ -1,10 +1,10 @@
 import 'package:auto_route/annotations.dart';
-import 'package:canteen/presentation/pages/debts/debts_page.dart';
-import 'package:canteen/presentation/pages/delivery/delivery_page.dart';
-import 'package:canteen/presentation/pages/products/catalogue_page.dart';
-import 'package:canteen/presentation/pages/recomendations/recommendations_page.dart';
-import 'package:canteen/presentation/pages/schedule/admin_schedule.dart';
-import 'package:canteen/presentation/pages/schedule/schedule_page.dart';
+import 'package:canteen/features/debts/presentation/debts_page.dart';
+import 'package:canteen/features/delivery/presentation/delivery_page.dart';
+import 'package:canteen/features/schedule/domain/presentation/catalogue_page.dart';
+import 'package:canteen/features/recomendations/presentation/recommendations_page.dart';
+import 'package:canteen/features/schedule/presentation/admin_schedule.dart';
+import 'package:canteen/features/schedule/presentation/schedule_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 

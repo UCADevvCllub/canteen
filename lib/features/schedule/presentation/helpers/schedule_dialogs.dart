@@ -1,4 +1,4 @@
-import 'package:canteen/presentation/pages/schedule/helpers/schedule_config.dart';
+import 'package:canteen/features/schedule/presentation/helpers/schedule_config.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

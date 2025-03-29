@@ -1,4 +1,4 @@
-import 'package:canteen/presentation/pages/schedule/domain/models/schedule_model.dart';
+import 'package:canteen/features/schedule/domain/models/schedule_model.dart';
 import 'package:flutter/material.dart';
 
 class ScheduleCard extends StatelessWidget {

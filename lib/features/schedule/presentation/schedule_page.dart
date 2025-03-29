@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-import 'package:canteen/presentation/widgets/cards/message_bubble_background.dart'; // Импортируем ваш BubbleBackground
+import 'package:canteen/core/widgets/cards/message_bubble_background.dart'; // Импортируем ваш BubbleBackground
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});

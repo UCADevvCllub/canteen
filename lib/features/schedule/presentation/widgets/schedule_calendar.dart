@@ -1,6 +1,6 @@
-import 'package:canteen/presentation/pages/schedule/helpers/schedule_config.dart';
-import 'package:canteen/presentation/pages/schedule/helpers/schedule_dialogs.dart';
-import 'package:canteen/presentation/pages/schedule/widgets/schedule_card.dart';
+import 'package:canteen/features/schedule/presentation/helpers/schedule_config.dart';
+import 'package:canteen/features/schedule/presentation/helpers/schedule_dialogs.dart';
+import 'package:canteen/features/schedule/presentation/widgets/schedule_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
