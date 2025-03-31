@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage>
 
   final Map<String, Widget> _pages = {
     'Recommendations': const RecommendationsPage(),
-    'Schedule': const AdminSchedulePage(),
+    'Schedule': const SchedulePage(),
     'Category': const CataloguePage(),
     'Debts': const DebtsPage(),
     'Delivery': const DeliveryPage(),
