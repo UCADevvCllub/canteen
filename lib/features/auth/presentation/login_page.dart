@@ -131,46 +131,46 @@ class _LoginPageState extends State<LoginPage> with SnackbarHelpers {
                   const SizedBox(height: 20),
                   authProvider.isLoading
                       ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
+                    child: CircularProgressIndicator(),
+                  )
                       : AppButton(
-                          title: 'Login',
-                          color: AppColors.darkGreen,
-                          onPressed: () async {
-                            if (_validateFields()) {
-                              setState(() {}); // Refresh UI while loading
-                              await authProvider.login(
-                                email: emailController.text.trim(),
-                                password: passwordController.text.trim(),
-                              );
+                    title: 'Login',
+                    color: AppColors.darkGreen,
+                    onPressed: () async {
+                      if (_validateFields()) {
+                        setState(() {}); // Refresh UI while loading
+                        await authProvider.login(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        );
 
-                              if (authProvider.errorMessage == null) {
-                                // Show success SnackBar
-                                showSuccessSnackBar(
-                                  context: context,
-                                  message: 'Login successful!',
-                                );
-                                context.router.replaceAll([HomeRoute()]);
-                              } else {
-                                // Show error SnackBar
-                                showErrorSnackBar(
-                                  context: context,
-                                  message: authProvider.errorMessage!,
-                                );
-                              }
-                            } else {
-                              // Show error SnackBar if fields are invalid
-                              showErrorSnackBar(
-                                context: context,
-                                message: 'Please fill in all fields correctly',
-                              );
-                            }
-                          },
-                        ),
+                        if (authProvider.errorMessage == null) {
+                          // Show success SnackBar
+                          showSuccessSnackBar(
+                            context: context,
+                            message: 'Login successful!',
+                          );
+                          context.router.replaceAll([HomeRoute()]);
+                        } else {
+                          // Show error SnackBar
+                          showErrorSnackBar(
+                            context: context,
+                            message: authProvider.errorMessage!,
+                          );
+                        }
+                      } else {
+                        // Show error SnackBar if fields are invalid
+                        showErrorSnackBar(
+                          context: context,
+                          message: 'Please fill in all fields correctly',
+                        );
+                      }
+                    },
+                  ),
                   const SizedBox(height: kToolbarHeight * 2),
                   TextButton(
                     onPressed: () {
-                      context.router.pushPath('/sign-up');
+                      context.router.push(const SignUpRoute()); // Fixed: Use push with SignUpRoute
                     },
                     child: RichText(
                       text: TextSpan(
