@@ -1,7 +1,8 @@
+// widgets/shop_status_header.dart
 import 'package:flutter/material.dart';
 
-class ScheduleHeader extends StatelessWidget {
-  const ScheduleHeader({super.key});
+class ShopStatusHeader extends StatelessWidget {
+  const ShopStatusHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
