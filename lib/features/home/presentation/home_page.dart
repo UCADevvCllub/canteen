@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:canteen/features/debts/presentation/debts_page.dart';
 import 'package:canteen/features/delivery/presentation/delivery_page.dart';
 import 'package:canteen/features/discount/presentation/discount_page.dart';
+import 'package:canteen/features/profile/presentation/pages/profile_page.dart';
 import 'package:canteen/features/recomendations/presentation/recommendations_page.dart';
 import 'package:canteen/features/schedule/domain/presentation/catalogue_page.dart';
 import 'package:canteen/features/schedule/presentation/schedule_page.dart';
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage>
 
   final Map<String, Widget> _pages = {
     'Recommendations': const RecommendationsPage(),
-    'Schedule': const SchedulePage(),
+    'Schedule': const ProfilePage(),
     'Category': const CataloguePage(),
     'Debts': const DebtsPage(),
     'Delivery': const DeliveryPage(),
