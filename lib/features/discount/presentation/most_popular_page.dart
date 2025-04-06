@@ -34,6 +34,21 @@ class MostPopularPage extends StatelessWidget {
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 16.0), // Space from the right edge
+                child: GestureDetector(
+                  onTap: () {
+                    // TODO: Add save functionality
+                    print("Save icon tapped");
+                  },
+                  child: Image.asset(
+                    'assets/icons/Vector.png',
+                    width: 25,
+                  ),
+                ),
+              ),
+            ],
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
