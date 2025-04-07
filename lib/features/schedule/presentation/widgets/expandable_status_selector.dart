@@ -12,7 +12,8 @@ class ExpandableStatusSelector extends StatefulWidget {
   });
 
   @override
-  State<ExpandableStatusSelector> createState() => _ExpandableStatusSelectorState();
+  State<ExpandableStatusSelector> createState() =>
+      _ExpandableStatusSelectorState();
 }
 
 class _ExpandableStatusSelectorState extends State<ExpandableStatusSelector> {
