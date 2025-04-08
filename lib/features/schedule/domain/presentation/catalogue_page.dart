@@ -16,22 +16,21 @@ class CataloguePage extends StatefulWidget {
 }
 
 class _CataloguePageState extends State<CataloguePage> with DialogHelper {
-  bool isAdmin = false; // Default to false until checked
+  bool? isAdmin; // null means not yet determined
   final TextEditingController _searchController = TextEditingController();
   List<dynamic> _filteredCategories = [];
 
   @override
   void initState() {
-    isAdminCheck(); // Uncommented to fetch admin status dynamically
     super.initState();
     _searchController.addListener(_filterCategories);
+    _checkAdmin();
   }
 
-  void isAdminCheck() async {
-    locator<AuthRemoteService>().isAdmin().then((value) {
-      setState(() {
-        isAdmin = value;
-      });
+  void _checkAdmin() async {
+    final adminStatus = await locator<AuthRemoteService>().isAdmin();
+    setState(() {
+      isAdmin = adminStatus;
     });
   }
 
@@ -43,7 +42,8 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
         _filteredCategories = provider.categories;
       } else {
         _filteredCategories = provider.categories
-            .where((category) => category.name.toLowerCase().contains(query))
+            .where((category) =>
+            category.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
       }
     });
@@ -58,6 +58,11 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
 
   @override
   Widget build(BuildContext context) {
+    // Show loading spinner until admin status is known
+    if (isAdmin == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Consumer<ProductsNotifier>(
@@ -65,32 +70,31 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
           if (_filteredCategories.isEmpty && _searchController.text.isEmpty) {
             _filteredCategories = provider.categories;
           }
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Adds vertical spacing above the title/icons row to push it lower
               const SizedBox(height: 60),
 
-              // Title and Icons Row: Wrapped in a SizedBox to set a custom height
+              // Top bar: Title + Icons
               SizedBox(
-                height: 50, // Custom height for the title/icons row
+                height: 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Menu icon and "Catalogue" title
+                    // Menu icon + Title
                     Row(
                       children: [
-                        // Menu icon
                         GestureDetector(
                           onTap: () {
-                            // TODO: Add menu functionality (e.g., logout as in DiscountsPage)
+                            // TODO: Add menu or drawer action
                           },
                           child: Image.asset(
                             'assets/icons/menu.png',
                             width: 25,
                           ),
                         ),
-                        const SizedBox(width: 10), // Space between icon and title
+                        const SizedBox(width: 10),
                         const Text(
                           'Catalogue',
                           style: TextStyle(
@@ -101,33 +105,28 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
                         ),
                       ],
                     ),
-                    // Chat and Vector (Save) icons
+
+                    // Right-side icons
                     Row(
-                      mainAxisSize: MainAxisSize.min, // Take only the space needed
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // TODO: Add chat functionality
+                            // TODO: Chat button action
                           },
                           child: Image.asset(
                             'assets/icons/chat.png',
                             width: 25,
                           ),
                         ),
-                        // Show the save icon only for non-admin users
-                        if (!isAdmin) ...[
-                          const SizedBox(width: 10), // Space between icons
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0), // Add padding to the right
-                            child: GestureDetector(
-                              onTap: () {
-                                // TODO: Add save functionality
-                                print("Save icon tapped");
-                              },
-                              child: Image.asset(
-                                'assets/icons/Vector.png',
-                                width: 25,
-                              ),
+                        if (isAdmin == false) ...[
+                          const SizedBox(width: 10),
+                          GestureDetector(
+                            onTap: () {
+                              print("Save icon tapped");
+                            },
+                            child: Image.asset(
+                              'assets/icons/Vector.png',
+                              width: 25,
                             ),
                           ),
                         ],
@@ -136,8 +135,10 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
                   ],
                 ),
               ),
+
               const SizedBox(height: 40),
 
+              // Search Field
               TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
@@ -149,20 +150,21 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
                     borderRadius: BorderRadius.circular(25),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   prefixIcon: const Icon(Icons.search, color: Colors.grey),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(
                     icon: const Icon(Icons.clear, color: Colors.grey),
-                    onPressed: () {
-                      _searchController.clear();
-                    },
+                    onPressed: () => _searchController.clear(),
                   )
                       : null,
                 ),
               ),
+
               const SizedBox(height: 20),
 
+              // Categories Grid
               Expanded(
                 child: GridView.builder(
                   itemCount: _filteredCategories.length,
@@ -187,8 +189,8 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
                 ),
               ),
 
-              // Show the "Add Category" button only for admin users
-              if (isAdmin)
+              // Add Category Button (Admins only)
+              if (isAdmin == true)
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
