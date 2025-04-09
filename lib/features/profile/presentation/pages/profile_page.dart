@@ -10,7 +10,8 @@ class ProfilePage extends StatelessWidget {
         children: [
           // Green header with back button and "Profile" text
           Container(
-            padding: const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 80),
+            padding:
+                const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 80),
             decoration: const BoxDecoration(
               color: Color(0xFF8BC34A), // Green color
               borderRadius: BorderRadius.only(
