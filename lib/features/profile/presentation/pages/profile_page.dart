@@ -1,4 +1,9 @@
+import 'package:canteen/features/profile/presentation/pages/notifications_page.dart';
 import 'package:flutter/material.dart';
+import 'package:canteen/features/profile/presentation/pages/my_account_page.dart';
+import 'package:canteen/features/profile/presentation/pages/saved_page.dart';
+import 'package:canteen/features/profile/presentation/pages/widgets/profile_header.dart';
+import 'package:canteen/features/profile/presentation/pages/widgets/profile_menu.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -85,34 +90,40 @@ class ProfilePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                // My Account menu item
-                _buildMenuItem(
+                ProfileMenuItem(
                   icon: Icons.person_outline,
                   title: 'My Account',
-                  onTap: () {},
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const MyAccountPage()),
+                  ),
                 ),
-
-                // Saved menu item
-                _buildMenuItem(
+                ProfileMenuItem(
                   icon: Icons.bookmark_outline,
                   title: 'Saved',
-                  onTap: () {},
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SavedPage()),
+                  ),
                 ),
-
-                // Notifications menu item
-                _buildMenuItem(
+                ProfileMenuItem(
                   icon: Icons.notifications_outlined,
                   title: 'Notifications',
-                  onTap: () {},
                   badgeCount: 1,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const NotificationsPage()),
+                  ),
                 ),
-
-                // Log Out menu item
-                _buildMenuItem(
+                ProfileMenuItem(
                   icon: Icons.logout,
                   title: 'Log Out',
-                  onTap: () {},
                   isLogout: true,
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (_) => const LogoutDialog(),
+                  ),
                 ),
               ],
             ),

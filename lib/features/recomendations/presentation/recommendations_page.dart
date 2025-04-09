@@ -3,6 +3,8 @@ import 'package:canteen/core/navigation/app_router.gr.dart';
 import 'package:canteen/features/auth/presentation/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:canteen/features/profile/presentation/pages/profile_page.dart';
+
 
 class RecommendationsPage extends StatelessWidget {
   const RecommendationsPage({super.key});
@@ -56,8 +58,11 @@ class RecommendationsPage extends StatelessWidget {
             left: 16,
             child: GestureDetector(
               onTap: () {
-                Provider.of<AuthProvider>(context, listen: false).logout();
-                context.router.replace(const LoginRoute());
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(), // Ваш существующий виджет
+                  ),
+                );
               },
               child: Image.asset(
                 'assets/icons/menu.png',
