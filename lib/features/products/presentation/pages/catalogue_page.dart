@@ -3,8 +3,9 @@ import 'package:canteen/core/config/di.dart';
 import 'package:canteen/core/mixins/dialog_helper.dart';
 import 'package:canteen/features/auth/data/remote/auth_remote_service.dart';
 import 'package:canteen/core/navigation/app_router.gr.dart';
-import 'package:canteen/features/schedule/presentation/provider/products_notifier.dart';
-import 'package:canteen/features/schedule/presentation/widgets/catalog_widget.dart';
+import 'package:canteen/features/products/presentation/provider/product_provider.dart';
+import 'package:canteen/features/schedule/presentation/provider/schedule_provider.dart';
+import 'package:canteen/features/products/presentation/widgets/catalog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +37,7 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Consumer<ProductsNotifier>(
+      child: Consumer<ProductProvider>(
         builder: (context, provider, _) {
           final categories = provider.categories;
           return Column(

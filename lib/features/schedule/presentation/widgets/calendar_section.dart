@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:canteen/features/schedule/presentation/widgets/custom_calendar.dart';
-import 'package:canteen/features/schedule/presentation/widgets/schedule_list.dart';
+import 'package:canteen/features/schedule/presentation/widgets/layout/schedule_list.dart';
 
 class CalendarSection extends StatelessWidget {
   final bool isAdmin;
@@ -62,10 +62,7 @@ class CalendarSection extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           ScheduleList(
-            isAdmin: isAdmin,
             selectedDay: selectedDay,
-            scheduleTimes: scheduleTimes,
-            onEditTime: onEditTime,
           ),
         ],
       ),

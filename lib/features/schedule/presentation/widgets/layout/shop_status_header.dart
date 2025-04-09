@@ -10,17 +10,13 @@ class ShopStatusHeader extends StatelessWidget {
       padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
       child: Row(
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(width: 24, height: 2, color: const Color(0xFF84C164)),
-              const SizedBox(height: 4),
-              Container(width: 18, height: 2, color: const Color(0xFF84C164)),
-              const SizedBox(height: 4),
-              Container(width: 12, height: 2, color: const Color(0xFF84C164)),
-            ],
+          Image.asset(
+            'assets/icons/menu.png',
+            width: 24,
+            height: 24,
+            color: Colors.green,
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 15),
           const Text(
             'Shop Status',
             style: TextStyle(

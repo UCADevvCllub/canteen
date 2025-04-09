@@ -1,7 +1,8 @@
 platform :ios, '13.0'
 
-# Disable CocoaPods analytics to improve build latency
+# Speed up pod installation
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+ENV['COCOAPODS_SKIP_CACHE'] = 'false' # Keep cache for faster subsequent installs
 
 project 'Runner', {
   'Debug' => :debug,
@@ -12,14 +13,14 @@ project 'Runner', {
 def flutter_root
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
   unless File.exist?(generated_xcode_build_settings_path)
-    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first"
+    raise "#{generated_xcode_build_settings_path} must exist."
   end
 
   File.foreach(generated_xcode_build_settings_path) do |line|
     matches = line.match(/FLUTTER_ROOT\=(.*)/)
     return matches[1].strip if matches
   end
-  raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get"
+  raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}."
 end
 
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
@@ -27,10 +28,20 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 flutter_ios_podfile_setup
 
 target 'Runner' do
-  use_frameworks!
-  use_modular_headers!
-
+  # Only enable modular headers for pods that need it
+  use_frameworks! :linkage => :static # Use static frameworks for faster build time
+  
+  # Other pods your app needs
+  
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
+  pod 'FirebaseCore'
+  pod 'FirebaseAuth'
+  pod 'FirebaseStorage'
+
+  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '11.8.0'
+
+  
   target 'RunnerTests' do
     inherit! :search_paths
   end
@@ -39,7 +50,11 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0' # Set deployment target
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      # Enable parallel builds
+      config.build_settings['SWIFT_COMPILATION_MODE'] = 'wholemodule'
+      config.build_settings['GCC_OPTIMIZATION_LEVEL'] = '0' # Fastest for debug
+      config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Onone' # Fastest for debug
     end
     flutter_additional_ios_build_settings(target)
   end
