@@ -3,7 +3,6 @@ import 'package:canteen/features/debts/presentation/debts_page.dart';
 import 'package:canteen/features/delivery/presentation/delivery_page.dart';
 import 'package:canteen/features/discount/presentation/discount_page.dart';
 import 'package:canteen/features/profile/presentation/pages/profile_page.dart';
-import 'package:canteen/features/recomendations/presentation/recommendations_page.dart';
 import 'package:canteen/features/schedule/presentation/pages/catalogue_page.dart';
 import 'package:canteen/features/schedule/presentation/pages/schedule_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -32,7 +31,7 @@ class _HomePageState extends State<HomePage>
 
   final Map<String, Widget> _pages = {
     'Recommendations': const DiscountsPage(),
-    'Schedule': const AdminSchedulePage(),
+    'Schedule': const SchedulePage(),
     'Category': const CataloguePage(),
     'Debts': const DebtsPage(),
     'Delivery': const DeliveryPage(),
