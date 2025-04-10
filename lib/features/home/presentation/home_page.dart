@@ -1,6 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:canteen/features/debts/presentation/debts_page.dart';
 import 'package:canteen/features/delivery/presentation/delivery_page.dart';
+import 'package:canteen/features/recomendations/presentation/recommendations_page.dart';
+import 'package:canteen/features/products/presentation/pages/catalogue_page.dart';
 import 'package:canteen/features/discount/presentation/discount_page.dart';
 import 'package:canteen/features/profile/presentation/pages/profile_page.dart';
 import 'package:canteen/features/schedule/presentation/pages/catalogue_page.dart';

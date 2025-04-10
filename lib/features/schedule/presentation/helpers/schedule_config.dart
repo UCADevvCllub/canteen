@@ -1,9 +1,9 @@
 import 'package:canteen/features/schedule/domain/models/schedule_model.dart';
+import 'package:canteen/features/schedule/domain/models/time_range.dart';
 import 'package:intl/intl.dart';
 
 class ScheduleConfig {
   static List<ScheduleModel> getWeeklySchedule(DateTime startDate) {
-    final DateFormat dateFormat = DateFormat('MMMM d, y');
     final DateFormat dayFormat = DateFormat('EEEE');
     List<ScheduleModel> schedule = [];
 
@@ -16,9 +16,10 @@ class ScheduleConfig {
 
       schedule.add(
         ScheduleModel(
-          day: day,
-          date: dateFormat.format(currentDate),
-          status: 'Open',
+          dayOfTheWeek: day,
+          open: TimeRange(startTime: "08:00", endTime: "12:00"),
+          breakTime: TimeRange(startTime: "12:00", endTime: "13:00"),
+          close: TimeRange(startTime: "13:00", endTime: "17:00"),
         ),
       );
     }

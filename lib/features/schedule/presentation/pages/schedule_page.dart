@@ -1,10 +1,10 @@
+import 'package:canteen/features/schedule/presentation/provider/schedule_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart';
-import 'package:canteen/core/data/service/user_service.dart';
-import 'package:canteen/features/schedule/presentation/widgets/shop_status_header.dart';
-import 'package:canteen/features/schedule/presentation/widgets/status_selector.dart';
-import 'package:canteen/features/schedule/presentation/widgets/note_section.dart';
+import 'package:canteen/features/schedule/presentation/widgets/layout/shop_status_header.dart';
+import 'package:canteen/features/schedule/presentation/widgets/fields/status_selector.dart';
+import 'package:canteen/features/schedule/presentation/widgets/fields/note_section.dart';
 import 'package:canteen/features/schedule/presentation/widgets/calendar_section.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -20,30 +20,50 @@ class _SchedulePageState extends State<SchedulePage> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   String _currentStatus = 'Open';
   String _currentNote = 'Shop will be open only until 19:00 this week';
-  late Future<bool> _adminCheckFuture;
   final TextEditingController _noteController = TextEditingController();
 
   Map<String, Map<String, TimeOfDay>> _scheduleTimes = {
-    'Monday': {'open': TimeOfDay(hour: 12, minute: 0), 'break': TimeOfDay(hour: 13, minute: 0), 'closed': TimeOfDay(hour: 21, minute: 0)},
-    'Tuesday': {'open': TimeOfDay(hour: 12, minute: 0), 'break': TimeOfDay(hour: 13, minute: 0), 'closed': TimeOfDay(hour: 21, minute: 0)},
-    'Wednesday': {'open': TimeOfDay(hour: 12, minute: 0), 'break': TimeOfDay(hour: 13, minute: 0), 'closed': TimeOfDay(hour: 21, minute: 0)},
-    'Thursday': {'open': TimeOfDay(hour: 12, minute: 0), 'break': TimeOfDay(hour: 13, minute: 0), 'closed': TimeOfDay(hour: 21, minute: 0)},
-    'Friday': {'open': TimeOfDay(hour: 12, minute: 0), 'break': TimeOfDay(hour: 13, minute: 0), 'closed': TimeOfDay(hour: 21, minute: 0)},
-    'Saturday': {'open': TimeOfDay(hour: 12, minute: 0), 'break': TimeOfDay(hour: 13, minute: 0), 'closed': TimeOfDay(hour: 21, minute: 0)},
-    'Sunday': {'open': TimeOfDay(hour: 12, minute: 0), 'break': TimeOfDay(hour: 13, minute: 0), 'closed': TimeOfDay(hour: 21, minute: 0)},
+    'Monday': {
+      'open': TimeOfDay(hour: 12, minute: 0),
+      'break': TimeOfDay(hour: 13, minute: 0),
+      'closed': TimeOfDay(hour: 21, minute: 0)
+    },
+    'Tuesday': {
+      'open': TimeOfDay(hour: 12, minute: 0),
+      'break': TimeOfDay(hour: 13, minute: 0),
+      'closed': TimeOfDay(hour: 21, minute: 0)
+    },
+    'Wednesday': {
+      'open': TimeOfDay(hour: 12, minute: 0),
+      'break': TimeOfDay(hour: 13, minute: 0),
+      'closed': TimeOfDay(hour: 21, minute: 0)
+    },
+    'Thursday': {
+      'open': TimeOfDay(hour: 12, minute: 0),
+      'break': TimeOfDay(hour: 13, minute: 0),
+      'closed': TimeOfDay(hour: 21, minute: 0)
+    },
+    'Friday': {
+      'open': TimeOfDay(hour: 12, minute: 0),
+      'break': TimeOfDay(hour: 13, minute: 0),
+      'closed': TimeOfDay(hour: 21, minute: 0)
+    },
+    'Saturday': {
+      'open': TimeOfDay(hour: 12, minute: 0),
+      'break': TimeOfDay(hour: 13, minute: 0),
+      'closed': TimeOfDay(hour: 21, minute: 0)
+    },
+    'Sunday': {
+      'open': TimeOfDay(hour: 12, minute: 0),
+      'break': TimeOfDay(hour: 13, minute: 0),
+      'closed': TimeOfDay(hour: 21, minute: 0)
+    },
   };
 
   @override
   void initState() {
     super.initState();
-    _adminCheckFuture = _checkAdminStatus();
     _noteController.text = _currentNote;
-  }
-
-  Future<bool> _checkAdminStatus() async {
-    final userService = UserService();
-    await userService.loadUserData();
-    return userService.role?.toLowerCase() == 'admin';
   }
 
   Future<void> _editNote() async {
@@ -106,53 +126,41 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: FutureBuilder<bool>(
-        future: _adminCheckFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return const Center(child: Text('Error loading schedule data'));
-          }
-
-          final isAdmin = snapshot.data ?? false;
-
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                const ShopStatusHeader(),
-                const SizedBox(height: 30),
-                StatusSelector(
-                  isAdmin: isAdmin,
-                  currentStatus: _currentStatus,
-                  onStatusChanged: (newStatus) => setState(() => _currentStatus = newStatus),
-                ),
-                const SizedBox(height: 25),
-                NoteSection(
-                  isAdmin: isAdmin,
-                  currentNote: _currentNote,
-                  noteController: _noteController,
-                  onEditNote: _editNote,
-                ),
-                CalendarSection(
-                  isAdmin: isAdmin,
-                  calendarFormat: _calendarFormat,
-                  focusedDay: _focusedDay,
-                  selectedDay: _selectedDay,
-                  scheduleTimes: _scheduleTimes,
-                  onDaySelected: (selectedDay, focusedDay) => setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  }),
-                  onFormatChanged: (format) => setState(() => _calendarFormat = format),
-                  onEditTime: _editTimeDialog,
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+      body: Consumer<ScheduleProvider>(builder: (context, provider, _) {
+        final isAdmin = provider.isUserAdmin;
+        // final isAdmin = true;
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const ShopStatusHeader(),
+              const SizedBox(height: 30),
+              StatusSelector(),
+              const SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  NoteSection(),
+                ],
+              ),
+              CalendarSection(
+                isAdmin: isAdmin,
+                calendarFormat: _calendarFormat,
+                focusedDay: _focusedDay,
+                selectedDay: _selectedDay,
+                scheduleTimes: _scheduleTimes,
+                onDaySelected: (selectedDay, focusedDay) => setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                }),
+                onFormatChanged: (format) =>
+                    setState(() => _calendarFormat = format),
+                onEditTime: _editTimeDialog,
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

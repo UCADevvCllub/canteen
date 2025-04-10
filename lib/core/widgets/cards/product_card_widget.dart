@@ -1,6 +1,7 @@
 import 'package:canteen/features/products/domain/models/product.dart';
+import 'package:canteen/features/products/presentation/pages/product_description_page.dart';
 import 'package:flutter/material.dart';
-import 'package:canteen/features/schedule/presentation/pages/product_description_page.dart'; // Import the ProductDescriptionPage
+
 class ProductCardWidget extends StatelessWidget {
   final String name;
   final String price;
