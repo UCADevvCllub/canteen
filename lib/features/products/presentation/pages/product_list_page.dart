@@ -4,6 +4,8 @@ import 'package:canteen/features/products/domain/models/product.dart';
 import 'package:canteen/features/products/presentation/pages/product_description_page.dart';
 import 'package:flutter/material.dart';
 
+
+
 @RoutePage()
 class ProductListPage extends StatelessWidget {
   final String categoryTitle;

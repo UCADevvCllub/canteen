@@ -1,0 +1,2 @@
+C:/Users/Sunatullo.Yogbekov/AndroidStudioProjects/canteen/android/app/.cxx/Debug/v185y5l4/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/Sunatullo.Yogbekov/AndroidStudioProjects/canteen/android/app/.cxx/Debug/v185y5l4/arm64-v8a/CMakeFiles/rebuild_cache.dir

@@ -22,10 +22,10 @@ class AppRouter extends RootStackRouter {
           page: HomeRoute.page,
           path: '/home',
         ),
-        AutoRoute(
-          page: ProfileRoute.page,
-          path: '/profile',
-        ),
+        // AutoRoute(
+        //   page: ProfileRoute.page,
+        //   path: '/profile',
+        // ),
         AutoRoute(
           page: ProductListRoute.page,
           path: '/product-list',
