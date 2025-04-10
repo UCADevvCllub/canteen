@@ -4,7 +4,6 @@ import 'package:canteen/core/mixins/dialog_helper.dart';
 import 'package:canteen/features/auth/data/remote/auth_remote_service.dart';
 import 'package:canteen/core/navigation/app_router.gr.dart';
 import 'package:canteen/features/products/presentation/provider/product_provider.dart';
-import 'package:canteen/features/schedule/presentation/provider/schedule_provider.dart';
 import 'package:canteen/features/products/presentation/widgets/catalog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +36,7 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
 
   void _filterCategories() {
     final query = _searchController.text.toLowerCase();
-    final provider = Provider.of<ProductsNotifier>(context, listen: false);
+    final provider = Provider.of< ProductProvider>(context, listen: false);
     setState(() {
       if (query.isEmpty) {
         _filteredCategories = provider.categories;
