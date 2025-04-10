@@ -65,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
     });
   }
 
-  // Validate password input
+  // Validate password input@
   void _validatePassword() {
     final password = passwordController.text.trim();
     setState(() {
@@ -140,41 +140,41 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
                 authProvider.isLoading
                     ? const CircularProgressIndicator()
                     : AppButton(
-                  title: 'Sign Up',
-                  color: AppColors.darkGreen,
-                  onPressed: () async {
-                    if (_validateFields()) {
-                      await authProvider.register(
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim(),
-                        name: nameController.text.trim(),
-                        role: selectedRole!,
-                      );
+                        title: 'Sign Up',
+                        color: AppColors.darkGreen,
+                        onPressed: () async {
+                          if (_validateFields()) {
+                            await authProvider.register(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim(),
+                              name: nameController.text.trim(),
+                              role: selectedRole!,
+                            );
 
-                      if (authProvider.errorMessage == null) {
-                        showSuccessSnackBar(
-                          context: context,
-                          message: 'Sign up successful!',
-                        );
-                        context.router.replaceAll([HomeRoute()]);
-                      } else {
-                        showErrorSnackBar(
-                          context: context,
-                          message: authProvider.errorMessage!,
-                        );
-                      }
-                    } else {
-                      showErrorSnackBar(
-                        context: context,
-                        message: 'Please fill in all fields correctly',
-                      );
-                    }
-                  },
-                ),
+                            if (authProvider.errorMessage == null) {
+                              showSuccessSnackBar(
+                                context: context,
+                                message: 'Sign up successful!',
+                              );
+                              context.router.replaceAll([HomeRoute()]);
+                            } else {
+                              showErrorSnackBar(
+                                context: context,
+                                message: authProvider.errorMessage!,
+                              );
+                            }
+                          } else {
+                            showErrorSnackBar(
+                              context: context,
+                              message: 'Please fill in all fields correctly',
+                            );
+                          }
+                        },
+                      ),
                 const Spacer(),
                 TextButton(
                   onPressed: () {
-                    context.router.push(const LoginRoute()); // Fixed: Use push with LoginRoute
+                    context.router.pushNamed('/login');
                   },
                   child: RichText(
                     text: TextSpan(

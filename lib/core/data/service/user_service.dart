@@ -51,4 +51,8 @@ class UserService {
     email = null;
     role = null;
   }
+
+  bool isAdmin() {
+    return role == 'admin';
+  }
 }

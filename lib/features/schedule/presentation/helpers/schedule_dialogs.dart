@@ -1,153 +1,144 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 mixin ScheduleDialogs {
-  // void showEditTimeDialog(BuildContext context,
-  //     {required VoidCallback onSaved}) {
-  //   final schedule = ScheduleConfig.getWeeklySchedule(DateTime.now());
+  static Future<Map<String, String>?> showEditTimeDialog(
+      BuildContext context, {
+        required String initialDay,
+        required String initialOpen,
+        required String initialBreak,
+        required String initialClosed,
+      }) async {
+    final TextEditingController openController =
+    TextEditingController(text: initialOpen);
+    final TextEditingController breakController =
+    TextEditingController(text: initialBreak);
+    final TextEditingController closedController =
+    TextEditingController(text: initialClosed);
 
-  //   TextEditingController openController =
-  //       TextEditingController(text: schedule['open']);
-  //   TextEditingController breakController =
-  //       TextEditingController(text: schedule['break']);
-  //   TextEditingController closedController =
-  //       TextEditingController(text: schedule['closed']);
-  //   TextEditingController dateController =
-  //       TextEditingController(text: schedule['date']);
-
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         title: Text('Edit Time for ${schedule['day']}'),
-  //         content: Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             TextField(
-  //               controller: dateController,
-  //               decoration: InputDecoration(
-  //                 labelText: 'Date',
-  //                 suffixIcon: IconButton(
-  //                   icon: Icon(Icons.calendar_today),
-  //                   onPressed: () async {
-  //                     DateTime? pickedDate = await showDatePicker(
-  //                       context: context,
-  //                       initialDate: DateTime.now(),
-  //                       firstDate: DateTime(2000),
-  //                       lastDate: DateTime(2100),
-  //                     );
-  //                     if (pickedDate != null) {
-  //                       dateController.text =
-  //                           DateFormat('MMMM d, y').format(pickedDate);
-  //                     }
-  //                   },
-  //                 ),
-  //               ),
-  //             ),
-  //             TextField(
-  //               controller: openController,
-  //               decoration: InputDecoration(
-  //                 labelText: 'Open Time',
-  //                 suffixIcon: IconButton(
-  //                   icon: Icon(Icons.access_time),
-  //                   onPressed: () async {
-  //                     TimeOfDay? pickedTime = await showTimePicker(
-  //                       context: context,
-  //                       initialTime: TimeOfDay.now(),
-  //                     );
-  //                     if (pickedTime != null) {
-  //                       openController.text = pickedTime.format(context);
-  //                     }
-  //                   },
-  //                 ),
-  //               ),
-  //             ),
-  //             TextField(
-  //               controller: breakController,
-  //               decoration: InputDecoration(
-  //                 labelText: 'Break Time',
-  //                 suffixIcon: IconButton(
-  //                   icon: Icon(Icons.access_time),
-  //                   onPressed: () async {
-  //                     TimeOfDay? pickedTime = await showTimePicker(
-  //                       context: context,
-  //                       initialTime: TimeOfDay.now(),
-  //                     );
-  //                     if (pickedTime != null) {
-  //                       breakController.text = pickedTime.format(context);
-  //                     }
-  //                   },
-  //                 ),
-  //               ),
-  //             ),
-  //             TextField(
-  //               controller: closedController,
-  //               decoration: InputDecoration(
-  //                 labelText: 'Closed Time',
-  //                 suffixIcon: IconButton(
-  //                   icon: Icon(Icons.access_time),
-  //                   onPressed: () async {
-  //                     TimeOfDay? pickedTime = await showTimePicker(
-  //                       context: context,
-  //                       initialTime: TimeOfDay.now(),
-  //                     );
-  //                     if (pickedTime != null) {
-  //                       closedController.text = pickedTime.format(context);
-  //                     }
-  //                   },
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               onSaved();
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: Text('Save'),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: Text('Cancel'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
-  void showEditNoteDialog({
-    required BuildContext context,
-    required TextEditingController controller,
-    required VoidCallback onSaved,
-  }) {
-    showDialog(
+    return await showDialog<Map<String, String>>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Edit Note'),
-          content: TextField(
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: 'Enter your note here',
+          title: Text('Edit Time for $initialDay'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildTimeField(
+                  context,
+                  controller: openController,
+                  label: 'Open Time',
+                ),
+                _buildTimeField(
+                  context,
+                  controller: breakController,
+                  label: 'Break Time',
+                ),
+                _buildTimeField(
+                  context,
+                  controller: closedController,
+                  label: 'Closed Time',
+                ),
+              ],
             ),
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                onSaved();
-                Navigator.of(context).pop();
-              },
-              child: Text('Save'),
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                final result = {
+                  'open': openController.text,
+                  'break': breakController.text,
+                  'closed': closedController.text,
+                };
+                Navigator.pop(context, result);
               },
-              child: Text('Cancel'),
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static Widget _buildTimeField(
+      BuildContext context, {
+        required TextEditingController controller,
+        required String label,
+      }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          suffixIcon: IconButton(
+            icon: const Icon(Icons.access_time),
+            onPressed: () async {
+              final time = await showTimePicker(
+                context: context,
+                initialTime: _parseTime(controller.text),
+              );
+              if (time != null) {
+                controller.text = _formatTime(time);
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  static TimeOfDay _parseTime(String time) {
+    try {
+      final format = DateFormat.jm();
+      final date = format.parse(time);
+      return TimeOfDay.fromDateTime(date);
+    } catch (e) {
+      return TimeOfDay.now();
+    }
+  }
+
+  static String _formatTime(TimeOfDay time) {
+    final now = DateTime.now();
+    final dt = DateTime(
+        now.year, now.month, now.day, time.hour, time.minute);
+    return DateFormat.jm().format(dt);
+  }
+
+  static Future<void> showEditNoteDialog({
+    required BuildContext context,
+    required TextEditingController controller,
+    required Function(String) onSave,
+  }) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Edit Note'),
+          content: TextField(
+            controller: controller,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              hintText: 'Enter your note here',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                onSave(controller.text);
+                Navigator.pop(context);
+              },
+              child: const Text('Save'),
             ),
           ],
         );
