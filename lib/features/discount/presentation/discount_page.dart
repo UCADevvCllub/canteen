@@ -71,7 +71,8 @@ class _DiscountsPageState extends State<DiscountsPage> {
                           // Menu icon with logout functionality
                           GestureDetector(
                             onTap: () {
-                              Provider.of<AuthProvider>(context, listen: false).logout();
+                              Provider.of<AuthProvider>(context, listen: false)
+                                  .logout();
                               context.router.replace(const LoginRoute());
                             },
                             child: Image.asset(
@@ -79,7 +80,8 @@ class _DiscountsPageState extends State<DiscountsPage> {
                               width: 25,
                             ),
                           ),
-                          const SizedBox(width: 20), // Space between icon and title
+                          const SizedBox(
+                              width: 20), // Space between icon and title
                           // "Discounts" title
                           const Text(
                             'Discounts',
@@ -93,24 +95,24 @@ class _DiscountsPageState extends State<DiscountsPage> {
                       ),
 
                       // Interactive search field
-                      SizedBox(
-                        width: 200,
-                        child: TextField(
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                            hintText: 'Search product',
-                            hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            prefixIcon: const Icon(Icons.search, color: Colors.grey, size: 20),
-                          ),
-                        ),
-                      ),
+                      //   SizedBox(
+                      //     width: 200,
+                      //     child: TextField(
+                      //       controller: _searchController,
+                      //       decoration: InputDecoration(
+                      //         hintText: 'Search product',
+                      //         hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
+                      //         filled: true,
+                      //         fillColor: Colors.white,
+                      //         border: OutlineInputBorder(
+                      //           borderRadius: BorderRadius.circular(25),
+                      //           borderSide: BorderSide.none,
+                      //         ),
+                      //         contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      //         prefixIcon: const Icon(Icons.search, color: Colors.grey, size: 20),
+                      //       ),
+                      //     ),
+                      //   ),
                     ],
                   ),
                 ),
@@ -152,13 +154,15 @@ class _DiscountsPageState extends State<DiscountsPage> {
                       _buildSection(
                         context,
                         title: "Top Offers",
-                        onSeeMore: () => context.router.push(const TopOffersRoute()),
+                        onSeeMore: () =>
+                            context.router.push(const TopOffersRoute()),
                       ),
                       const SizedBox(height: 20),
                       _buildSection(
                         context,
                         title: "Most Popular",
-                        onSeeMore: () => context.router.push(const MostPopularRoute()),
+                        onSeeMore: () =>
+                            context.router.push(const MostPopularRoute()),
                       ),
                     ],
                   ),
@@ -171,7 +175,8 @@ class _DiscountsPageState extends State<DiscountsPage> {
     );
   }
 
-  Widget _buildSection(BuildContext context, {required String title, required VoidCallback onSeeMore}) {
+  Widget _buildSection(BuildContext context,
+      {required String title, required VoidCallback onSeeMore}) {
     // Determine the color for the "See more" button based on the section title
     final seeMoreColor = title == "Most Popular" ? Colors.black : Colors.white;
 
@@ -186,7 +191,10 @@ class _DiscountsPageState extends State<DiscountsPage> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: title == "Most Popular" ? Colors.black : Colors.white, // Black for "Most Popular", white for others
+                color: title == "Most Popular"
+                    ? Colors.black
+                    : Colors
+                        .white, // Black for "Most Popular", white for others
               ),
             ),
             TextButton(
@@ -194,9 +202,11 @@ class _DiscountsPageState extends State<DiscountsPage> {
               child: Text(
                 "See more",
                 style: TextStyle(
-                  color: seeMoreColor, // Black for "Most Popular", white for "Top Offers"
+                  color:
+                      seeMoreColor, // Black for "Most Popular", white for "Top Offers"
                   decoration: TextDecoration.underline, // Underline the text
-                  decorationColor: seeMoreColor, // Underline color matches the text color
+                  decorationColor:
+                      seeMoreColor, // Underline color matches the text color
                   decorationThickness: 2.0, // Make the underline more prominent
                 ),
               ),
@@ -211,7 +221,8 @@ class _DiscountsPageState extends State<DiscountsPage> {
           ),
           margin: const EdgeInsets.symmetric(vertical: 8),
           child: const Center(
-            child: Text("Product list here", style: TextStyle(color: Colors.black)),
+            child: Text("Product list here",
+                style: TextStyle(color: Colors.black)),
           ),
         ),
       ],
