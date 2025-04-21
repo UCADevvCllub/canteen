@@ -1,12 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/config/di.dart';
-import 'package:canteen/core/mixins/dialog_helper.dart';
+import 'package:canteen/core/navigation/app_router.gr.dart' hide AddCategoryDialogWidget;
 import 'package:canteen/features/auth/data/remote/auth_remote_service.dart';
-import 'package:canteen/core/navigation/app_router.gr.dart';
 import 'package:canteen/features/products/presentation/provider/product_provider.dart';
 import 'package:canteen/features/products/presentation/widgets/catalog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:canteen/core/widgets/fields/search_field.dart'; // Import the SearchField widget
+import 'package:canteen/core/widgets/layout/add_category_dialog_widget.dart';
 
 class CataloguePage extends StatefulWidget {
   const CataloguePage({super.key});
@@ -15,8 +16,8 @@ class CataloguePage extends StatefulWidget {
   State<CataloguePage> createState() => _CataloguePageState();
 }
 
-class _CataloguePageState extends State<CataloguePage> with DialogHelper {
-  bool? isAdmin; // null means not yet determined
+class _CataloguePageState extends State<CataloguePage> {
+  bool? isAdmin;
   final TextEditingController _searchController = TextEditingController();
   List<dynamic> _filteredCategories = [];
 
@@ -28,15 +29,14 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
   }
 
   void _checkAdmin() async {
-    final adminStatus = await locator<AuthRemoteService>().isAdmin();
     setState(() {
-      isAdmin = adminStatus;
+      isAdmin = true;
     });
   }
 
   void _filterCategories() {
     final query = _searchController.text.toLowerCase();
-    final provider = Provider.of< ProductProvider>(context, listen: false);
+    final provider = Provider.of<ProductProvider>(context, listen: false);
     setState(() {
       if (query.isEmpty) {
         _filteredCategories = provider.categories;
@@ -56,9 +56,17 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
     super.dispose();
   }
 
+  void showAddCategoryDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const AddCategoryDialogWidget();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Show loading spinner until admin status is known
     if (isAdmin == null) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -76,19 +84,15 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
             children: [
               const SizedBox(height: 60),
 
-              // Top bar: Title + Icons
               SizedBox(
                 height: 50,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Menu icon + Title
                     Row(
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            // TODO: Add menu or drawer action
-                          },
+                          onTap: () {},
                           child: Image.asset(
                             'assets/icons/menu.png',
                             width: 25,
@@ -105,14 +109,10 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
                         ),
                       ],
                     ),
-
-                    // Right-side icons
                     Row(
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            // TODO: Chat button action
-                          },
+                          onTap: () {},
                           child: Image.asset(
                             'assets/icons/chat.png',
                             width: 25,
@@ -138,33 +138,10 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
 
               const SizedBox(height: 40),
 
-              // Search Field
-              TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search product',
-                  hintStyle: const TextStyle(fontSize: 16, color: Colors.grey),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                  suffixIcon: _searchController.text.isNotEmpty
-                      ? IconButton(
-                    icon: const Icon(Icons.clear, color: Colors.grey),
-                    onPressed: () => _searchController.clear(),
-                  )
-                      : null,
-                ),
-              ),
+              SearchField(controller: _searchController),
 
               const SizedBox(height: 20),
 
-              // Categories Grid
               Expanded(
                 child: GridView.builder(
                   itemCount: _filteredCategories.length,
@@ -181,7 +158,7 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
                       imagePath: item.imageUrl,
                       onTap: () {
                         context.router.push(
-                          ProductListRoute(categoryTitle: item.name),
+                          ProductListRoute(categoryId: item.id),
                         );
                       },
                     );
@@ -189,7 +166,6 @@ class _CataloguePageState extends State<CataloguePage> with DialogHelper {
                 ),
               ),
 
-              // Add Category Button (Admins only)
               if (isAdmin == true)
                 Center(
                   child: Padding(

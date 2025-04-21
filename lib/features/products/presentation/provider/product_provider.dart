@@ -3,8 +3,6 @@ import 'package:canteen/features/products/domain/models/category.dart';
 import 'package:flutter/material.dart';
 import 'package:canteen/features/products/domain/models/product.dart';
 
-// Добавьте импорт
-
 class ProductProvider extends ChangeNotifier {
   final ProductsService _productsService;
   List<Product> _products = [];
@@ -12,7 +10,6 @@ class ProductProvider extends ChangeNotifier {
   bool _isLoading = false;
 
   ProductProvider(this._productsService) {
-    // Измените конструктор
     _initialize();
   }
 
@@ -37,6 +34,7 @@ class ProductProvider extends ChangeNotifier {
   Future<void> fetchProducts() async {
     try {
       _products = await _productsService.getProducts();
+      notifyListeners();
     } catch (e) {
       print('Error fetching products: $e');
     }
@@ -50,7 +48,29 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
-  getCategoryById(String id) {
-    return _categories.firstWhere((category) => category.id == id);
+  Future<List<Product>> getProductsByCategory(String categoryId) async {
+    try {
+      return await _productsService.getProductsByCategory(categoryId);
+    } catch (e) {
+      print('Error fetching products by category: $e');
+      return [];
+    }
+  }
+
+  Future<void> addProduct(Product product) async {
+    try {
+      await _productsService.addProduct(product);
+      await fetchProducts();
+    } catch (e) {
+      print('Error adding product: $e');
+      rethrow;
+    }
+  }
+
+  Category getCategoryById(String id) {
+    return _categories.firstWhere(
+          (category) => category.id == id,
+      orElse: () => Category(id: id, name: 'Unknown', imageUrl: ''),
+    );
   }
 }
