@@ -8,10 +8,8 @@ class CalendarSection extends StatelessWidget {
   final CalendarFormat calendarFormat;
   final DateTime focusedDay;
   final DateTime? selectedDay;
-  final Map<String, Map<String, TimeOfDay>> scheduleTimes;
   final Function(DateTime, DateTime) onDaySelected;
   final Function(CalendarFormat) onFormatChanged;
-  final Function(String) onEditTime;
 
   const CalendarSection({
     super.key,
@@ -19,10 +17,8 @@ class CalendarSection extends StatelessWidget {
     required this.calendarFormat,
     required this.focusedDay,
     required this.selectedDay,
-    required this.scheduleTimes,
     required this.onDaySelected,
     required this.onFormatChanged,
-    required this.onEditTime,
   });
 
   @override
@@ -38,7 +34,7 @@ class CalendarSection extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black45,
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),

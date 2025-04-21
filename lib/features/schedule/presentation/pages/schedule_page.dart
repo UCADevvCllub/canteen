@@ -18,109 +18,6 @@ class _SchedulePageState extends State<SchedulePage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.week;
-  String _currentStatus = 'Open';
-  String _currentNote = 'Shop will be open only until 19:00 this week';
-  final TextEditingController _noteController = TextEditingController();
-
-  Map<String, Map<String, TimeOfDay>> _scheduleTimes = {
-    'Monday': {
-      'open': TimeOfDay(hour: 12, minute: 0),
-      'break': TimeOfDay(hour: 13, minute: 0),
-      'closed': TimeOfDay(hour: 21, minute: 0)
-    },
-    'Tuesday': {
-      'open': TimeOfDay(hour: 12, minute: 0),
-      'break': TimeOfDay(hour: 13, minute: 0),
-      'closed': TimeOfDay(hour: 21, minute: 0)
-    },
-    'Wednesday': {
-      'open': TimeOfDay(hour: 12, minute: 0),
-      'break': TimeOfDay(hour: 13, minute: 0),
-      'closed': TimeOfDay(hour: 21, minute: 0)
-    },
-    'Thursday': {
-      'open': TimeOfDay(hour: 12, minute: 0),
-      'break': TimeOfDay(hour: 13, minute: 0),
-      'closed': TimeOfDay(hour: 21, minute: 0)
-    },
-    'Friday': {
-      'open': TimeOfDay(hour: 12, minute: 0),
-      'break': TimeOfDay(hour: 13, minute: 0),
-      'closed': TimeOfDay(hour: 21, minute: 0)
-    },
-    'Saturday': {
-      'open': TimeOfDay(hour: 12, minute: 0),
-      'break': TimeOfDay(hour: 13, minute: 0),
-      'closed': TimeOfDay(hour: 21, minute: 0)
-    },
-    'Sunday': {
-      'open': TimeOfDay(hour: 12, minute: 0),
-      'break': TimeOfDay(hour: 13, minute: 0),
-      'closed': TimeOfDay(hour: 21, minute: 0)
-    },
-  };
-
-  @override
-  void initState() {
-    super.initState();
-    _noteController.text = _currentNote;
-  }
-
-  Future<void> _editNote() async {
-    await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit Note'),
-        content: TextField(
-          controller: _noteController,
-          decoration: const InputDecoration(hintText: 'Enter new note'),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() => _currentNote = _noteController.text);
-              Navigator.pop(context);
-            },
-            child: const Text('Save'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _editTimeDialog(String day) async {
-    final currentTimes = _scheduleTimes[day]!;
-
-    final TimeOfDay? newOpen = await showTimePicker(
-      context: context,
-      initialTime: currentTimes['open']!,
-    );
-    if (newOpen == null) return;
-
-    final TimeOfDay? newBreak = await showTimePicker(
-      context: context,
-      initialTime: currentTimes['break']!,
-    );
-    if (newBreak == null) return;
-
-    final TimeOfDay? newClosed = await showTimePicker(
-      context: context,
-      initialTime: currentTimes['closed']!,
-    );
-    if (newClosed == null) return;
-
-    setState(() {
-      _scheduleTimes[day] = {
-        'open': newOpen,
-        'break': newBreak,
-        'closed': newClosed,
-      };
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +25,6 @@ class _SchedulePageState extends State<SchedulePage> {
       backgroundColor: Colors.white,
       body: Consumer<ScheduleProvider>(builder: (context, provider, _) {
         final isAdmin = provider.isUserAdmin;
-        // final isAdmin = true;
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -148,14 +44,12 @@ class _SchedulePageState extends State<SchedulePage> {
                 calendarFormat: _calendarFormat,
                 focusedDay: _focusedDay,
                 selectedDay: _selectedDay,
-                scheduleTimes: _scheduleTimes,
                 onDaySelected: (selectedDay, focusedDay) => setState(() {
                   _selectedDay = selectedDay;
                   _focusedDay = focusedDay;
                 }),
                 onFormatChanged: (format) =>
                     setState(() => _calendarFormat = format),
-                onEditTime: _editTimeDialog,
               ),
             ],
           ),

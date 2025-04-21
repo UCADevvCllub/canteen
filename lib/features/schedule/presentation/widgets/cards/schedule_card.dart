@@ -1,4 +1,5 @@
 import 'package:canteen/core/config/app_date_config.dart';
+import 'package:canteen/core/theme/app_colors.dart';
 import 'package:canteen/features/schedule/domain/models/schedule_model.dart';
 import 'package:canteen/features/schedule/presentation/helpers/dialogs/schedule_dialog.dart';
 import 'package:canteen/features/schedule/presentation/provider/schedule_provider.dart';
@@ -50,7 +51,7 @@ class _ScheduleCardState extends State<ScheduleCard> with ScheduleDialog {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       margin: const EdgeInsets.symmetric(vertical: 5.0),
       decoration: BoxDecoration(
-        color: isToday ? Colors.green : Colors.grey[200],
+        color: isToday ? AppColors.primarySwatch.shade100 : Colors.grey[200],
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
@@ -61,9 +62,7 @@ class _ScheduleCardState extends State<ScheduleCard> with ScheduleDialog {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(formattedDate, style: _dateTextStyle(isToday)),
-              isWeekend
-                  ? _buildDaysOff()
-                  : ScheduleTimeSlots(schedule: schedule),
+              ScheduleTimeSlots(schedule: schedule),
             ],
           ),
         ],
@@ -108,7 +107,7 @@ class _ScheduleCardState extends State<ScheduleCard> with ScheduleDialog {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: isToday ? Colors.green : Colors.black,
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -123,29 +122,18 @@ class _ScheduleCardState extends State<ScheduleCard> with ScheduleDialog {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: isToday ? Colors.green : Colors.black,
+            color: Colors.black,
           ),
         ),
       );
     }
   }
 
-  Widget _buildDaysOff() {
-    return const Text(
-      'Days off',
-      style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-      ),
-    );
-  }
-
   TextStyle _dateTextStyle(bool isToday) {
     return TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
-      color: isToday ? Colors.green : Colors.black,
+      color: Colors.black,
     );
   }
 }

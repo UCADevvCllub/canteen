@@ -17,10 +17,11 @@ class _StatusSelectorState extends State<StatusSelector> with StatusDialog {
       builder: (context, scheduleProvider, child) {
         final isAdmin = scheduleProvider.isUserAdmin;
         final currentStatus = scheduleProvider.currentStatus;
+        final isLoading = scheduleProvider.isLoading;
 
         return GestureDetector(
           onTap: () async {
-            if (isAdmin) {
+            if (isAdmin && !isLoading) {
               final newStatus = await showStatusDialog(
                 context: context,
                 currentStatus: currentStatus,
@@ -39,21 +40,32 @@ class _StatusSelectorState extends State<StatusSelector> with StatusDialog {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (isAdmin)
-                  Image.asset(
-                    'assets/icons/linesforschedule.png',
-                    width: 20,
-                    height: 20,
+                if (isLoading)
+                  const SizedBox(
+                    height: 25,
+                    width: 25,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                else ...[
+                  if (isAdmin)
+                    Image.asset(
+                      'assets/icons/linesforschedule.png',
+                      width: 20,
+                      height: 20,
+                    ),
+                  const SizedBox(width: 8),
+                  Text(
+                    currentStatus,
+                    style: const TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                const SizedBox(width: 8),
-                Text(
-                  currentStatus,
-                  style: const TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+                ],
               ],
             ),
           ),

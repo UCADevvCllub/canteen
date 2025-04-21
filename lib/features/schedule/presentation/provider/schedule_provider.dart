@@ -44,10 +44,36 @@ class ScheduleProvider extends ChangeNotifier {
   Future<void> fetchWeeklySchedule() async {
     try {
       _weeklySchedule = await scheduleService.getAllSchedules();
+      _reorderScheduleByToday();
       notifyListeners();
     } catch (e) {
       debugPrint('Error fetching schedules: $e');
     }
+  }
+
+  void _reorderScheduleByToday() {
+    final daysOrder = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ];
+
+    final today = DateTime.now().weekday;
+    final todayIndex = today - 1;
+
+    final reorderedDays = [
+      ...daysOrder.sublist(todayIndex),
+      ...daysOrder.sublist(0, todayIndex),
+    ];
+
+    _weeklySchedule
+        .sort((a, b) => reorderedDays.indexOf(a.dayOfTheWeek).compareTo(
+              reorderedDays.indexOf(b.dayOfTheWeek),
+            ));
   }
 
   Future<void> updateSchedule(ScheduleModel schedule) async {
