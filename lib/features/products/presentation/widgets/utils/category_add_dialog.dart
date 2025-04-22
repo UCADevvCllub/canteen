@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:canteen/core/theme/app_colors.dart';
 import 'package:canteen/core/widgets/buttons/app_button.dart';
 import 'package:canteen/core/widgets/cards/image_holder.dart';
@@ -6,16 +5,14 @@ import 'package:canteen/core/widgets/cards/titled_field_wrapper.dart';
 import 'package:canteen/core/widgets/fields/app_text_form_field.dart';
 import 'package:flutter/material.dart';
 
-@RoutePage()
-class AddCategoryDialogWidget extends StatefulWidget {
-  const AddCategoryDialogWidget({super.key});
+class CategoryAddDialog extends StatefulWidget {
+  const CategoryAddDialog({super.key});
 
   @override
-  State<AddCategoryDialogWidget> createState() =>
-      _AddCategoryDialogWidgetState();
+  State<CategoryAddDialog> createState() => _CategoryAddDialogState();
 }
 
-class _AddCategoryDialogWidgetState extends State<AddCategoryDialogWidget> {
+class _CategoryAddDialogState extends State<CategoryAddDialog> {
   final _nameController = TextEditingController();
   final _imageController = TextEditingController();
 

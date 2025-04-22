@@ -4,13 +4,14 @@ import 'package:canteen/features/products/data/products_service.dart';
 import 'package:canteen/core/navigation/app_router.dart';
 import 'package:canteen/features/schedule/schedule_injection.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt locator = GetIt.instance;
 
-void setupLocator() {
+Future<void> setupLocator() async {
   locator.registerLazySingleton(() => AppRouter());
 
-  coreSetup();
+  await coreSetup();
 
   authInjection();
 
@@ -19,7 +20,10 @@ void setupLocator() {
   scheduleInjection();
 }
 
-void coreSetup() {
+Future<void> coreSetup() async {
+  final prefs = await SharedPreferences.getInstance();
+  locator.registerSingleton<SharedPreferences>(prefs);
+
   locator.registerLazySingleton(() => UserService());
 }
 

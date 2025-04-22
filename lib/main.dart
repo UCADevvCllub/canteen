@@ -15,7 +15,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  setupLocator(); // Инициализация locator
+  await setupLocator(); // Инициализация locator
 
   runApp(
     MultiProvider(

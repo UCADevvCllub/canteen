@@ -1,14 +1,11 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:canteen/core/config/di.dart';
-import 'package:canteen/core/navigation/app_router.gr.dart'
-    hide AddCategoryDialogWidget;
-import 'package:canteen/features/auth/data/remote/auth_remote_service.dart';
+import 'package:canteen/core/mixins/dialog_helper.dart';
+import 'package:canteen/core/navigation/app_router.dart';
 import 'package:canteen/features/products/presentation/provider/product_provider.dart';
 import 'package:canteen/features/products/presentation/widgets/catalog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:canteen/core/widgets/fields/search_field.dart'; // Import the SearchField widget
-import 'package:canteen/core/widgets/layout/add_category_dialog_widget.dart';
+import 'package:canteen/core/widgets/fields/search_field.dart';
 
 class CataloguePage extends StatefulWidget {
   const CataloguePage({super.key});
@@ -17,7 +14,7 @@ class CataloguePage extends StatefulWidget {
   State<CataloguePage> createState() => _CataloguePageState();
 }
 
-class _CataloguePageState extends State<CataloguePage> {
+class _CataloguePageState extends State<CataloguePage> with DialogHelper {
   bool? isAdmin;
   final TextEditingController _searchController = TextEditingController();
   List<dynamic> _filteredCategories = [];
@@ -55,15 +52,6 @@ class _CataloguePageState extends State<CataloguePage> {
     _searchController.removeListener(_filterCategories);
     _searchController.dispose();
     super.dispose();
-  }
-
-  void showAddCategoryDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const AddCategoryDialogWidget();
-      },
-    );
   }
 
   @override
