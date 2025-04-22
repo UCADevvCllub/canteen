@@ -2,8 +2,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/navigation/app_router.gr.dart';
 import 'package:canteen/features/auth/presentation/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:marquee/marquee.dart'; // Import the marquee package
+import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
+import 'package:canteen/core/widgets/fields/search_field.dart'; // Import the SearchField widget
 
 @RoutePage()
 class DiscountsPage extends StatefulWidget {
@@ -14,21 +15,16 @@ class DiscountsPage extends StatefulWidget {
 }
 
 class _DiscountsPageState extends State<DiscountsPage> {
-  // Controller to manage the search field's input
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // Add a listener to the search controller if you want to implement search functionality
-    _searchController.addListener(() {
-      // TODO: Add search functionality if needed (e.g., filter products)
-    });
+    _searchController.addListener(() {});
   }
 
   @override
   void dispose() {
-    // Clean up the search controller to prevent memory leaks
     _searchController.dispose();
     super.dispose();
   }
@@ -38,25 +34,19 @@ class _DiscountsPageState extends State<DiscountsPage> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background image
           Positioned.fill(
             child: Image.asset(
               'assets/layouts/home_back.png',
               fit: BoxFit.cover,
             ),
           ),
-
-          // Main content
           Column(
             children: [
-              // Custom AppBar with reduced height
               AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                toolbarHeight: 30, // Reduced height to move the row higher
+                toolbarHeight: 30,
               ),
-
-              // Row for menu icon, title, and search field, wrapped in SizedBox to control height
               SizedBox(
                 height: 50,
                 child: Padding(
@@ -65,14 +55,11 @@ class _DiscountsPageState extends State<DiscountsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Menu icon and "Discounts" title
                       Row(
                         children: [
-                          // Menu icon with logout functionality
                           GestureDetector(
                             onTap: () {
-                              Provider.of<AuthProvider>(context, listen: false)
-                                  .logout();
+                              Provider.of<AuthProvider>(context, listen: false).logout();
                               context.router.replace(const LoginRoute());
                             },
                             child: Image.asset(
@@ -80,9 +67,7 @@ class _DiscountsPageState extends State<DiscountsPage> {
                               width: 25,
                             ),
                           ),
-                          const SizedBox(
-                              width: 20), // Space between icon and title
-                          // "Discounts" title
+                          const SizedBox(width: 20),
                           const Text(
                             'Discounts',
                             style: TextStyle(
@@ -93,32 +78,20 @@ class _DiscountsPageState extends State<DiscountsPage> {
                           ),
                         ],
                       ),
-
-                      // Interactive search field
-                      //   SizedBox(
-                      //     width: 200,
-                      //     child: TextField(
-                      //       controller: _searchController,
-                      //       decoration: InputDecoration(
-                      //         hintText: 'Search product',
-                      //         hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
-                      //         filled: true,
-                      //         fillColor: Colors.white,
-                      //         border: OutlineInputBorder(
-                      //           borderRadius: BorderRadius.circular(25),
-                      //           borderSide: BorderSide.none,
-                      //         ),
-                      //         contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      //         prefixIcon: const Icon(Icons.search, color: Colors.grey, size: 20),
-                      //       ),
-                      //     ),
-                      //   ),
+                      SizedBox(
+                        width: 200,
+                        child: SearchField(
+                          controller: _searchController,
+                          hintFontSize: 14,
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                          showClearButton: false,
+                          iconSize: 20,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-
-              // "Shop is Open" marquee text with white background
               const SizedBox(height: 45),
               Container(
                 height: 40,
@@ -143,8 +116,6 @@ class _DiscountsPageState extends State<DiscountsPage> {
                 ),
               ),
               const SizedBox(height: 50),
-
-              // Main content (Top Offers, Most Popular sections)
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -154,15 +125,13 @@ class _DiscountsPageState extends State<DiscountsPage> {
                       _buildSection(
                         context,
                         title: "Top Offers",
-                        onSeeMore: () =>
-                            context.router.push(const TopOffersRoute()),
+                        onSeeMore: () => context.router.push(const TopOffersRoute()),
                       ),
                       const SizedBox(height: 20),
                       _buildSection(
                         context,
                         title: "Most Popular",
-                        onSeeMore: () =>
-                            context.router.push(const MostPopularRoute()),
+                        onSeeMore: () => context.router.push(const MostPopularRoute()),
                       ),
                     ],
                   ),
@@ -175,9 +144,7 @@ class _DiscountsPageState extends State<DiscountsPage> {
     );
   }
 
-  Widget _buildSection(BuildContext context,
-      {required String title, required VoidCallback onSeeMore}) {
-    // Determine the color for the "See more" button based on the section title
+  Widget _buildSection(BuildContext context, {required String title, required VoidCallback onSeeMore}) {
     final seeMoreColor = title == "Most Popular" ? Colors.black : Colors.white;
 
     return Column(
@@ -191,10 +158,7 @@ class _DiscountsPageState extends State<DiscountsPage> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: title == "Most Popular"
-                    ? Colors.black
-                    : Colors
-                        .white, // Black for "Most Popular", white for others
+                color: title == "Most Popular" ? Colors.black : Colors.white,
               ),
             ),
             TextButton(
@@ -202,12 +166,10 @@ class _DiscountsPageState extends State<DiscountsPage> {
               child: Text(
                 "See more",
                 style: TextStyle(
-                  color:
-                      seeMoreColor, // Black for "Most Popular", white for "Top Offers"
-                  decoration: TextDecoration.underline, // Underline the text
-                  decorationColor:
-                      seeMoreColor, // Underline color matches the text color
-                  decorationThickness: 2.0, // Make the underline more prominent
+                  color: seeMoreColor,
+                  decoration: TextDecoration.underline,
+                  decorationColor: seeMoreColor,
+                  decorationThickness: 2.0,
                 ),
               ),
             ),
@@ -221,8 +183,7 @@ class _DiscountsPageState extends State<DiscountsPage> {
           ),
           margin: const EdgeInsets.symmetric(vertical: 8),
           child: const Center(
-            child: Text("Product list here",
-                style: TextStyle(color: Colors.black)),
+            child: Text("Product list here", style: TextStyle(color: Colors.black)),
           ),
         ),
       ],

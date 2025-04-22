@@ -21,6 +21,11 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // Determine the text color: if the background is white, use the borderColor (if provided) or a default color; otherwise, use white
+    final textColor = (color == Colors.white && borderColor != null)
+        ? borderColor!
+        : Colors.white;
+
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -40,19 +45,19 @@ class AppButton extends StatelessWidget {
                 children: [
                   Icon(
                     leadingIcon,
-                    color: Colors.white,
+                    color: textColor, // Use the same text color for the icon
                   ),
                   const SizedBox(width: 8.0),
                 ],
               ),
             text == null
                 ? Text(
-                    title,
-                    style: theme.textTheme.headlineSmall!.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
+              title,
+              style: theme.textTheme.headlineSmall!.copyWith(
+                color: textColor, // Use the calculated text color
+                fontWeight: FontWeight.bold,
+              ),
+            )
                 : text!,
           ],
         ),

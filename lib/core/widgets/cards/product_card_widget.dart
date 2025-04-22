@@ -3,97 +3,107 @@ import 'package:canteen/features/products/presentation/pages/product_description
 import 'package:flutter/material.dart';
 
 class ProductCardWidget extends StatelessWidget {
-  final String name;
-  final String price;
-  final String imagePath;
-  final String description;
-  final double rating;
-  final int reviews;
-  final VoidCallback onTap;
   final Product product;
+  final VoidCallback? onTap;
 
   const ProductCardWidget({
     super.key,
-    required this.name,
-    required this.price,
-    required this.imagePath,
-    required this.description,
-    required this.rating,
-    required this.reviews,
-    required this.onTap,
     required this.product,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    bool isOutOfStock = product.quantity == null || product.quantity! <= 0;
+
     return GestureDetector(
-      onTap: () {
-        // Navigate to the Product Description Page
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductDescriptionPage(
-              name: name,
-              price: price,
-              imagePath: imagePath,
-              description: description,
-              rating: rating,
-              reviews: reviews,
-            ),
-          ),
-        );
-      },
+      onTap: onTap ??
+              () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductDescriptionPage(
+                  product: product,
+                ),
+              ),
+            );
+          },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              blurRadius: 6,
-              spreadRadius: 2,
-              offset: const Offset(2, 4),
-            ),
-          ],
+          border: isOutOfStock ? Border.all(color: Colors.red) : null,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Stack(
           children: [
-            // Product image
-            Expanded(
-              child: ClipRRect(
-                borderRadius:
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(16)),
-                child: product.imageUrl != null
-                    ? Image.network(
-                        product.imageUrl!,
-                        fit: BoxFit.cover,
-                      )
-                    : const Icon(
+                    child: product.imageUrl != null
+                        ? Image.network(
+                      product.imageUrl!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      errorBuilder: (context, error, stackTrace) =>
+                      const Icon(
                         Icons.image,
                         size: 48,
                         color: Colors.grey,
                       ),
-              ),
+                    )
+                        : const Icon(
+                      Icons.image,
+                      size: 48,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
+                  child: Text(
+                    product.name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 8.0, right: 8.0),
+                  child: Text(
+                    '${product.price} som',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                product.name,
-                style: theme.textTheme.headlineMedium,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                '${product.price} сом',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.green,
+            if (isOutOfStock)
+              Positioned(
+                top: 8,
+                left: 8,
+                child: Container(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  color: Colors.red,
+                  child: const Text(
+                    'Out of Stock',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

@@ -1,4 +1,4 @@
-import 'package:canteen/features/schedule/presentation/admin/add_category.dart';
+import 'package:canteen/core/widgets/layout/add_category_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 mixin DialogHelper {
@@ -11,7 +11,7 @@ mixin DialogHelper {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
-          child: AddCategory(),
+          child: AddCategoryDialogWidget(),
         );
       },
     );

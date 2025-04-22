@@ -1,22 +1,13 @@
 import 'dart:ui';
+import 'package:canteen/features/products/domain/models/product.dart';
 import 'package:flutter/material.dart';
 
 class ProductDescriptionPage extends StatelessWidget {
-  final String name;
-  final String price;
-  final String imagePath;
-  final String description;
-  final double rating;
-  final int reviews;
+  final Product product;
 
   const ProductDescriptionPage({
     super.key,
-    required this.name,
-    required this.price,
-    required this.imagePath,
-    required this.description,
-    required this.rating,
-    required this.reviews,
+    required this.product,
   });
 
   @override
@@ -29,18 +20,26 @@ class ProductDescriptionPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: Container(
-                color: const Color(
-                    0xFF84C264), // Green background outside the image
-                padding: const EdgeInsets.all(
-                    16.0), // Padding to make the image smaller
+                color: const Color(0xFF84C264),
+                padding: const EdgeInsets.all(16.0),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                      20), // Rounded corners for the image
-                  child: Image.asset(
-                    imagePath, // Image path
+                  borderRadius: BorderRadius.circular(20),
+                  child: product.imageUrl != null
+                      ? Image.network(
+                    product.imageUrl!,
                     fit: BoxFit.cover,
-                    height: 200, // Adjust the image height
+                    height: 200,
                     width: double.infinity,
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.image,
+                      size: 48,
+                      color: Colors.grey,
+                    ),
+                  )
+                      : const Icon(
+                    Icons.image,
+                    size: 48,
+                    color: Colors.grey,
                   ),
                 ),
               ),
@@ -116,7 +115,7 @@ class ProductDescriptionPage extends StatelessWidget {
                 _buildDragHandle(),
                 // Product Name
                 Text(
-                  name,
+                  product.name,
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -141,7 +140,7 @@ class ProductDescriptionPage extends StatelessWidget {
                 const SizedBox(height: 10),
                 // Product Description Text
                 Text(
-                  description,
+                  product.description ?? 'No description available.',
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.black54,
@@ -183,11 +182,11 @@ class ProductDescriptionPage extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: const Color(0xFFE8F5E9), // Light green background
+            color: const Color(0xFFE8F5E9),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(
-            price,
+            '${product.price} som',
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -195,23 +194,23 @@ class ProductDescriptionPage extends StatelessWidget {
             ),
           ),
         ),
-        // Star Rating and Reviews
-        Row(
+        // Star Rating and Reviews (Placeholder)
+        const Row(
           children: [
-            const Icon(Icons.star, color: Colors.amber, size: 20),
-            const SizedBox(width: 4),
+            Icon(Icons.star, color: Colors.amber, size: 20),
+            SizedBox(width: 4),
             Text(
-              rating.toString(),
-              style: const TextStyle(
+              '4.5',
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(width: 4),
+            SizedBox(width: 4),
             Text(
-              '($reviews)',
-              style: const TextStyle(
+              '(10)',
+              style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
               ),
