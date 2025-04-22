@@ -1,4 +1,4 @@
-import 'package:canteen/core/widgets/layout/add_category_dialog_widget.dart';
+import 'package:canteen/features/products/presentation/widgets/add_category_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 mixin DialogHelper {

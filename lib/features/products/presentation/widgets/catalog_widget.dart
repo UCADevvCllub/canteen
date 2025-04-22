@@ -16,7 +16,6 @@ class CatalogWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Image: $imagePath');
     return InkWell(
       // get the category by id function
       onTap: onTap, // Handle the tap event

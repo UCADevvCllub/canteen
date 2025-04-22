@@ -59,7 +59,8 @@ class _DiscountsPageState extends State<DiscountsPage> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Provider.of<AuthProvider>(context, listen: false).logout();
+                              Provider.of<AuthProvider>(context, listen: false)
+                                  .logout();
                               context.router.replace(const LoginRoute());
                             },
                             child: Image.asset(
@@ -78,16 +79,16 @@ class _DiscountsPageState extends State<DiscountsPage> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        width: 200,
-                        child: SearchField(
-                          controller: _searchController,
-                          hintFontSize: 14,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                          showClearButton: false,
-                          iconSize: 20,
-                        ),
-                      ),
+                      // SizedBox(
+                      //   width: 200,
+                      //   child: SearchField(
+                      //     controller: _searchController,
+                      //     hintFontSize: 14,
+                      //     contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      //     showClearButton: false,
+                      //     iconSize: 20,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -125,13 +126,15 @@ class _DiscountsPageState extends State<DiscountsPage> {
                       _buildSection(
                         context,
                         title: "Top Offers",
-                        onSeeMore: () => context.router.push(const TopOffersRoute()),
+                        onSeeMore: () =>
+                            context.router.push(const TopOffersRoute()),
                       ),
                       const SizedBox(height: 20),
                       _buildSection(
                         context,
                         title: "Most Popular",
-                        onSeeMore: () => context.router.push(const MostPopularRoute()),
+                        onSeeMore: () =>
+                            context.router.push(const MostPopularRoute()),
                       ),
                     ],
                   ),
@@ -144,7 +147,8 @@ class _DiscountsPageState extends State<DiscountsPage> {
     );
   }
 
-  Widget _buildSection(BuildContext context, {required String title, required VoidCallback onSeeMore}) {
+  Widget _buildSection(BuildContext context,
+      {required String title, required VoidCallback onSeeMore}) {
     final seeMoreColor = title == "Most Popular" ? Colors.black : Colors.white;
 
     return Column(
@@ -183,7 +187,8 @@ class _DiscountsPageState extends State<DiscountsPage> {
           ),
           margin: const EdgeInsets.symmetric(vertical: 8),
           child: const Center(
-            child: Text("Product list here", style: TextStyle(color: Colors.black)),
+            child: Text("Product list here",
+                style: TextStyle(color: Colors.black)),
           ),
         ),
       ],

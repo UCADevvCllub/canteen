@@ -17,7 +17,7 @@ class ProductsService {
       return Category(
         id: doc.id,
         name: data['name'] ?? '',
-        imageUrl: ''
+        imageUrl: data['image_url'] ?? '',
       );
     }).toList();
   }

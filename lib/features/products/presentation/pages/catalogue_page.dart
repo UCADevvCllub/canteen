@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/config/di.dart';
-import 'package:canteen/core/navigation/app_router.gr.dart' hide AddCategoryDialogWidget;
+import 'package:canteen/core/navigation/app_router.gr.dart'
+    hide AddCategoryDialogWidget;
 import 'package:canteen/features/auth/data/remote/auth_remote_service.dart';
 import 'package:canteen/features/products/presentation/provider/product_provider.dart';
 import 'package:canteen/features/products/presentation/widgets/catalog_widget.dart';
@@ -43,7 +44,7 @@ class _CataloguePageState extends State<CataloguePage> {
       } else {
         _filteredCategories = provider.categories
             .where((category) =>
-            category.name.toLowerCase().contains(query.toLowerCase()))
+                category.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
       }
     });
@@ -83,7 +84,6 @@ class _CataloguePageState extends State<CataloguePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 60),
-
               SizedBox(
                 height: 50,
                 child: Row(
@@ -135,13 +135,9 @@ class _CataloguePageState extends State<CataloguePage> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 40),
-
               SearchField(controller: _searchController),
-
               const SizedBox(height: 20),
-
               Expanded(
                 child: GridView.builder(
                   itemCount: _filteredCategories.length,
@@ -153,6 +149,7 @@ class _CataloguePageState extends State<CataloguePage> {
                   ),
                   itemBuilder: (context, index) {
                     final item = _filteredCategories[index];
+                    print('Category: ${item.imageUrl}');
                     return CatalogWidget(
                       title: item.name,
                       imagePath: item.imageUrl,
@@ -165,7 +162,6 @@ class _CataloguePageState extends State<CataloguePage> {
                   },
                 ),
               ),
-
               if (isAdmin == true)
                 Center(
                   child: Padding(

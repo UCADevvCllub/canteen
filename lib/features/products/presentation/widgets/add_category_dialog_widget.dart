@@ -11,7 +11,8 @@ class AddCategoryDialogWidget extends StatefulWidget {
   const AddCategoryDialogWidget({super.key});
 
   @override
-  State<AddCategoryDialogWidget> createState() => _AddCategoryDialogWidgetState();
+  State<AddCategoryDialogWidget> createState() =>
+      _AddCategoryDialogWidgetState();
 }
 
 class _AddCategoryDialogWidgetState extends State<AddCategoryDialogWidget> {
@@ -83,56 +84,6 @@ class _AddCategoryDialogWidgetState extends State<AddCategoryDialogWidget> {
                     controller: _imageController,
                   ),
                   const SizedBox(height: 10),
-
-                  // Upload and Open Camera Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            // TODO: Implement image upload logic
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(
-                              color: Color(0xFF84C264), // Green border
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: const Text(
-                            'Upload',
-                            style: TextStyle(
-                              color: Color(0xFF84C264), // Green text
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            // TODO: Implement camera logic
-                          },
-                          style: OutlinedButton.styleFrom(
-                            side: const BorderSide(
-                              color: Color(0xFF84C264), // Green border
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: const Text(
-                            'Open Camera',
-                            style: TextStyle(
-                              color: Color(0xFF84C264), // Green text
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
