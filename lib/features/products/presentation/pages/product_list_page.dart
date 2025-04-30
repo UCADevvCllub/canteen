@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
 import 'package:canteen/core/widgets/fields/search_field.dart';
 import 'package:canteen/core/data/service/user_service.dart'; // ✅ Added UserService import
-
 @RoutePage()
 class ProductListPage extends StatefulWidget {
   final String categoryId;

@@ -1,8 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/features/products/presentation/provider/product_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // For FilteringTextInputFormatter
 import 'package:provider/provider.dart';
 import 'package:canteen/features/products/domain/models/product.dart';
+import 'package:canteen/core/widgets/fields/app_text_form_field.dart';
+import 'package:image_picker/image_picker.dart'; // Import image_picker
 
 @RoutePage()
 class AddProductPage extends StatefulWidget {
@@ -16,16 +19,83 @@ class _AddProductPageState extends State<AddProductPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _imageController = TextEditingController(); // Add controller for image URL
   String? _selectedCategoryId;
   int _quantity = 1;
   bool _isLoading = false;
+
+  final ImagePicker _picker = ImagePicker(); // Initialize ImagePicker
 
   @override
   void dispose() {
     _nameController.dispose();
     _priceController.dispose();
     _descriptionController.dispose();
+    _imageController.dispose(); // Dispose the new controller
     super.dispose();
+  }
+
+  // Function to pick an image from the gallery
+  Future<void> _pickImageFromGallery() async {
+    try {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          _imageController.text = image.path; // Store the image path
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to pick image: $e')),
+      );
+    }
+  }
+
+  // Function to take a photo with the camera
+  Future<void> _takePhoto() async {
+    try {
+      final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+      if (photo != null) {
+        setState(() {
+          _imageController.text = photo.path; // Store the photo path
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to take photo: $e')),
+      );
+    }
+  }
+
+  // Function to show the image source selection dialog
+  void _showImageSourceDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Select Image Source'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Gallery'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickImageFromGallery();
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Camera'),
+              onTap: () {
+                Navigator.pop(context);
+                _takePhoto();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> _addProduct(BuildContext context) async {
@@ -47,6 +117,7 @@ class _AddProductPageState extends State<AddProductPage> {
           price: double.parse(_priceController.text),
           categoryId: _selectedCategoryId!,
           quantity: _quantity,
+          imageUrl: _imageController.text.isNotEmpty ? _imageController.text : null, // Include image URL
         );
         await provider.addProduct(newProduct);
         if (mounted) {
@@ -109,53 +180,49 @@ class _AddProductPageState extends State<AddProductPage> {
                 const SizedBox(height: 16),
 
                 // Product Photo Placeholder
-                Container(
-                  height: 150,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.image, size: 50, color: Colors.grey),
-                      Text(
-                        'Add Product Photo',
-                        style: TextStyle(color: Colors.grey),
+                GestureDetector(
+                  onTap: _showImageSourceDialog, // Trigger dialog on tap
+                  child: Container(
+                    height: 150,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: _imageController.text.isNotEmpty
+                        ? Image.network(
+                      _imageController.text,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.error, size: 50, color: Colors.red),
+                          Text(
+                            'Failed to load image',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
                       ),
-                    ],
+                    )
+                        : const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.image, size: 50, color: Colors.grey),
+                        Text(
+                          'Add Product Photo',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
 
                 // Product Name
-                TextField(
+                AppTextFormField(
+                  hintText: 'Product name',
                   controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Product name',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Rating (Static for now)
-                const Row(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.star, color: Colors.amber, size: 20),
-                        Icon(Icons.star, color: Colors.amber, size: 20),
-                        Icon(Icons.star, color: Colors.amber, size: 20),
-                        Icon(Icons.star, color: Colors.amber, size: 20),
-                        Icon(Icons.star, color: Colors.amber, size: 20),
-                      ],
-                    ),
-                    SizedBox(width: 8),
-                    Text('(13,234)', style: TextStyle(color: Colors.grey)),
-                  ],
+                  maxLines: 1,
                 ),
                 const SizedBox(height: 16),
 
@@ -164,16 +231,15 @@ class _AddProductPageState extends State<AddProductPage> {
                   children: [
                     // Price
                     Expanded(
-                      child: TextField(
+                      child: AppTextFormField(
+                        hintText: 'Price',
                         controller: _priceController,
                         keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'Price',
-                          suffixText: 'som',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
+                        suffixText: 'som',
+                        maxLines: 1,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly, // Allow only numbers
+                        ],
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -190,10 +256,14 @@ class _AddProductPageState extends State<AddProductPage> {
                           return DropdownButtonFormField<String>(
                             value: _selectedCategoryId,
                             hint: const Text('Category'),
+                            isExpanded: true, // Ensure the dropdown takes full width
                             items: provider.categories.map((category) {
                               return DropdownMenuItem<String>(
                                 value: category.id,
-                                child: Text(category.name),
+                                child: Text(
+                                  category.name,
+                                  overflow: TextOverflow.ellipsis, // Handle long text
+                                ),
                               );
                             }).toList(),
                             onChanged: (value) {
@@ -206,6 +276,8 @@ class _AddProductPageState extends State<AddProductPage> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
+                            isDense: true, // Make the dropdown more compact
+                            menuMaxHeight: 200, // Limit the dropdown menu height
                           );
                         },
                       ),
@@ -250,17 +322,10 @@ class _AddProductPageState extends State<AddProductPage> {
                 const SizedBox(height: 16),
 
                 // Description
-                TextField(
+                AppTextFormField(
+                  hintText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                   controller: _descriptionController,
                   maxLines: 3,
-                  decoration: InputDecoration(
-                    labelText: 'Description',
-                    hintText:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
                 ),
                 const SizedBox(height: 16),
 

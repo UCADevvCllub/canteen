@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // For TextInputFormatter
 
 class AppTextFormField extends StatefulWidget {
   const AppTextFormField({
@@ -10,6 +11,9 @@ class AppTextFormField extends StatefulWidget {
     this.isPassword = false,
     this.maxLines = 1,
     this.borderColor,
+    this.keyboardType,
+    this.suffixText,
+    this.inputFormatters, // Added inputFormatters property
   });
 
   final String hintText;
@@ -19,6 +23,9 @@ class AppTextFormField extends StatefulWidget {
   final bool isPassword;
   final int maxLines;
   final Color? borderColor;
+  final TextInputType? keyboardType;
+  final String? suffixText;
+  final List<TextInputFormatter>? inputFormatters; // Added property
 
   @override
   State<AppTextFormField> createState() => _AppTextFormFieldState();
@@ -47,6 +54,8 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           child: TextFormField(
             controller: widget.controller,
             obscureText: widget.isPassword ? _obscureText : false,
+            keyboardType: widget.keyboardType,
+            inputFormatters: widget.inputFormatters, // Use inputFormatters
             decoration: InputDecoration(
               hintText: widget.hintText,
               hintStyle: TextStyle(
@@ -64,23 +73,24 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
               ),
               prefixIcon: widget.icon != null
                   ? Icon(
-                      widget.icon,
-                      color: Colors.grey.shade600,
-                    )
+                widget.icon,
+                color: Colors.grey.shade600,
+              )
                   : null,
               suffixIcon: widget.isPassword
                   ? IconButton(
-                      icon: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.grey.shade500,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
-                    )
+                icon: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.grey.shade500,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+              )
                   : null,
+              suffixText: widget.suffixText,
             ),
             maxLines: widget.maxLines,
           ),
