@@ -1,10 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/navigation/app_router.dart';
-import 'package:canteen/features/auth/presentation/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
-import 'package:canteen/core/widgets/fields/search_field.dart';
 import 'package:canteen/features/products/presentation/provider/product_provider.dart'; // Add ProductProvider import
 
 @RoutePage()
@@ -30,7 +28,8 @@ class _DiscountsPageState extends State<DiscountsPage> {
     final provider = Provider.of<ProductProvider>(context, listen: false);
     setState(() {
       if (query.isEmpty) {
-        _filteredProducts = provider.products; // Show all products if query is empty
+        _filteredProducts =
+            provider.products; // Show all products if query is empty
       } else {
         _filteredProducts = provider.products
             .where((product) => product.name.toLowerCase().contains(query))
@@ -76,9 +75,7 @@ class _DiscountsPageState extends State<DiscountsPage> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Provider.of<AuthProvider>(context, listen: false)
-                                  .logout();
-                              context.router.replace(const LoginRoute());
+                              context.router.pushNamed('/profile');
                             },
                             child: Image.asset(
                               'assets/icons/menu.png',
@@ -95,17 +92,6 @@ class _DiscountsPageState extends State<DiscountsPage> {
                             ),
                           ),
                         ],
-                      ),
-                      SizedBox(
-                        width: 200,
-                        child: SearchField(
-                          controller: _searchController,
-                          hintFontSize: 14,
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                          showClearButton: false,
-                          iconSize: 20,
-                        ),
                       ),
                     ],
                   ),
@@ -176,11 +162,11 @@ class _DiscountsPageState extends State<DiscountsPage> {
   }
 
   Widget _buildSection(
-      BuildContext context, {
-        required String title,
-        required List<dynamic> products,
-        required VoidCallback onSeeMore,
-      }) {
+    BuildContext context, {
+    required String title,
+    required List<dynamic> products,
+    required VoidCallback onSeeMore,
+  }) {
     final seeMoreColor = title == "Most Popular" ? Colors.black : Colors.white;
 
     return Column(
@@ -220,49 +206,50 @@ class _DiscountsPageState extends State<DiscountsPage> {
           margin: const EdgeInsets.symmetric(vertical: 8),
           child: products.isEmpty
               ? const Center(
-            child: Text(
-              "No products found",
-              style: TextStyle(color: Colors.black),
-            ),
-          )
+                  child: Text(
+                    "No products found",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                )
               : ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              final product = products[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    // Placeholder for product image
-                    Container(
-                      width: 100,
-                      height: 100,
-                      color: Colors.grey[300],
-                      child: product.imageUrl != null &&
-                          product.imageUrl.isNotEmpty
-                          ? Image.network(
-                        product.imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                        const Icon(Icons.broken_image),
-                      )
-                          : const Icon(Icons.image),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      product.name,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final product = products[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          // Placeholder for product image
+                          Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.grey[300],
+                            child: product.imageUrl != null &&
+                                    product.imageUrl.isNotEmpty
+                                ? Image.network(
+                                    product.imageUrl,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            const Icon(Icons.broken_image),
+                                  )
+                                : const Icon(Icons.image),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            product.name,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                    );
+                  },
                 ),
-              );
-            },
-          ),
         ),
       ],
     );

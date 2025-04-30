@@ -53,5 +53,9 @@ class AppRouter extends RootStackRouter {
           page: MostPopularRoute.page,
           path: '/most-popular',
         ),
+        AutoRoute(
+          page: ProfileRoute.page,
+          path: '/profile',
+        ),
       ];
 }

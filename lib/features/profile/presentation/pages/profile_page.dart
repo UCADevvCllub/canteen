@@ -3,7 +3,6 @@ import 'package:canteen/features/profile/presentation/pages/notifications_page.d
 import 'package:flutter/material.dart';
 import 'package:canteen/features/profile/presentation/pages/my_account_page.dart';
 import 'package:canteen/features/profile/presentation/pages/saved_page.dart';
-import 'package:canteen/features/profile/presentation/pages/widgets/profile_header.dart';
 import 'package:canteen/features/profile/presentation/pages/widgets/profile_menu.dart';
 
 @RoutePage()
