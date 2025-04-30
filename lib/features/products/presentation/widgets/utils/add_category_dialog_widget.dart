@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:canteen/core/theme/app_colors.dart';
 import 'package:canteen/core/widgets/buttons/app_button.dart';
 import 'package:canteen/core/widgets/cards/image_holder.dart';
@@ -5,14 +6,15 @@ import 'package:canteen/core/widgets/cards/titled_field_wrapper.dart';
 import 'package:canteen/core/widgets/fields/app_text_form_field.dart';
 import 'package:flutter/material.dart';
 
-class CategoryAddDialog extends StatefulWidget {
-  const CategoryAddDialog({super.key});
+
+class AddCategoryDialogWidget extends StatefulWidget {
+  const AddCategoryDialogWidget({super.key});
 
   @override
-  State<CategoryAddDialog> createState() => _CategoryAddDialogState();
+  State<AddCategoryDialogWidget> createState() => _AddCategoryDialogWidgetState();
 }
 
-class _CategoryAddDialogState extends State<CategoryAddDialog> {
+class _AddCategoryDialogWidgetState extends State<AddCategoryDialogWidget> {
   final _nameController = TextEditingController();
   final _imageController = TextEditingController();
 
@@ -26,9 +28,9 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: const EdgeInsets.all(16.0), // Match previous styling
+      insetPadding: const EdgeInsets.all(16.0),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24), // Match previous styling
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -81,6 +83,34 @@ class _CategoryAddDialogState extends State<CategoryAddDialog> {
                     controller: _imageController,
                   ),
                   const SizedBox(height: 10),
+
+                  // Upload and Open Camera Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: AppButton(
+                          title: 'Upload',
+                          color: Colors.white,
+                          borderColor: const Color(0xFF84C264), // Green border
+                          onPressed: () {
+                            // TODO: Implement image upload logic
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: AppButton(
+                          title: 'Open Camera',
+                          color: Colors.white,
+                          borderColor: const Color(0xFF84C264), // Green border
+                          onPressed: () {
+                            // TODO: Implement camera logic
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

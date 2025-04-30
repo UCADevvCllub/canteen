@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
-import 'package:canteen/core/widgets/fields/search_field.dart'; // Import the SearchField widget
-
+import 'package:canteen/core/widgets/fields/search_field.dart';
+import 'package:canteen/core/data/service/user_service.dart'; // ✅ Added UserService import
 @RoutePage()
 class ProductListPage extends StatefulWidget {
   final String categoryId;
@@ -23,6 +23,7 @@ class _ProductListPageState extends State<ProductListPage> {
   final TextEditingController _searchController = TextEditingController();
   List<Product> _filteredProducts = [];
   String _selectedCategoryId = '';
+  bool? isAdmin; // ✅ Track admin status
 
   @override
   void initState() {
@@ -37,8 +38,17 @@ class _ProductListPageState extends State<ProductListPage> {
       ),
     );
 
+    _loadUserRole(); // ✅ Load user role from UserService
+
     print('Category ID: ${widget.categoryId}');
     print('Loading background image: assets/images/product over.png');
+  }
+
+  Future<void> _loadUserRole() async {
+    await UserService().loadUserData();
+    setState(() {
+      isAdmin = UserService().isAdmin();
+    });
   }
 
   @override
@@ -73,6 +83,10 @@ class _ProductListPageState extends State<ProductListPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (isAdmin == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -101,8 +115,7 @@ class _ProductListPageState extends State<ProductListPage> {
               } else {
                 title = provider.categories
                     .firstWhereOrNull(
-                      (category) => category.id == _selectedCategoryId,
-                )
+                        (category) => category.id == _selectedCategoryId)
                     ?.name ??
                     'Products';
               }
@@ -119,20 +132,14 @@ class _ProductListPageState extends State<ProductListPage> {
             },
           ),
           actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 25,
+            if (isAdmin!) ...[
+              IconButton(
+                icon: const Icon(Icons.add, color: Colors.white, size: 25),
+                onPressed: () => _showAddProductModal(context),
               ),
-              onPressed: () => _showAddProductModal(context),
-            ),
+            ],
             IconButton(
-              icon: const Icon(
-                Icons.bookmark_border,
-                color: Colors.white,
-                size: 25,
-              ),
+              icon: const Icon(Icons.bookmark_border, color: Colors.white, size: 25),
               onPressed: () {
                 // TODO: Save action
               },
@@ -147,18 +154,12 @@ class _ProductListPageState extends State<ProductListPage> {
                 _filteredProducts = provider.products;
               }
 
-              print('Categories: ${provider.categories.map((c) => c.id).toList()}');
-              print('Products: ${provider.products.length}');
-
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10),
-
                   SearchField(controller: _searchController),
-
                   const SizedBox(height: 10),
-
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -170,7 +171,6 @@ class _ProductListPageState extends State<ProductListPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-
                   Expanded(
                     child: FutureBuilder(
                       future: provider.getProductsByCategory(
@@ -181,9 +181,7 @@ class _ProductListPageState extends State<ProductListPage> {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return const Center(child: CircularProgressIndicator());
                         }
-
                         if (snapshot.hasError) {
-                          print('FutureBuilder Error: ${snapshot.error}');
                           return const Center(
                             child: Text(
                               'Error loading products.',
@@ -191,19 +189,14 @@ class _ProductListPageState extends State<ProductListPage> {
                             ),
                           );
                         }
-
                         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                          print('No products found for category: ${_selectedCategoryId.isEmpty ? widget.categoryId : _selectedCategoryId}');
                           return const SizedBox.shrink();
                         }
 
                         final products = snapshot.data!;
-                        print('Loaded products: ${products.length}');
-
                         return GridView.builder(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 16.0,
                             mainAxisSpacing: 16.0,
@@ -212,9 +205,7 @@ class _ProductListPageState extends State<ProductListPage> {
                           itemCount: products.length,
                           itemBuilder: (context, index) {
                             final product = products[index];
-                            return ProductCardWidget(
-                              product: product,
-                            );
+                            return ProductCardWidget(product: product);
                           },
                         );
                       },
@@ -245,7 +236,7 @@ class _ProductListPageState extends State<ProductListPage> {
             Text(
               name,
               style: TextStyle(
-                color: isSelected ? Colors.white : Colors.white,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),

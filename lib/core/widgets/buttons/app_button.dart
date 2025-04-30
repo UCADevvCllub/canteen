@@ -53,7 +53,7 @@ class AppButton extends StatelessWidget {
             text == null
                 ? Text(
               title,
-              style: theme.textTheme.headlineSmall!.copyWith(
+              style: theme.textTheme.labelLarge!.copyWith(
                 color: textColor, // Use the calculated text color
                 fontWeight: FontWeight.bold,
               ),
