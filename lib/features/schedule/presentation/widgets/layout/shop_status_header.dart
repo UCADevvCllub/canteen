@@ -1,5 +1,5 @@
-// widgets/shop_status_header.dart
 import 'package:flutter/material.dart';
+import 'package:canteen/features/profile/presentation/pages/profile_page.dart'; // Import ProfilePage
 
 class ShopStatusHeader extends StatelessWidget {
   const ShopStatusHeader({super.key});
@@ -10,11 +10,19 @@ class ShopStatusHeader extends StatelessWidget {
       padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
       child: Row(
         children: [
-          Image.asset(
-            'assets/icons/menu.png',
-            width: 24,
-            height: 24,
-            color: Colors.green,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfilePage()),
+              );
+            },
+            child: Image.asset(
+              'assets/icons/menu.png',
+              width: 24,
+              height: 24,
+              color: Colors.green,
+            ),
           ),
           const SizedBox(width: 15),
           const Text(

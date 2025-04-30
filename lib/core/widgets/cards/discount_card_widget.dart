@@ -15,7 +15,7 @@ class DiscountCardWidget extends StatelessWidget {
     required this.newPrice,
     this.oldPrice,
     this.discount,
-    this.showStar = false,
+    this.showStar = false, String? imageUrl,
   });
 
   @override
