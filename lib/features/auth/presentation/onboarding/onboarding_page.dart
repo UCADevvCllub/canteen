@@ -79,7 +79,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               child: AppButton(
                                 onPressed: () {
                                   if (index == pages.length - 1) {
-                                    // Navigate to the next screen
                                     context.router.replaceAll([LoginRoute()]);
                                   } else {
                                     _controller.nextPage(
