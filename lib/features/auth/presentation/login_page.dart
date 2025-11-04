@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/mixins/snackbar_helpers.dart';
-import 'package:canteen/core/navigation/app_router.gr.dart';
+import 'package:canteen/core/navigation/app_router.dart';
 import 'package:canteen/core/theme/app_colors.dart';
 import 'package:canteen/core/widgets/buttons/app_button.dart';
 import 'package:canteen/core/widgets/fields/app_text_form_field.dart';

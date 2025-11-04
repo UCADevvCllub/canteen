@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:canteen/core/widgets/cards/discount_card_widget.dart';
-import 'package:canteen/core/navigation/app_router.gr.dart';
+import 'package:canteen/core/navigation/app_router.dart';
 
 @RoutePage()
 class RecommendationPage extends StatelessWidget {

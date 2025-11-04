@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:canteen/core/navigation/app_router.gr.dart';
+import 'package:canteen/core/navigation/app_router.dart';
 import 'package:canteen/features/auth/presentation/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

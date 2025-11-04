@@ -6,7 +6,7 @@ import 'package:canteen/core/widgets/cards/titled_field_wrapper.dart';
 import 'package:canteen/core/widgets/fields/app_text_form_field.dart';
 import 'package:flutter/material.dart';
 
-@RoutePage()
+@RoutePage(name: 'AddCategoryRoute')
 class AddCategory extends StatefulWidget {
   const AddCategory({super.key});
 

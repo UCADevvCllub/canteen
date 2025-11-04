@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart'; // Adjust path as needed for your router
 import 'package:canteen/core/navigation/app_router.dart';
-import 'package:canteen/core/navigation/app_router.gr.dart';
 
 import '../../../../auth/presentation/provider/auth_provider.dart';
 
