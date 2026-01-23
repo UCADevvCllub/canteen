@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:93268727766:android:fec3d5eabe08dd9213b677",
+        "mobilesdk_app_id": "1:93268727766:android:47631af43d4c904913b677",
         "android_client_info": {
-          "package_name": "com.example.canteen"
+          "package_name": "com.devclub.snapshop"
         }
       },
       "oauth_client": [],
@@ -27,9 +27,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:93268727766:android:abcdef1234567890",
+        "mobilesdk_app_id": "1:93268727766:android:fec3d5eabe08dd9213b677",
         "android_client_info": {
-          "package_name": "com.devclub.snapshop"
+          "package_name": "com.example.canteen"
         }
       },
       "oauth_client": [],

@@ -1,0 +1,42 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /admins/{adminId} {
+      allow read, write: if request.auth.uid == adminId;
+    }
+    
+    match /users/{userId} {
+      // Разрешаем чтение всем авторизованным пользователям (для страницы долгов)
+      allow read: if request.auth != null;
+      // Разрешаем обновление баланса всем авторизованным пользователям
+      allow update: if request.auth != null;
+      // Разрешаем создание и удаление только владельцу документа
+      allow create, delete: if request.auth.uid == userId;
+    }
+    
+    match /categories/{categoryId} {
+      allow read: if true; 
+    }
+    
+    match /products/{productId} {
+      allow read: if true; 
+    }
+    
+    match /app_settings/status {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    match /app_settings/note {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    match /schedule/{scheduleId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}
+
