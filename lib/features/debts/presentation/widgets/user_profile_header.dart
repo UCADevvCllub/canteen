@@ -13,7 +13,6 @@ class UserProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
       padding: EdgeInsets.symmetric(vertical: 30),
       child: Column(
         children: [

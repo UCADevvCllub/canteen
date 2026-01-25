@@ -65,7 +65,7 @@ class _BalanceDetailPageState extends State<BalanceDetailPage> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[50],
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.green[400]),
@@ -86,8 +86,7 @@ class _BalanceDetailPageState extends State<BalanceDetailPage> {
           UserProfileHeader(user: widget.user),
           SizedBox(height: 20),
           // Баланс с кнопками
-          Container(
-            color: Colors.white,
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
             child: BalanceEditor(
               initialBalance: _currentBalance,

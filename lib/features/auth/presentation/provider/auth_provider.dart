@@ -46,7 +46,8 @@ class AuthProvider extends ChangeNotifier {
           email: email,
           role: role,
         );
-        _isAuthenticated = true; // Mark user as authenticated
+        // Don't mark as authenticated until email is verified
+        _isAuthenticated = false;
       }
     } on FirebaseAuthException catch (e) {
       _errorMessage = e.message;
@@ -74,8 +75,17 @@ class AuthProvider extends ChangeNotifier {
       );
 
       if (userCredential.user != null) {
-        await userService.loadUserData();
-        _isAuthenticated = true; // User is authenticated
+        // Reload user to get latest email verification status
+        await authRemoteService.reloadUser();
+        
+        // Check if email is verified
+        if (!authRemoteService.isEmailVerified()) {
+          _errorMessage = 'Please verify your email before logging in. Check your inbox for the verification email.';
+          _isAuthenticated = false;
+        } else {
+          await userService.loadUserData();
+          _isAuthenticated = true; // User is authenticated
+        }
       }
     } on FirebaseAuthException catch (e) {
       _errorMessage = e.message;
@@ -98,11 +108,37 @@ class AuthProvider extends ChangeNotifier {
     User? user = authRemoteService.currentUser;
 
     if (user != null) {
-      await userService.loadUserData();
-      _isAuthenticated = true; // User is authenticated
+      // Reload user to get latest email verification status
+      await authRemoteService.reloadUser();
+      
+      // Check if email is verified
+      if (authRemoteService.isEmailVerified()) {
+        await userService.loadUserData();
+        _isAuthenticated = true; // User is authenticated
+      } else {
+        _isAuthenticated = false; // Email not verified
+      }
     } else {
       _isAuthenticated = false; // User is not authenticated
     }
+    notifyListeners();
+  }
+
+  // Resend email verification
+  Future<void> resendEmailVerification() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      await authRemoteService.sendEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      _errorMessage = e.message;
+    } catch (e) {
+      _errorMessage = "An error occurred: $e";
+    }
+
+    _isLoading = false;
     notifyListeners();
   }
 }

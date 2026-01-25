@@ -44,6 +44,9 @@ class AuthRemoteService {
       User? user = userCredential.user;
 
       if (user != null) {
+        // Send email verification
+        await user.sendEmailVerification();
+        
         // Save additional user data to Firestore
         await _fireStore.collection('users').doc(user.uid).set({
           'uid': user.uid,
@@ -122,6 +125,28 @@ class AuthRemoteService {
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     }
+  }
+
+  // Send email verification
+  Future<void> sendEmailVerification() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification();
+      }
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthException(e);
+    }
+  }
+
+  // Check if email is verified
+  bool isEmailVerified() {
+    return _auth.currentUser?.emailVerified ?? false;
+  }
+
+  // Reload user to get latest email verification status
+  Future<void> reloadUser() async {
+    await _auth.currentUser?.reload();
   }
 
   // Helper method to handle Firebase Auth Exceptions

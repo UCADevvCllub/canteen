@@ -16,6 +16,7 @@ const List<String> iconsPath = [
   'assets/icons/delivery_icon.png',
 ];
 
+
 @RoutePage()
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
