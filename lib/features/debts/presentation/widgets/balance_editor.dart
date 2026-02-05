@@ -88,6 +88,8 @@ class _BalanceEditorState extends State<BalanceEditor> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -102,61 +104,20 @@ class _BalanceEditorState extends State<BalanceEditor> {
             onPressed: widget.isUpdating ? null : _decrementBalance,
           ),
         ),
-        SizedBox(width: 20),
-        // Сумма баланса (редактируемая)
-        GestureDetector(
+        const SizedBox(width: 20),
+        EditableBalanceAmount(
+          balance: _currentBalance,
+          controller: _balanceController,
+          isEditing: _isEditing,
+          theme: theme,
           onTap: () {
             setState(() {
               _isEditing = true;
             });
           },
-          child: _isEditing
-              ? Container(
-                  width: 120,
-                  child: TextField(
-                    controller: _balanceController,
-                    keyboardType: TextInputType.numberWithOptions(signed: true, decimal: false),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: _currentBalance < 0 ? Colors.red[400] : Colors.green[400],
-                    ),
-                    decoration: InputDecoration(
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: _currentBalance < 0 ? Colors.red[400]! : Colors.green[400]!,
-                          width: 2,
-                        ),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: _currentBalance < 0 ? Colors.red[400]! : Colors.green[400]!,
-                          width: 2,
-                        ),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: _currentBalance < 0 ? Colors.red[400]! : Colors.green[400]!,
-                          width: 2,
-                        ),
-                      ),
-                    ),
-                    onSubmitted: (_) => _saveBalance(),
-                    onEditingComplete: _saveBalance,
-                    autofocus: true,
-                  ),
-                )
-              : Text(
-                  _currentBalance.toStringAsFixed(0),
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: _currentBalance < 0 ? Colors.red[400] : Colors.green[400],
-                  ),
-                ),
+          onSave: _saveBalance,
         ),
-        SizedBox(width: 20),
+        const SizedBox(width: 20),
         // Кнопка плюс
         Container(
           decoration: BoxDecoration(
@@ -169,6 +130,81 @@ class _BalanceEditorState extends State<BalanceEditor> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class EditableBalanceAmount extends StatelessWidget {
+  final double balance;
+  final TextEditingController controller;
+  final bool isEditing;
+  final ThemeData theme;
+  final VoidCallback onTap;
+  final VoidCallback onSave;
+
+  const EditableBalanceAmount({
+    Key? key,
+    required this.balance,
+    required this.controller,
+    required this.isEditing,
+    required this.theme,
+    required this.onTap,
+    required this.onSave,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final color = balance < 0 ? Colors.red[400] : Colors.green[400];
+    final underlineColor = balance < 0 ? Colors.red[400]! : Colors.green[400]!;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: isEditing
+          ? SizedBox(
+              width: 120,
+              child: TextField(
+                controller: controller,
+                keyboardType: const TextInputType.numberWithOptions(
+                  signed: true,
+                  decimal: false,
+                ),
+                textAlign: TextAlign.center,
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: underlineColor,
+                      width: 2,
+                    ),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: underlineColor,
+                      width: 2,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: underlineColor,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                onSubmitted: (_) => onSave(),
+                onEditingComplete: onSave,
+                autofocus: true,
+              ),
+            )
+          : Text(
+              balance.toStringAsFixed(0),
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
     );
   }
 }

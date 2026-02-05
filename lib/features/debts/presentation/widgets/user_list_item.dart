@@ -13,26 +13,26 @@ class UserListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         title: Text(
           user.name,
-          style: TextStyle(
-            fontSize: 16,
+          style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w500,
           ),
         ),
         trailing: Text(
           user.balance.toStringAsFixed(0),
-          style: TextStyle(
+          style: theme.textTheme.titleMedium?.copyWith(
             color: user.balance < 0 ? Colors.red[400] : Colors.green[400],
-            fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
         ),

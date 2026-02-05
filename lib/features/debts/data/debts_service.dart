@@ -7,6 +7,27 @@ class DebtsService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final String usersCollection = 'users';
 
+  Stream<double> currentUserBalanceStream() {
+    final currentUser = _auth.currentUser;
+    if (currentUser == null) {
+      return Stream.error(Exception('Пользователь не авторизован'));
+    }
+
+    return _firestore
+        .collection(usersCollection)
+        .doc(currentUser.uid)
+        .snapshots()
+        .map((snapshot) {
+      final data = snapshot.data();
+      if (data == null) return 0.0;
+
+      final raw = data['balance'];
+      if (raw == null) return 0.0;
+      if (raw is num) return raw.toDouble();
+      return double.tryParse(raw.toString()) ?? 0.0;
+    });
+  }
+
   /// Получить список всех пользователей (кроме текущего)
   Future<List<DebtUser>> getAllUsers() async {
     final currentUser = _auth.currentUser;

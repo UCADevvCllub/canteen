@@ -13,10 +13,18 @@ class TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isNegative = transaction.amount < 0;
+    final theme = Theme.of(context);
+
+    final balanceAfterText =
+        'Balance ${transaction.balanceAfter.toStringAsFixed(0)}';
+    final formattedDate =
+        '${transaction.date.day}.${transaction.date.month}.${transaction.date.year.toString().substring(2)} '
+        '${transaction.date.hour.toString().padLeft(2, '0')}:'
+        '${transaction.date.minute.toString().padLeft(2, '0')} Pm';
     
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
-      padding: EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -29,8 +37,7 @@ class TransactionItem extends StatelessWidget {
               transaction.amount > 0
                   ? '+${transaction.amount.toStringAsFixed(0)}'
                   : transaction.amount.toStringAsFixed(0),
-              style: TextStyle(
-                fontSize: 20,
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: isNegative ? Colors.red[400] : Colors.green[400],
               ),
@@ -41,17 +48,15 @@ class TransactionItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                'Balance ${transaction.balanceAfter.toStringAsFixed(0)}',
-                style: TextStyle(
-                  fontSize: 14,
+                balanceAfterText,
+                style: theme.textTheme.bodyMedium?.copyWith(
                   color: Colors.grey[600],
                 ),
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
-                '${transaction.date.day}.${transaction.date.month}.${transaction.date.year.toString().substring(2)} ${transaction.date.hour.toString().padLeft(2, '0')}:${transaction.date.minute.toString().padLeft(2, '0')} Pm',
-                style: TextStyle(
-                  fontSize: 12,
+                formattedDate,
+                style: theme.textTheme.bodySmall?.copyWith(
                   color: Colors.grey[400],
                 ),
               ),

@@ -21,6 +21,47 @@ class AuthProvider extends ChangeNotifier {
   bool get isAuthenticated =>
       _isAuthenticated; // Getter for authentication state
 
+  String? validateSignUpForm({
+    required String name,
+    required String email,
+    required String password,
+    required String repeatPassword,
+    required String? role,
+  }) {
+    final trimmedName = name.trim();
+    final trimmedEmail = email.trim();
+    final trimmedPassword = password.trim();
+    final trimmedRepeat = repeatPassword.trim();
+
+    if (trimmedName.isEmpty ||
+        trimmedEmail.isEmpty ||
+        trimmedPassword.isEmpty ||
+        trimmedRepeat.isEmpty ||
+        role == null) {
+      return 'Please fill in all fields correctly';
+    }
+
+    if (!trimmedEmail.contains('@') ||
+        !trimmedEmail.toLowerCase().endsWith('@ucentralasia.org')) {
+      return 'Email must end with @ucentralasia.org';
+    }
+
+    if (trimmedPassword.length < 6) {
+      return 'Password must be at least 6 characters long';
+    }
+    if (!trimmedPassword.contains(RegExp(r'[0-9]'))) {
+      return 'Password must contain at least one number';
+    }
+    if (!trimmedPassword.contains(RegExp(r'[a-zA-Z]'))) {
+      return 'Password must contain at least one letter';
+    }
+    if (trimmedPassword != trimmedRepeat) {
+      return 'Passwords do not match';
+    }
+
+    return null;
+  }
+
   Future<void> register({
     required String email,
     required String password,

@@ -163,58 +163,45 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
                         title: 'Sign Up',
                         color: AppColors.darkGreen,
                         onPressed: () async {
-                          if (_validateFields()) {
-                            // Check if passwords match
-                            if (passwordController.text.trim() != repeatPasswordController.text.trim()) {
-                              showErrorSnackBar(
-                                context: context,
-                                message: 'Passwords do not match',
-                              );
-                              return;
-                            }
-                            
-                            await authProvider.register(
-                              email: emailController.text.trim(),
-                              password: passwordController.text.trim(),
-                              name: nameController.text.trim(),
-                              role: selectedRole!,
-                            );
+                          final validationError =
+                              authProvider.validateSignUpForm(
+                            name: nameController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                            repeatPassword: repeatPasswordController.text,
+                            role: selectedRole,
+                          );
 
-                            if (authProvider.errorMessage == null) {
-                              showSuccessSnackBar(
-                                context: context,
-                                message: 'Verification email sent! Please check your inbox.',
-                              );
-                              context.router.push(
-                                EmailVerificationRoute(email: emailController.text.trim()),
-                              );
-                            } else {
-                              showErrorSnackBar(
-                                context: context,
-                                message: authProvider.errorMessage!,
-                              );
-                            }
-                          } else {
-                            String errorMessage = 'Please fill in all fields correctly';
-                            if (!_isEmailValid && emailController.text.trim().isNotEmpty) {
-                              errorMessage = 'Email must end with @ucentralasia.org';
-                            } else if (!_isPasswordValid && passwordController.text.trim().isNotEmpty) {
-                              final password = passwordController.text.trim();
-                              if (password.length < 6) {
-                                errorMessage = 'Password must be at least 6 characters long';
-                              } else if (!password.contains(RegExp(r'[0-9]'))) {
-                                errorMessage = 'Password must contain at least one number';
-                              } else if (!password.contains(RegExp(r'[a-zA-Z]'))) {
-                                errorMessage = 'Password must contain at least one letter';
-                              } else {
-                                errorMessage = 'Password must be at least 6 characters, contain a letter and a number';
-                              }
-                            } else if (!_isRepeatPasswordValid && repeatPasswordController.text.trim().isNotEmpty) {
-                              errorMessage = 'Passwords do not match';
-                            }
+                          if (validationError != null) {
                             showErrorSnackBar(
                               context: context,
-                              message: errorMessage,
+                              message: validationError,
+                            );
+                            return;
+                          }
+
+                          await authProvider.register(
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim(),
+                            name: nameController.text.trim(),
+                            role: selectedRole!,
+                          );
+
+                          if (authProvider.errorMessage == null) {
+                            showSuccessSnackBar(
+                              context: context,
+                              message:
+                                  'Verification email sent! Please check your inbox.',
+                            );
+                            context.router.push(
+                              EmailVerificationRoute(
+                                email: emailController.text.trim(),
+                              ),
+                            );
+                          } else {
+                            showErrorSnackBar(
+                              context: context,
+                              message: authProvider.errorMessage!,
                             );
                           }
                         },
