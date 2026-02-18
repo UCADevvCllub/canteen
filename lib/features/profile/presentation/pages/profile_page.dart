@@ -4,10 +4,58 @@ import 'package:flutter/material.dart';
 import 'package:canteen/features/profile/presentation/pages/my_account_page.dart';
 import 'package:canteen/features/profile/presentation/pages/saved_page.dart';
 import 'package:canteen/features/profile/presentation/pages/widgets/profile_menu.dart';
+import 'package:canteen/features/profile/data/my_account_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 @RoutePage()
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final FirebaseService _firebaseService = FirebaseService();
+  String? _fullName;
+  String? _email;
+  String? _profileImageUrl;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final userData = await _firebaseService.getUserData();
+      if (userData != null) {
+        setState(() {
+          _fullName = userData['fullName'] ?? userData['name'] ?? '';
+          _email = userData['email'] ?? '';
+          _profileImageUrl = userData['profileImageUrl'];
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  ImageProvider? _getProfileImage() {
+    if (_profileImageUrl != null && _profileImageUrl!.isNotEmpty) {
+      return CachedNetworkImageProvider(_profileImageUrl!);
+    }
+    return const AssetImage('assets/images/profile_picture.png');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,18 +104,35 @@ class ProfilePage extends StatelessWidget {
                     border: Border.all(color: Colors.white, width: 4),
                   ),
                   child: ClipOval(
-                    child: Image.asset(
-                      'assets/images/profile_picture.png', // Replace with your image path
-                      width: 150,
-                      height: 150,
-                      fit: BoxFit.cover,
-                    ),
+                    child: _isLoading
+                        ? Container(
+                            width: 150,
+                            height: 150,
+                            color: Colors.grey[300],
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                        : Image(
+                            image: _getProfileImage()!,
+                            width: 150,
+                            height: 150,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/profile_picture.png',
+                                width: 150,
+                                height: 150,
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
                   ),
                 ),
                 const SizedBox(height: 16),
                 // User name
-                const Text(
-                  'Peter Andrew',
+                Text(
+                  _isLoading ? 'Loading...' : (_fullName ?? 'User'),
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -75,8 +140,8 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 // User email
-                const Text(
-                  'peterandrew@gmail.com',
+                Text(
+                  _isLoading ? 'Loading...' : (_email ?? ''),
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
@@ -192,30 +257,6 @@ class ProfilePage extends StatelessWidget {
         onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       ),
-    );
-  }
-}
-
-// If you need to use custom assets for icons, you can replace the Icon widget with:
-// Image.asset('assets/my_account_icon.png', width: 24, height: 24)
-
-// Main app for demonstration
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        scaffoldBackgroundColor: const Color(0xFFF5F5F5),
-      ),
-      home: const ProfilePage(),
     );
   }
 }

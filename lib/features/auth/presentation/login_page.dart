@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> with SnackbarHelpers {
   void _validatePassword() {
     final password = passwordController.text.trim();
     setState(() {
-      _isPasswordValid = password.isNotEmpty && password.length >= 6;
+      _isPasswordValid = password.isNotEmpty;
     });
   }
 

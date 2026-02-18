@@ -26,6 +26,7 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
   bool _isNameValid = false; // Track name validation state
   bool _isEmailValid = false; // Track email validation state
   bool _isPasswordValid = false; // Track password validation state
+  bool _isRepeatPasswordValid = false; // Track repeat password validation state
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
     nameController.addListener(_validateName);
     emailController.addListener(_validateEmail);
     passwordController.addListener(_validatePassword);
+    repeatPasswordController.addListener(_validateRepeatPassword);
   }
 
   @override
@@ -43,9 +45,11 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
     nameController.removeListener(_validateName);
     emailController.removeListener(_validateEmail);
     passwordController.removeListener(_validatePassword);
+    repeatPasswordController.removeListener(_validateRepeatPassword);
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
+    repeatPasswordController.dispose();
     super.dispose();
   }
 
@@ -61,15 +65,30 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
   void _validateEmail() {
     final email = emailController.text.trim();
     setState(() {
-      _isEmailValid = email.isNotEmpty && email.contains('@');
+      _isEmailValid = email.isNotEmpty && 
+          email.contains('@') && 
+          email.toLowerCase().endsWith('@ucentralasia.org');
     });
   }
 
-  // Validate password input@
+  // Validate password input
   void _validatePassword() {
     final password = passwordController.text.trim();
     setState(() {
-      _isPasswordValid = password.isNotEmpty && password.length >= 6;
+      _isPasswordValid = password.isNotEmpty && 
+          password.length >= 6 && 
+          password.contains(RegExp(r'[0-9]')) &&
+          password.contains(RegExp(r'[a-zA-Z]'));
+    });
+  }
+
+  // Validate repeat password input
+  void _validateRepeatPassword() {
+    final password = passwordController.text.trim();
+    final repeatPassword = repeatPasswordController.text.trim();
+    setState(() {
+      _isRepeatPasswordValid = repeatPassword.isNotEmpty && 
+          repeatPassword == password;
     });
   }
 
@@ -78,6 +97,7 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
     return _isNameValid &&
         _isEmailValid &&
         _isPasswordValid &&
+        _isRepeatPasswordValid &&
         selectedRole != null;
   }
 
@@ -110,7 +130,7 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
                 ),
                 const SizedBox(height: 20),
                 AppTextFormField(
-                  hintText: 'Email',
+                  hintText: 'email@ucentralasia.org',
                   controller: emailController,
                   icon: Icons.email,
                 ),
@@ -143,30 +163,45 @@ class _SignUpPageState extends State<SignUpPage> with SnackbarHelpers {
                         title: 'Sign Up',
                         color: AppColors.darkGreen,
                         onPressed: () async {
-                          if (_validateFields()) {
-                            await authProvider.register(
-                              email: emailController.text.trim(),
-                              password: passwordController.text.trim(),
-                              name: nameController.text.trim(),
-                              role: selectedRole!,
-                            );
+                          final validationError =
+                              authProvider.validateSignUpForm(
+                            name: nameController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                            repeatPassword: repeatPasswordController.text,
+                            role: selectedRole,
+                          );
 
-                            if (authProvider.errorMessage == null) {
-                              showSuccessSnackBar(
-                                context: context,
-                                message: 'Sign up successful!',
-                              );
-                              context.router.replaceAll([HomeRoute()]);
-                            } else {
-                              showErrorSnackBar(
-                                context: context,
-                                message: authProvider.errorMessage!,
-                              );
-                            }
+                          if (validationError != null) {
+                            showErrorSnackBar(
+                              context: context,
+                              message: validationError,
+                            );
+                            return;
+                          }
+
+                          await authProvider.register(
+                            email: emailController.text.trim(),
+                            password: passwordController.text.trim(),
+                            name: nameController.text.trim(),
+                            role: selectedRole!,
+                          );
+
+                          if (authProvider.errorMessage == null) {
+                            showSuccessSnackBar(
+                              context: context,
+                              message:
+                                  'Verification email sent! Please check your inbox.',
+                            );
+                            context.router.push(
+                              EmailVerificationRoute(
+                                email: emailController.text.trim(),
+                              ),
+                            );
                           } else {
                             showErrorSnackBar(
                               context: context,
-                              message: 'Please fill in all fields correctly',
+                              message: authProvider.errorMessage!,
                             );
                           }
                         },

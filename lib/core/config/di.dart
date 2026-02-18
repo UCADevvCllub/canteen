@@ -1,5 +1,6 @@
 import 'package:canteen/core/data/service/user_service.dart';
 import 'package:canteen/features/auth/auth_injection.dart';
+import 'package:canteen/features/debts/data/debts_service.dart';
 import 'package:canteen/features/products/data/products_service.dart';
 import 'package:canteen/core/navigation/app_router.dart';
 import 'package:canteen/features/schedule/schedule_injection.dart';
@@ -30,4 +31,5 @@ Future<void> coreSetup() async {
 void registerServices() {
   // Регистрация ProductsService
   locator.registerLazySingleton<ProductsService>(() => ProductsService());
+  locator.registerLazySingleton<DebtsService>(() => DebtsService());
 }

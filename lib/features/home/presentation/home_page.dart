@@ -1,5 +1,5 @@
 import 'package:auto_route/annotations.dart';
-import 'package:canteen/features/debts/presentation/debts_page.dart';
+import 'package:canteen/features/debts/presentation/pages/debts_page.dart';
 import 'package:canteen/features/delivery/presentation/delivery_page.dart';
 import 'package:canteen/features/products/presentation/pages/catalogue_page.dart';
 import 'package:canteen/features/discount/presentation/discount_page.dart';
@@ -15,6 +15,7 @@ const List<String> iconsPath = [
   'assets/icons/debt_icon.png',
   'assets/icons/delivery_icon.png',
 ];
+
 
 @RoutePage()
 class HomePage extends StatefulWidget {

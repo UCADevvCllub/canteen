@@ -12,6 +12,11 @@ class FormValidators {
       return 'Enter a valid email address';
     }
 
+    // Check if email ends with @ucentralasia.org
+    if (!value.toLowerCase().endsWith('@ucentralasia.org')) {
+      return 'Email must end with @ucentralasia.org';
+    }
+
     return null; // Validation passed
   }
 
@@ -21,17 +26,18 @@ class FormValidators {
       return 'Password cannot be empty';
     }
 
-    if (value.length < 8) {
-      return 'Password must be at least 8 characters long';
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters long';
     }
 
-    // Optional: Add more complex password validation
-    if (!value.contains(RegExp(r'[A-Z]'))) {
-      return 'Password must contain at least one uppercase letter';
-    }
-
+    // Check if password contains at least one number
     if (!value.contains(RegExp(r'[0-9]'))) {
       return 'Password must contain at least one number';
+    }
+
+    // Check if password contains at least one letter
+    if (!value.contains(RegExp(r'[a-zA-Z]'))) {
+      return 'Password must contain at least one letter';
     }
 
     return null; // Validation passed

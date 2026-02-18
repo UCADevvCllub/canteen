@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:canteen/features/auth/presentation/email_verification_page.dart';
 import 'package:canteen/features/auth/presentation/login_page.dart';
 import 'package:canteen/features/auth/presentation/onboarding/onboarding_page.dart';
 import 'package:canteen/features/auth/presentation/signup_page.dart';
@@ -32,6 +33,10 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           page: SignUpRoute.page,
           path: '/sign-up',
+        ),
+        AutoRoute(
+          page: EmailVerificationRoute.page,
+          path: '/email-verification',
         ),
         AutoRoute(
           page: HomeRoute.page,
